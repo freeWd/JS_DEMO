@@ -1,0 +1,14 @@
+{
+  "name": "day1",
+  "version": "1.0.0",
+  "description": "> 永远年轻，永远热泪盈眶",
+  "main": "01-callback.js",
+  "scripts": {
+    "test": "promises-aplus-tests 08-self-promise/8-3-promise.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "promises-aplus-tests": "^2.1.2"
+  }
+}

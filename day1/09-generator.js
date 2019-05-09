@@ -65,7 +65,7 @@ let p2 = new Promise(function(resolve, reject) {
 });
 
 function* read2() {
-    let name = yield p1;
+    let content = yield p1;
     let age = yield p2;
     return age;
 }
@@ -109,7 +109,7 @@ co(read2()).then(data => console.log(data));
 // part5 async + await 
 async function readAge() {
     try {
-        let name = await p1;
+        let content = await p1;
         let age = await p2;
         return age;
     } catch (error) {

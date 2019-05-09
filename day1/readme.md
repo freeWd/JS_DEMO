@@ -633,10 +633,81 @@ let object = {
 * 用生成器解实际解决异步的问题
 ```js
 // 读取不同文件中的内容
+let fs = require('fs');
+
+let p1 = new Promise(function(resolve, reject) {
+    fs.readFile('./day1/static/name.txt', 'utf8', function(error, data) {
+        if (error) reject(error);
+        resolve(data);
+    })
+});
+
+let p2 = new Promise(function(resolve, reject) {
+    fs.readFile('./day1/static/age.txt', 'utf8', function(error, data) {
+        if (error) reject(error);
+        resolve(data);
+    });
+});
+
+function* read2() {
+    let content = yield p1;
+    let age = yield p2;
+    return age;
+}
+
+let it2 = read2();
+let { value } = it2.next();
+value.then(data => {
+    console.log(data);
+    let { value } = it2.next(data);
+    value.then(data => {
+        console.log(data);
+    })
+})
 ```
 
 我们可以自己手写一个 co 方法来简化流程
+```js
+function co(it) {
+    return new Promise(function(resolve, reject) {
+        function next(data) {
+            let { value, done } = it.next(data);
+            if (done) {
+                resolve (value);
+            } else {
+                value.then((data2) => {
+                    next(data2);
+                }, error => {
+                    reject(error);
+                })
+            }
+        }
+
+        next();
+    });
+}
+
+co(read2()).then(data => console.log(data));
+```
 
 
 ## 9.async + await
 * 异步的终极解决方案 es7 async + await node 7.6以上 相当于是 generator + co的语法糖
+```js
+async function readAge() {
+    try {
+        let content = await p1;
+        let age = await p2;
+        return age;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// async函数执行后 返回的是一个promise
+readAge().then(data => {
+    console.log(data);
+}).catch(err => {
+    console.log(err);
+})
+```

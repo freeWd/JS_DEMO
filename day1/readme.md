@@ -353,44 +353,290 @@ let racePromise = new Promise((resolve, reject) => {
 ```
 
 
-## 7.手写promise A+ 规范 
-1 针对6.1的使用案例写出对应的promise对象
+## 7.手写promise 规范 
 ```js
 function Promise(executor) {
-    let that = this;
-    that.value = null;
-    that.error = null;
-    that.status = 'pending';
+  let that = this;
+  this.status = 'pending';
+  this.value = null;
+  this.error = null;
+  this.successMethodArr = [];
+  this.errorMethodArr = [];
 
-    function resolve(value) {
-        if (that.status === 'pending') {
-            that.status = 'resolve';
-            that.value = value;
-        }
+  function resolve(value) {
+    if (that.status === 'pending') {
+      that.status = 'resolve';
+      that.value = value;
+      that.successMethodArr.forEach(fn => fn());
     }
+  }
 
-    function reject(error) {
-        if (that.status === 'pending') {
-            that.status = 'reject';
-            that.error = error;
-        }
+  function reject(value) {
+    if (that.status === 'pending') {
+      that.status = 'reject';
+      that.value = value;
+      that.errorMethodArr.forEach(fn => fn());
     }
+  }
 
+  try {
     executor(resolve, reject);
+  } catch (error) {
+    reject(error);
+  }
 }
 
-Promise.prototype.then = function(successFn, errorFn) {
-    let that = this;
+function loopParsePromise(promise, callBackValue, resolve2, reject2) {
+  if (promise === callBackValue) {
+    reject2('error 循环调用');
+  }
+  if ((callBackValue !== null && typeof callBackValue === 'object') || typeof callBackValue === 'function') {
+    // callBackValue有可能是一个promise对象
+    let then = callBackValue.then;
+    if (typeof then === 'function') {
+      // callBackValue确认是一个promise对象
+      then.call(callBackValue, y => {
+        loopParsePromise(promise, y, resolve2, reject2);
+      }, r => {
+        reject2(r);
+      });
+    } else {
+      resolve2(callBackValue);
+    }
+  } else {
+    resolve2(callBackValue);
+  }
+
+}
+
+Promise.prototype.then = function (successFn, errorFn) {
+  let that = this;
+  successFn = typeof successFn === 'function'?successFn : value=> value;
+  errorFn = typeof errorFn === 'function'? errorFn:err=>{throw err}
+
+  let promise = new Promise(function (resolve2, reject2) {
     if (that.status === 'resolve') {
-        successFn(that.value);
-    } else if (that.status === 'reject') {
-        errorFn(that.error);
+      setTimeout(() => {
+        try {
+          let callBackValue = successFn(that.value);
+          loopParsePromise(promise, callBackValue, resolve2, reject2);
+        } catch (error) {
+          reject2(error);
+        }
+      })
+    }
+    if (that.status === 'reject') {
+      setTimeout(() => {
+        try {
+          let callBackValue = errorFn(that.value);
+          loopParsePromise(promise, callBackValue, resolve2, reject2);
+        } catch (error) {
+          reject2(error);
+        }
+      })
+    }
+
+    if (that.status === 'pending') {
+      that.successMethodArr.push(function () {
+        setTimeout(() => {
+          try {
+            let callBackValue = successFn(that.value);
+            loopParsePromise(promise, callBackValue, resolve2, reject2);
+          } catch (error) {
+            reject2(error);
+          }
+        })
+      });
+      that.errorMethodArr.push(function () {
+        setTimeout(() => {
+          try {
+            let callBackValue = errorFn(that.value);
+            loopParsePromise(promise, callBackValue, resolve2, reject2);
+          } catch (error) {
+            reject2(error);
+          }
+        })
+      });
+    }
+  });
+
+  return promise;
+}
+
+Promise.prototype.catch = function (errFn) {
+  return this.then(null, errFn);
+}
+
+Promise.resolve = function (params) {
+  return new Promise((resolve) => resolve(params));
+}
+
+Promise.reject = function (params) {
+  return new Promise((resolve, reject) => reject(params));
+}
+
+Promise.all = function (paramArr) {
+  return new Promise(function (resolve, reject) {
+    let data = [];
+
+    for (let index = 0; index < paramArr.length; index++) {
+      const paramItem = paramArr[index];
+      let promiseFn = null;
+
+      if (!(paramItem instanceof Promise)) {
+        promiseFn = Promise.resolve(paramItem);
+      } else {
+        promiseFn = paramItem;
+      }
+
+      promiseFn.then(value => {
+        data.push(value);
+        if (index === paramArr.length-1 && index === data.length-1) {
+          resolve(data);
+        }
+      }, error => {
+          reject(error);
+      })
+    }
+  });
+}
+
+Promise.race = function(paramArr) {
+  return new Promise((resolve, reject) => {
+    for (let index = 0; index < paramArr.length; index++) {
+      const paramItem = paramArr[index];
+      if (paramItem instanceof Promise) {
+        paramItem.then((value) => {
+          resolve(value)
+        }, (error) => {
+          resolve(error);
+        });
+      } else {
+        resolve(paramItem);
+      }
+    }
+  });
+}
+
+// // 实现一个promise的延迟对象 defer
+Promise.defer = Promise.deferred = function(){
+  let dfd = {};
+  dfd.promise = new Promise((resolve, reject)=>{
+      dfd.resolve = resolve;
+      dfd.reject = reject;
+  });
+  return dfd;
+}
+
+module.exports = Promise;
+```
+
+## 8.generator - 生成器 - 用于生成迭代器
+generator 是生成器，它的产出结果是迭代器。
+在了解生成器和迭代器之前，我们先了解下关于数组和类数组的概念。
+* 类数组：
+    1) 拥有length属性，length-0可隐式转换为number类型，并且不大于Math.pow(2,32)（比如：22.33和'022'都满足条件）
+    2) 不具有数组所具有的方法
+```js
+function test(a1, a2, a3) {
+    let object = { 0: 1, 1: 2, 2: 3, length: 3 };
+    let arr = [...arguments];
+    console.log(Array.prototype.slice.call(object));
+    console.log(arguments, Array.isArray(arguments));
+    console.log(arr, Array.isArray(arr));
+}
+
+test('a', 'b', 'c');
+```
+在上述方法中允许传入多个参数，arguments具有每个参数的索引和值。 object和arguments都属于类数组，但是在转化为真正的数组的过程中，argument可以使用...扩展运算符转化，而object不可以。原因在于arguments相比object内部 **实现了 Iterator（迭代器） 接口**
+
+一个数据结构只要部署了Symbol.iterator属性，就被视为具有 iterator 接口。
+
+如果我们想要object也可以用扩展运算符转化，需要给起其添加迭代器接口
+```js
+let object = {
+    0: 1,
+    1: 2,
+    2: 3,
+    length: 3,
+    [Symbol.iterator]: function() {
+        let index = 0;
+        let that = this;
+        // 迭代器的概念
+        return { // 迭代器上拥有next方法
+            next: function() {
+                return { 
+                    value: object[index],
+                    done: index++ == that.length 
+                }
+            }
+        }
     }
 }
 ```
 
-## 8.generator - 生成器 - 用于生成迭代器
+上面这些了解后，现在开始了解下generator的概念了。
+* Generator 函数是 ES6 提供的一种异步编程解决方案
+* Generator 函数有多种理解角度。语法上，首先可以把它理解成，Generator 函数是一个状态机，封装了多个内部状态
+* Generator会返回一个迭代器对象
 
+```js
+// 一个generator的语法
+// 形式上，Generator 函数是一个普通函数，但是有两个特征。一是，function关键字与函数名之间有一个星号；二是，函数体内部使用yield表达式，定义不同的内部状态（yield在英语里的意思就是“产出”）。
+function* read() {
+    yield 1;
+    yield 2;
+    return 100;
+}
+
+let ts = read();
+console.log(ts.next());
+console.log(ts.next());
+console.log(ts.next());
+console.log(ts.next());
+// { value: 1, done: false }
+// { value: 2, done: false }
+// { value: 100, done: true }
+// { value: undefined, done: true }
+
+function* read2() {
+    let a = yield 1;
+    console.log(a);
+    let b = yield 2;
+    console.log(b);
+    return b;
+}
+
+// 第一次传递next参数值是无意义的
+// 再传递参数就会把结果传递给上一次的yield的返回值
+let it2 = read2();
+it2.next();  
+it2.next('100'); // let a = 100, console.log(100), yield 2
+it2.next('200'); // b = 200 console.log(200) return 200
+```
+
+通过了解了生成器的基本使用方法后，我们可以将上面的object迭代器的接口进行简化。
+```js
+let object = {
+    0: 1,
+    1: 2,
+    2: 3,
+    length: 3,
+    [Symbol.iterator]: function*() {
+        let index = 0;
+        while(index < length) {
+            yield object[index++];
+        }
+    }
+}
+```
+* 用生成器解实际解决异步的问题
+```js
+// 读取不同文件中的内容
+```
+
+我们可以自己手写一个 co 方法来简化流程
 
 
 ## 9.async + await
+* 异步的终极解决方案 es7 async + await node 7.6以上 相当于是 generator + co的语法糖

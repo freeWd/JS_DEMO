@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="test">add</button>
+    <script>
+        let body = document.querySelector('body');
+        let btn = document.querySelector('.test');
+        btn.addEventListener('click', function () {
+            for (var index = 0; index < 10; index++) {
+                (function(index) {
+                    let aEle = document.createElement('a');
+                    aEle.innerText = 'a' + index;
+                    aEle.addEventListener('click', function () {
+                        console.log(index);
+                    });
+                    body.appendChild(aEle);
+                })(index);
+            }
+        })
+    </script>
+</body>
+
+</html>

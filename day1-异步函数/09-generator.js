@@ -82,10 +82,33 @@ value.then(data => {
 
 
 // part4 封装co方法解决通用性问题
+let fs = require('fs');
+
+let p1 = new Promise(function(resolve, reject) {
+    fs.readFile('./day1/static/name.txt', 'utf8', function(error, data) {
+        if (error) reject(error);
+        resolve(data);
+    })
+});
+
+let p2 = new Promise(function(resolve, reject) {
+    fs.readFile('./day1/static/age.txt', 'utf8', function(error, data) {
+        if (error) reject(error);
+        resolve(data);
+    });
+});
+
+function* read2() {
+    let content = yield p1;
+    let age = yield p2;
+    return age;
+}
+
 function co(it) {
     return new Promise(function(resolve, reject) {
         function next(data) {
             let { value, done } = it.next(data);
+            console.log(value, done, data);
             if (done) {
                 resolve (value);
             } else {
@@ -107,10 +130,34 @@ co(read2()).then(data => console.log(data));
 
 
 // part5 async + await 
+let fs = require('fs');
+
+let p1 = new Promise(function(resolve, reject) {
+    fs.readFile('./day1/static/name.txt', 'utf8', function(error, data) {
+        if (error) reject(error);
+        resolve(data);
+    })
+});
+
+let p2 = new Promise(function(resolve, reject) {
+    fs.readFile('./day1/static/age.txt', 'utf8', function(error, data) {
+        if (error) reject(error);
+        resolve(data);
+    });
+});
+
+function* read2() {
+    let content = yield p1;
+    let age = yield p2;
+    return age;
+}
+
 async function readAge() {
     try {
-        let content = await p1;
+        let name = await p1;
+        console.log(name);
         let age = await p2;
+        console.log(age);
         return age;
     } catch (error) {
         console.log(error);

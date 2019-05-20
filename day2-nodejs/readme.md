@@ -62,7 +62,7 @@ js是一门**主线程**为单线程的语言，同时它要也是一门解释�
 * 常见的宏任务macrotask有：setTimeout、setInterval、 setImmediate(ie浏览器才支持,node中自己也实现了)、MessageChannel
 * 常见的微任务microtask有：promise.then()、process.nextTick(node的)
 
-**是什么是事件环?**
+**是什么是浏览器事件环?**
 浏览器中，事件环的运行机制是，先会执行栈中的内容，栈中的内容执行后执行微任务，微任务清空后再执行宏任务，先取出一个宏任务，再去执行微任务，然后在取宏任务清微任务这样不停的循环。
 ![image](../static/eventloop.png)
 > 从图中可以看出，同步任务会进入执行栈，而异步任务会进入任务队列（callback queue）等待执行。一旦执行栈中的内容执行完毕，就会读取任务队列中等待的任务放入执行栈开始执行。
@@ -127,11 +127,16 @@ console.log('script end');
 ```
 
 
+****
+
+## nodejs
 下面我们来正式的聊一聊nodejs
 我们都知道完整的JS由三部分组成：
 * DOM (Document Object Model)
 * BOM (Browser Object Model)
 * ECMAScript (js基本语法)
+
+nodejs只有上面的ECMAScript部分
 
 **什么是nodejs**
 * Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境,让JavaScript的执行效率与低端的C语言的相近的执行效率。它运行在服务端，所以仅仅包含js的ECMAScript部分。
@@ -147,5 +152,35 @@ console.log('script end');
 
 异步/同步：被调用方，可以决定此方法是同步还是异步
 阻塞/非阻塞：调用方的状态就是阻塞、非阻塞。 同步对应阻塞，异步对应非阻塞。 **同步阻塞，异步非阻塞**
+
+**REPL**
+> 在Node.js中为了使开发者方便测试JavaScript代码，提供了一个名为REPL的可交互式运行环境。开发者可以在该运行环境中输入任何JavaScript表达式，当用户按下回车键后，REPL运行环境将显示该表达式的运行结果。
+
+在命令行容器中输入node命令并按下回车键，即可进入REPL运行环境。
+
+REPL的操作：
+* 变量的操作，声明普通对象和变量
+* eval
+* 函数的书写
+* 下划线访问最近使用的表达式
+* 多行书写
+* REPL运行环境中的上下文对象
+
+REPL运行环境的基础命令： 
+* .break退出当前命令
+* .clear 清除REPL运行环境上下文对象中保存的所有变量与函数
+* .exit 退出REPL运行环境
+* .save 把输入的所有表达式保存到一个文件中
+* .load 把所有的表达式加载到REPL运行环境中
+* .help 查看帮助命令
+
+**REPL**
+
+
+
+
+http://www.zhufengpeixun.cn/architecture/html/3.Node.html
+https://juejin.im/post/5b5f365e6fb9a04fa8673f97
+https://www.cnblogs.com/woodyblog/p/6061671.html
 
 

@@ -1,19 +1,44 @@
-// global 可以直接访问global。并且没有window的概念
-// window 代理了 global
+// nodejs事件环
+setTimeout(() => {
+    console.log('setTmeout1');
+});
 
-// console.log(global);
+setImmediate(() => {
+    console.log('setImmediate2');
+});
 
-// global 里面的process - 就是进程 - 当前运行的环境
-// global 里面的Buffer  读取的二进制内容 - buffer主要是内存 缓存 16进制，可以和字符串相互转化
+// nodejs 事件环2
+setImmediate(() => {
+    console.log('setImmediate1');
+    setTimeout(() => {
+        console.log('setTimeout1')
+    }, 0);
+});
+Promise.resolve().then(res => {
+    console.log('then');
+})
+setTimeout(() => {
+    process.nextTick(() => {
+        console.log('nextTick');
+    });
+    console.log('setTimeout2');
+    setImmediate(() => {
+        console.log('setImmediate2');
+    });
+}, 0);
 
+// node core
+console.log(global);
+console.log(Buffer);
+console.log(console);
 
-console.log(this);
-console.log(process.cwd()); // 在哪执行文件 就打印出位置
-
-
-// 开发环境  生产环境
-// window set a=1
-// mac export a=1
-// console.log(process.env);
-
+console.log(process);
+console.log(process.env);
 console.log(process.argv);
+console.log(process.execPath);
+
+process.nextTick(function() {
+    console.log(123);
+});
+
+console.log(__dirname, __filename);

@@ -552,7 +552,7 @@ test('a', 'b', 'c');
 
 一个数据结构只要部署了Symbol.iterator属性，就被视为具有 iterator 接口。
 
-如果我们想要object也可以用扩展运算符转化，需要给起其添加迭代器接口
+如果我们想要object也可以用扩展运算符转化，需要给其添加迭代器接口
 ```js
 let object = {
     0: 1,
@@ -650,9 +650,9 @@ let p2 = new Promise(function(resolve, reject) {
 });
 
 function* read2() {
-    let content = yield p1;
-    let age = yield p2;
-    return age;
+    let content1 = yield p1;
+    let content2 = yield p2;
+    return content2;
 }
 
 let it2 = read2();

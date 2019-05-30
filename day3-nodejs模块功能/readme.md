@@ -1,3 +1,5 @@
+> 永远年轻，永远热泪盈眶
+
 ### buffer
 buffer(缓冲器) -  Buffer 类是作为 Node.js API 的一部分引入的，用于在 TCP 流、文件系统操作、以及其他上下文中与八位字节流进行交互。
 
@@ -22,10 +24,10 @@ console.log(buffer.toString('base64'));
 
 * 进制之间的相互转化
 ```js
-// 2进制等 ==> 10进制
+// 2进制等... ==> 10进制
 parseInt('111111', 2); // 将二进制111111 转化为10进制的int类型的数字
 
-// 10进制等数组 ===> 2进制等
+// 10进制、16进制 ===> 2进制等...
 let num = 255;
 let num2 = 0xff;
 (num).toString(16); // 将10进制的255 转化为16进制的
@@ -97,5 +99,266 @@ console.log(big);
 // 2. concat 常用
 let big2 = Buffer.concat([b1, b2]);
 console.log(big2);
+```
 
+
+### fs
+fs - file system - 文件操作相关
+
+常用的方法
+```js
+let fs = require('fs');
+let path = require('path');
+// 读取文件 - 读取文件可以使用绝对路径
+let absPath = path.resolve(__dirname, './static/1.txt');
+fs.readFile(absPath, (err, data) => {
+    console.log(data);
+});
+const bufferData = fs.readFileSync(absPath);
+
+// 写文件
+// 路径如果为相对路径 就是以当前运行环境为路径标准
+// 此文件存在就覆盖原来的内容，若不存在就新建文件
+// data 只能为 string 或者 buffer
+// 以回调的err来判断是否成功
+fs.writeFile(absPath, 'hello world', (err) => {
+    console.log(err);
+});
+
+// 文件的读写
+fs.readFile(absPath, (err, data) => {
+    fs.writeFile('./day3-nodejs模块功能/static/2.txt', data, (err) => {
+        if(err) throw new Error('写入失败');
+        console.log('写入成功');
+    });
+});
+
+// 以上虽然可以实现文件的读写，但是fs.readFile() 函数会缓冲整个文件。 为了最小化内存成本，尽可能通过 fs.createReadStream() 进行流式传输。
+// 流 - 边读边写 - 可以控制读取的速率 - 流是基于事件的
+```
+
+
+### EventEmitter
+大多数 Node.js 核心 API 构建于惯用的异步事件驱动架构，其中某些类型的对象（又称触发器，Emitter）会触发命名事件来调用函数（又称监听器，Listener）
+==类似于发布 订阅==
+```js
+class EventEmitter {
+    constructor() {
+        this._events = {};
+    }
+    on(key, fn) {
+        if(this._events[key]) {
+           this. _events[key].push(fn);
+        } else {
+           this. _events[key] = [fn];
+        }
+    }
+
+    emit(key) {
+        this._events[key].forEach(fnItem => {
+            fnItem()
+        });
+    }
+
+    off(key, fn) {
+        this._event[key] = this._events[key].filter((fnItem) => fnItem != fn);
+    }
+}
+
+const myEmitter = new EventEmitter();
+// 添加 listener 函数到名为 eventName 的事件的监听器数组的末尾
+myEmitter.on('a', function() {
+    console.log('1');
+});
+myEmitter.on('a', function() {
+    console.log('2');
+});
+// 从名为 a 的事件的监听器数组中移除指定的 listener(方法)。
+myEmitter.off('a', function() {
+    console.log('2');
+});
+// 触发事件 a
+myEmitter.emit('a');
+```
+
+
+### stream
+Node.js 中有四种基本的流类型：
+* Readable - 可读取数据的流（例如 fs.createReadStream()）。
+* Writable - 可写入数据的流（例如 fs.createWriteStream()）。
+* Duplex - 可读又可写的流（例如 net.Socket）- 双工流。
+* Transform - 在读写过程中可以修改或转换数据的 Duplex 流（例如 zlib.createDeflate()）。
+
+**Readable**
+```js
+// 文件中为了能实现文件的操作，也提供了流相关的api
+// highWaterMark 不设置，默认一次读取64k
+let fs = require('fs');
+let rs = fs.createReadStream(path.resolve(__dirname, './static/1.txt'), {
+    flags: 'r', // r , w
+    highWaterMark: 4, // 一次最多多多少个字节
+    encoding: null,
+    autoClose: true, // 读取完毕后，是否自动关闭
+    start:0, // 从第几个字节开始读
+    end: 5 // 读到第几个文件结束
+});
+
+// 默认流失暂停流，非流动模式，内部会监听你有没有监听 data 事件，rs.emit('data', 123)
+let arr = [];
+rs.on('data', function(chunk) {
+    arr.push(chunk);
+    rs.pause(); // 暂停读取
+});
+rs.on('end', function() {
+    console.log(Buffer.concat(arr).toString()); // 读取完毕
+});
+setTimeout(() => {
+    rs.resume(); // 恢复 data 事件的触发
+}, 1000);
+
+```
+
+
+**Writable**
+```js
+let fs = require('fs');
+let path = require('path');
+
+// ws没有end属性
+let ws = rs.createWriteStream(path.resolve(__dirname, './static/2.txt'), {
+    flags: 'w',
+    encoding: 'utf8',
+    highWaterMark: 5,
+    autoClose: true,
+    start: 0
+});
+
+// chunk 参数 ‘123’ 必须是一个 string | buffer
+let flag = ws.write('123' + '', function(err) {
+    console.log('写入')
+});
+
+// 如果内部的缓冲小于创建流时配置的 highWaterMark，则返回 true 。 如果返回 false ，则应该停止向流写入数据，直到 'drain' 事件被触发。
+ws.on('drain', function() {
+    console.log('抽干');
+})
+
+// 当我写入完成后再继续写入其他的 on('drain')
+ws.end('写入最后结束的语句');
+
+// 此处抛异常，文件如果已经存在，内容被清空
+ws.write('234'); // write after end 在调用end方法后写入是无效的，已经结束，无法再写入了。
+```
+
+**read + write**
+```js
+let fs = require('fs');
+let path = require('path');
+
+let rs = fs.createReadStream(path.resolve(__dirname, './static/1.txt'), {
+    highWaterMark: 3
+});
+
+let ws = fs.createWriteStream(path.resolve(__dirname, './static/2.txt'), {
+    highWaterMark: 1
+});
+
+rs.on('data', function(data) {
+    let flag = ws.write(data);
+    if (!flag) {
+        rs.pause();
+    }
+});
+
+ws.on('drain', function() {
+    console.log('抽干');
+    rs.resume();
+});
+```
+上面这样边读边写能有效的减轻文件过大导致的读取压力。
+但是每次都要写这么多是不是很麻烦，我们可以自己封装方法，让其更简单。
+
+```js
+function pipe(rs, ws) {
+    rs.on('data', function(data) {
+        let flag = ws.write(data);
+        if (!flag) {
+            rs.pause();
+        }
+    });
+
+    ws.on('drain', function() {
+        console.log('抽干');
+        rs.resume();
+    });
+}
+
+let fs = require('fs');
+let path = require('path');
+
+let rs = fs.createReadStream(path.resolve(__dirname, './static/1.txt'), {
+    highWaterMark: 3
+});
+
+let ws = fs.createWriteStream(path.resolve(__dirname, './static/2.txt'), {
+    highWaterMark: 1
+});
+
+pipe(rs, ws);
+
+// 实际上，nodejs已经考虑到了
+// 直接调用node api：rs.pipe(ws); // 把给读流导入到可写流中
+```
+
+
+==剩下的两种流后面再说，先看看另一个模块==
+
+
+### http
+客户端 服务端直接通过请求和响应来通信，http模块旨在支持传统上难以使用的协议的许多特性。 特别是，大块的、可能块编码的消息。 接口永远不会缓冲整个请求或响应，用户能够流式传输数据。
+
+```js
+let http = require('http');
+let queryString = require('queryString');
+
+// 创建服务端 需要提供一个监听函数，这个函数只在请求来到时触发
+// 传统请求分为三部分： （响应也一样）
+//  1) 请求行 ： 方法  路径  协议
+//  2) 请求头
+//  3) 请求体
+
+// request 是 可读流  response 是 可写流
+
+let http = require('http');
+let querystring = require('querystring');
+
+let server = http.createServer(function(req, res) {
+    console.log('ok');
+    console.log(req.method); // method后面的方法名是大写的
+    console.log(req.url); // 获取一个完整链接端口号后面的内容，但是拿不到hash
+    console.log(req.httpVersion);
+    console.log(req.headers); // 所有的属性名都是小写的
+
+    let arr = [];
+    req.on('data', function(data) {
+        arr.push(data);
+    });
+    req.on('end', function() { // 不管有没有请求体都会触发end事件
+        let str = Buffer.concat(arr).toString();
+        let obj = {};
+        // 解析字符串 - 自己手写
+        // str.replace(/([^=&]*)=([^=&]*)/g, function() {
+        //     obj[arguments[1]] = arguments[2];
+        // });
+
+        // 解析字符串 - 调用方法
+        obj = querystring.parse(str, "&", "=");
+        res.statusCode = 404;
+        res.setHeader('a','b');
+        // 立刻把结果响应回去，因为res是write stream, end只能接受string和buffer，所以要用stringify
+        res.end(JSON.stringify(obj)); 
+    });
+});
+
+server.listen(3003, 'localhost');
 ```

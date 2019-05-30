@@ -11,6 +11,7 @@ console.log((255).toString(16));
 console.log(r);
 
 
+
 // 看看base64的逻辑
 console.log(parseInt("00111001", 2));
 console.log(parseInt("00101011", 2));
@@ -62,5 +63,6 @@ Buffer.concat = function(arr) {
 
 let big3 = Buffer.concat([b1, b2]);
 console.log(big3.toString());
+
 
 

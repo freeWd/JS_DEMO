@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 
+        server端读取文件的时候，是不认识相对路径的 如果css资源和html不在同一级，
+        需要 ../../ 这样来获取css 文件，对于server来说都是 ./ ，这是css资源加载就会失败
+    -->
+    <link rel="stylesheet" href="./8-index.css">
+    <title>Demo</title>
+</head>
+<body>
+    <h1>Hello I am a index html</h1>
+</body>
+</html>

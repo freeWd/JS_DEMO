@@ -239,6 +239,7 @@ let flag = ws.write('123' + '', function(err) {
 });
 
 // 如果内部的缓冲小于创建流时配置的 highWaterMark，则返回 true 。 如果返回 false ，则应该停止向流写入数据，直到 'drain' 事件被触发。
+// 当流还未被排空时，调用 write() 会缓冲 chunk，并返回 false。 一旦所有当前缓冲的数据块都被排空了（被操作系统接收并传输），则触发 'drain' 事件
 ws.on('drain', function() {
     console.log('抽干');
 })
@@ -361,4 +362,214 @@ let server = http.createServer(function(req, res) {
 });
 
 server.listen(3003, 'localhost');
+```
+
+上面实现了一个简单的服务端流程，主要用到了nodejs中http模块的内容。 需要注意的几个地方：
+* http.createServer 用于创建服务端的http服务
+* 创建的服务中的 request是一个 http.IncomingMessage 实例，它是可读流。 response 是一个 http.ServerResponse 实例，它是可写流。
+* request 有自己内置的一些事件和属性，并通过监听 “data”, 获取请求body数据。 通过“end” 执行获取完整body后的操作
+* response 也有自己的事件和属性，可以设置响应头，响应状态码和响应体，通过end函数发送response给客户端
+
+
+下面我们来试着写一个完整的 http client 和 http server
+在这个完整的http client 和 http server中，我们试图去构建路由和概念，已经针对不同请求做出的不同响应
+> * 路由就是根据不同的path 返回不同的内容
+一般服务端会处理两种不同类型的请求
+1. 纯静态的，页面加载 - html/css
+2. 动态数据 - ajax 获取
+
+```js
+// 8-client.js
+let http = require('http');
+
+let client =http.request({
+    hostname: 'localhost',
+    port: 3003,
+    path: '/xxx?a=3&b=4',
+    method: 'post',
+    headers: {
+        'a': 1,
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+}, (response) => {
+    response.on('data', function(data) {
+        console.log(JSON.parse(data));
+    })
+});
+
+client.end('name=123&pwd=234');
+
+// 8-server.js
+let http = require('http');
+let path = require('path');
+let url = require('url');
+let fs = require('fs');
+let querystring = require('querystring');
+// mime是第三方模块需要安装第三方依赖包，它能根据你的路径（后缀名）返回不同的数据格式
+// .html -> text/html   .css -> test/css   .png -> image/png
+let mime = require('mime');
+
+let server = http.createServer((req, resp) => {
+    let { pathname } =  url.parse(req.url, true);
+    let absPath = path.join(__dirname, pathname);
+
+    fs.stat(absPath, (err, statObj) => {
+        if (err) {
+            resp.statusCode = 404;
+            resp.end('Not Fount');
+            return;
+        }
+        // 是一个文件
+        if (statObj.isFile()) {
+            // 根据路径的后缀名，给响应设置不同的content-type
+            resp.setHeader('content-type', mime.getType(absPath)+";charset=utf-8");
+            fs.createReadStream(absPath).pipe(resp);
+        } else { // 是一个文件夹 就查找当前文件夹下的index.html
+            let realPath = path.resolve(absPath, 'index.html');
+            fs.access(realPath, (err) => {
+                if (err) {
+                    resp.statusCode = 404;
+                    resp.end('Not Fount');
+                    return;
+                }
+                resp.setHeader('content-type', mime.getType(absPath)+";charset=utf-8");
+                fs.createReadStream(realPath).pipe(resp);
+            });
+        }
+    });
+});
+```
+通过上面的例子我们可以看到：
+* 启动服务后，我们在页面输入url, 可以根据url中的文件路径，加载对应的静态资源 （html, css, png...）
+* 我们用fs.stat 来判断是否存在路径资源以及是否为文件，通过fs.assess来判断是否是否存在该资源
+* 如果是文件夹，默认访问文件夹下的index.html资源
+* 通过mime来设置响应头中的content-type
+
+
+下满我们简单的修改下例子，来看看一个既有静态资源又有ajax请求如何处理
+```html
+// index.html
+ <h1>hello world</h1>
+    <span id="test"></span>
+    <script>
+        let spanEle = document.querySelector('#test');
+        let xhr = new XMLHttpRequest();
+        // xhr.open('GET', 'http://localhost:3003/user/list', true);
+        // xhr.onreadystatechange = function() {
+        //     if (xhr.status === 200 && xhr.readyState === 4) {
+        //         console.log(xhr.response);
+        //         spanEle.textContent = JSON.stringify(xhr.response);
+        //     }
+        // }
+        // xhr.send();
+
+        // 1 跨域请求中如果我们使用了非简单的请求 put delete
+        // 2 设置了自定义的请求头式
+        // 满足以上两点会不定时向server发送一个option请求进行预检测
+        xhr.open('PUT', 'http://localhost:3003/user/list', true);
+        document.cookie = 'token=100'; // 默认跨域不支持cookie携带
+        xhr.withCredentials = true;
+        xhr.setRequestHeader('custom-test', 'hello');
+        xhr.setRequestHeader('Content-Type', 'application/json');        
+        xhr.onreadystatechange = function() {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+                console.log(xhr.response);
+                spanEle.textContent = JSON.stringify(xhr.response);
+            }
+        }
+        xhr.se
+        nd();
+    </script>
+```
+
+```js
+// server.js
+let http = require('http');
+let path = require('path');
+let url = require('url');
+let fs = require('fs');
+let querystring = require('querystring');
+let mime = require('mime');
+
+let server = http.createServer((req, resp) => {
+    let {
+        pathname
+    } = url.parse(req.url, true);
+    let absPath = path.join(__dirname, pathname);
+    let method = req.method.toLocaleLowerCase();
+
+    resp.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, OPTIONS');
+    resp.setHeader('Access-Control-Allow-Headers', 'Content-Type, custom-test', 'Cookie');
+    resp.setHeader('Access-Control-Max-Age', 20); // 控制options方法定期发送时间
+    resp.setHeader('Access-Control-Allow-Credentials', true); // 允许请求带上cookie，且要求origin头不能为 *
+
+    console.log(req.headers['cookie'], '<----cookie');
+
+    if (method === 'options') {
+        resp.end();
+    }
+
+    switch (pathname) {
+        case '/user/list':
+            if (method === 'get' || method === 'put') {
+                resp.end(JSON.stringify({
+                    'test': 'hello world'
+                }));
+            } 
+            break;
+        default:
+            break;
+    }
+
+    fs.stat(absPath, (err, statObj) => {
+        if (err) {
+            resp.statusCode = 404;
+            resp.end('Not Fount');
+            return;
+        }
+        // 是一个文件
+        if (statObj.isFile()) {
+            // 根据路径的后缀名，给响应设置不同的content-type
+            resp.setHeader('content-type', mime.getType(absPath) + ";charset=utf-8");
+            fs.createReadStream(absPath).pipe(resp);
+        } else { // 是一个文件夹 就查找当前文件夹下的index.html
+            let realPath = path.resolve(absPath, 'index.html');
+            fs.access(realPath, (err) => {
+                if (err) {
+                    resp.statusCode = 404;
+                    resp.end('Not Fount');
+                    return;
+                }
+                resp.setHeader('content-type', mime.getType(realPath) + ";charset=utf-8");
+                fs.createReadStream(realPath).pipe(resp);
+            });
+        }
+    });
+});
+
+server.listen(3003, 'localhost');
+```
+
+当我们加载静态资源时（index.html），同时发送了ajax请求。
+如何实现对这两种类型处理的server逻辑呢？
+* 很简单：在上一个demo的基础上，判断静态资源路径之前调用switch 和 if方法，将异步请求的url列表和请求方法作为判断来进行简单的逻辑判断（这只是个demo，正常的开发是不会这样写的）
+* 根据判断条件走不同的逻辑
+
+如果server端口是3003，而静态资源（index.html）另起来一个端口打开(8080)，就相当于简单的模拟了前后端分离，此时index.html发送的请求就是跨域请求，面对跨域请求我们要设置若干响应头让请求正确的处理：
+```js
+//控制请求发送的 Origin - 相当于将此域名加入白名单。可以为*（通配符-表示运行所有域名跨域访问此server）
+resp.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+
+// 如果前端发送的请求不是简单请求，需要设置运行的方法白名单
+resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, OPTIONS');
+
+// 如果请求中有自定义头，需要这只请求头白名单
+resp.setHeader('Access-Control-Allow-Headers', 'Content-Type, custom-test', 'Cookie');
+
+// 控制options方法定期发送时间 - 在异步请求是，某些情况下会不定期触发options方法 -  控制options方法定期发送时间
+resp.setHeader('Access-Control-Max-Age', 20); 
+
+// 允许请求带上cookie，且要求origin头不能为 *
+resp.setHeader('Access-Control-Allow-Credentials', true); 
 ```

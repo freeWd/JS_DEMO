@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>hello world</h1>
+    <span id="test"></span>
+    <script>
+        let spanEle = document.querySelector('#test');
+        let xhr = new XMLHttpRequest();
+        // xhr.open('GET', 'http://localhost:3003/user/list', true);
+        // xhr.onreadystatechange = function() {
+        //     if (xhr.status === 200 && xhr.readyState === 4) {
+        //         console.log(xhr.response);
+        //         spanEle.textContent = JSON.stringify(xhr.response);
+        //     }
+        // }
+        // xhr.send();
+
+        // 1 跨域请求中如果我们使用了非简单的请求 put delete
+        // 2 设置了自定义的请求头
+        // 3 请求头中的content-type是application/x-www-form-urlencoded，multipart/form-data，text/plain之外的格式
+        // 会不定时向server发送一个option请求进行预检测
+        xhr.open('PUT', 'http://localhost:3003/user/list', true);
+        document.cookie = 'token=100'; // 默认跨域不支持cookie携带
+        xhr.withCredentials = true;
+        xhr.setRequestHeader('custom-test', 'hello');
+        xhr.setRequestHeader('Content-Type', 'application/json');        
+        xhr.onreadystatechange = function() {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+                console.log(xhr.response);
+                spanEle.textContent = JSON.stringify(xhr.response);
+            }
+        }
+        xhr.send();
+    </script>
+</body>
+</html>

@@ -10,7 +10,9 @@ let ws = fs.createWriteStream(path.resolve(__dirname, './static/2.txt'), {
 });
 
 rs.on('data', function(data) {
+    console.log(data);
     let flag = ws.write(data);
+    console.log(flag);
     if (!flag) {
         rs.pause();
     }

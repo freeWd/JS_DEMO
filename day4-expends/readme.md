@@ -1,0 +1,125 @@
+## Cookie & Session
+- cookie 客户端 每次发请求的时候，浏览器正常的请求中会自动将cookie的值放在请求头中带给服务端
+- cookie既可以在客户端设置（domain.cookie） 也 可以在服务端设置（response header set-cookie）
+    - domain 可以访问此cookie的域名。 (默认为设定该Cookie的域名)， 所指定的域名必须是当前发送Cookie的域名的一部分，比如当前访问的域名是example.com，就不能将其设为google.com。只有访问的域名匹配domain属性，Cookie才会发送到服务器。
+    - path 字段为可以访问此cookie的页面路径。 比如domain是abc.com,path是/test，那么只有/test路径下的页面可以读取此
+    cookie。 mac上可以通过 ==sudo vi /etc/hosts==设置本地映射不同的域名来测试
+    - expires/Max-Age 字段为此cookie超时时间。若设置其值为一个时间，那么当到达此时间后，此cookie失效。不设置的话默认值是Session，意思是cookie会和session一起失效。当浏览器关闭(不是浏览器标签页，而是整个浏览器) 后，此cookie失效。
+    - httponly HttpOnly属性用于设置该Cookie不能被JavaScript读取. （即document.cookie不会返回这个Cookie的值），只用于向服务器发送。这主要是为了防止XSS攻击盗取Cookie。
+    - secure secure属性用来指定Cookie只能在加密协议HTTPS下发送到服务器。 该属性只是一个开关，不需要指定值。如果通信是HTTPS协议，该开关自动打开。
+
+```js
+let http = require('http');
+let url = require('url');
+let querystring = require('querystring');
+
+let server = http.createServer((req, resp) => {
+    let url = req.url;
+    if (url === '/read') {
+        let cookieObj = querystring.parse(req.headers.cookie, '; ');
+        resp.end(JSON.stringify(cookieObj));
+    } 
+    if (url === '/read/2') {
+        let cookieObj = querystring.parse(req.headers.cookie, '; ');
+        resp.end(JSON.stringify(cookieObj));
+    } 
+    if (url === '/read2') {
+        let cookieObj = querystring.parse(req.headers.cookie, '; ');
+        resp.end(JSON.stringify(cookieObj));
+    } 
+    if (url === '/write') {
+        // 如果原来已经有多个cookie，那么新设置的cookie的key如果和之前的某个相同，就替换其值，其他cookie任然不变
+
+        // 设置单个Cookie
+        // resp.setHeader('Set-Cookie', 'token=21345');
+
+        // 设置多个Cookie
+        // resp.setHeader('Set-Cookie', ['token=21345', 'token2=23412']);
+
+        // 添加domain属性 设置domain后，只有符合当前设置的domain的url才能携带cookie request 到server
+        // resp.setHeader('Set-Cookie', 'token=21345; domain=a.test.cn');
+        // resp.setHeader('Set-Cookie', 'token=21345; domain=.test.cn');
+
+        // 设置path属性后，符合当前path的url才能读取读取此cookie, 此时 /read /read/2 请求Cookie中会携带token, 其他请求只会携带token2
+        // 所以 /read /read/2能读到两个值，/read2只能读到一个值
+        // resp.setHeader('Set-Cookie', ['token=123; path=/read', 'token2=1234']);
+        
+
+        // expires 绝对时间 / max-age 相对时间
+        // resp.setHeader('Set-Cookie', ['token=123; max-age=10', 'token2=234; expires=' + new Date(Date.now() + 10000).toUTCString()]);
+
+        // httponly - 设置完成后， document.cookie 获取到的是空字符串
+        resp.setHeader('Set-Cookie', 'toekn=123; httponly=true');
+        resp.end('write success');
+    }
+});
+
+server.listen(3003);
+```
+
+> 客户端可以直接看到甚至修改cookie的内容， 严厉禁止将敏感信息存储在cookie中。 就算是一般的信息在存储在cookie中时，我们从安全的角度考虑，一般可以对其进行加密存储
+
+感兴趣可以看下知乎中第一个答案的小故事（和尚，小花和张屠夫），很有意思 虽然讲的是https的东西，但是也涉及到很多加解密的内容：https://www.zhihu.com/question/21518760/answer/19698894
+
+```js
+// 加密用的核心模块 crypto
+let http = require('http');
+let querystring = require('querystring');
+let crypto = require('crypto');
+
+// 加密 签名 cookie
+function cryptSignCookie(value) {
+    let key = 'a little salt';
+    return value + crypto.createHmac('sha256', key).update(value).digest('base64');
+} 
+
+http.createServer((req, resp) => {
+    const url = req.url;
+
+    req.getCookie = function(key) {
+        let cookieObj = querystring.parse(req.headers.cookie, '; ');
+        if (key) {
+            return cookieObj[key];
+        }
+        return cookieObj;
+    }
+    
+    req.getCryptCookie = function(key) {
+        let cookieObj = querystring.parse(req.headers.cookie, '; ');
+        let [value, cryptValue] = cookieObj[key].split('.');
+        if (cryptSignCookie(value) === cryptValue) {
+            return value;
+        } else {
+            return 'cooke值疑似被篡改';
+        }
+    }
+
+    let cookieArr = [];
+    resp.setCookie = function(key, value) {
+        cookieArr.push(`${key}=${value}`);
+        resp.setHeader('Set-Cookie', cookieArr);
+    }
+
+    if (url === '/read') {
+        resp.end(req.getCookie('token'));
+    }
+
+    if (url === '/read2') {
+        resp.end(req.getCryptCookie('token'));
+    }
+
+    if (url === '/write') {
+        let originValue = '12345';
+        let cryptValue = cryptSignCookie(originValue);
+        resp.setCookie('token', originValue + '.' + cryptValue);
+        resp.end('write success');
+    }
+}).listen(3003);
+```
+
+* MD5 和 sha1 都已经不安全，有可能被碰撞成功
+* sha256 是不可逆加密，即如果明文一致，加密结果一致，但不能根据密文解密出明文
+* sha256 可以添加盐（随机数），盐值不同，即使用的都是sha256, 加密的结果都不一样。 （你不知道我的盐，不可能做出口味和我一样的菜）
+* 根据明文加密后的密文对比cookie中的密码，来判断是否内容被篡改
+
+

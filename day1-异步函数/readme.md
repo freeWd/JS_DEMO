@@ -696,6 +696,7 @@ co(read2()).then(data => console.log(data));
 * 异步的终极解决方案 es7 async + await node 7.6以上 相当于是 generator + co的语法糖
 * async和await，比起星号和yield，语义更清楚了。async表示函数里有异步操作，await表示紧跟在后面的表达式需要等待结果
 * async函数的返回值是 Promise 对象，这比 Generator 函数的返回值是 Iterator 对象方便多了。你可以用then方法指定下一步的操作，进一步说，async函数完全可以看作多个异步操作，包装成的一个 Promise 对象，而await命令就是内部then命令的语法糖。
+* async 函数内如果是reutrn 1 调用的时候相当于是返回了 Promise.resolve(1)
 * async函数的await命令后面，可以是 Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。正常情况下，await命令后面是一个 Promise 对象。如果不是，会被转成一个立即resolve的 Promise 对象。 await相当于执行了 promise.then
 ```js
 async function readAge() {

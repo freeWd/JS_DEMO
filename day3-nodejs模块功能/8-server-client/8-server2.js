@@ -24,7 +24,9 @@ let server = http.createServer((req, resp) => {
         path: '/test/1.html?a=2&c=3',
         href: 'http://localhost/test/1.html?a=2&c=3' } 
      */
-    let { pathname } =  url.parse(req.url, true);
+    let {
+        pathname
+    } = url.parse(req.url, true);
     let absPath = path.join(__dirname, pathname);
 
 
@@ -37,7 +39,7 @@ let server = http.createServer((req, resp) => {
         // 是一个文件
         if (statObj.isFile()) {
             // 根据路径的后缀名，给响应设置不同的content-type
-            resp.setHeader('content-type', mime.getType(absPath)+";charset=utf-8");
+            resp.setHeader('content-type', mime.getType(absPath) + ";charset=utf-8");
             fs.createReadStream(absPath).pipe(resp);
         } else { // 是一个文件夹 就查找当前文件夹下的index.html
             let realPath = path.resolve(absPath, 'index.html');
@@ -47,7 +49,7 @@ let server = http.createServer((req, resp) => {
                     resp.end('Not Fount');
                     return;
                 }
-                resp.setHeader('content-type', mime.getType(realPath)+";charset=utf-8");
+                resp.setHeader('content-type', mime.getType(realPath) + ";charset=utf-8");
                 fs.createReadStream(realPath).pipe(resp);
             });
         }
@@ -58,3 +60,10 @@ let server = http.createServer((req, resp) => {
 
 
 server.listen(3003, 'localhost');
+
+
+
+
+
+
+

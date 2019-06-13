@@ -123,3 +123,36 @@ http.createServer((req, resp) => {
 * 根据明文加密后的密文对比cookie中的密码，来判断是否内容被篡改
 
 
+## 浏览器HTTP缓存和304
+缓存的作用：
+* 减少了冗余的数据传输。节省带宽
+* 减少了服务器负担，提高webapp性能
+* 加快客户端加载网页的速度
+
+**缓存的分类：**
+* 缓存分为强制缓存和对比缓存，强制缓存如果生效，不需要再和服务器发生交互，而对比缓存不管是否生效，都需要与服务端发生交互
+* 两类缓存规则可以同时存在，强制缓存优先级高于对比缓存，也就是说，当执行强制缓存的规则时，如果缓存生效，直接使用缓存，不再执行对比缓存规则
+
+1. 强制缓存(首页没法强制缓存)
+    * 响应头：Expires   ==resp.setHeader('Expires', new Date(Date.now() + 10000).toUTCString());== 设置到期时间
+    * 响应头：Cache-Control 与Expires的作用一致，都是指明当前资源的有效期, 其优先级高于Expires。 ==resp.setHeader('Cache-Control', 'max-age=10');== 设置到期时间
+
+    ![img](http://img.zhufengpeixun.cn/cache2.png)
+
+2. 对比缓存
+    * 响应头：Last-Modified。
+    响应时告诉客户端此资源的最后修改时间
+    If-Modified-Since：当资源过期时（使用Cache-Control标识的max-age），发现资源具有Last-Modified声明，则再次向服务器请求时带上头If-Modified-Since。
+    服务器收到请求后发现有头If-Modified-Since则与被请求资源的最后修改时间进行比对。若最后修改时间较新，说明资源又被改动过，则响应最新的资源内容并返回200状态码；
+    若最后修改时间和If-Modified-Since一样，说明资源没有修改，则响应304表示未更新，告知浏览器继续使用所保存的缓存文件。
+
+    * 响应头：ETag，是实体标签的缩写，根据实体内容生成的一段hash字符串,可以标识资源的状态。当资源发生改变时，ETag也随之发生变化。 ETag是Web服务端产生的，然后发给浏览器客户端。
+    客户端想判断缓存是否可用可以先获取缓存中文档的ETag，然后通过If-None-Match发送请求给Web服务器询问此缓存是否可用。
+    服务器收到请求，将服务器的中此文件的ETag,跟请求头中的If-None-Match相比较,如果值是一样的,说明缓存还是最新的,Web服务器将发送304 Not Modified响应码给客户端表示缓存未修改过，可以使用。
+    如果不一样则Web服务器将发送该文档的最新版本给浏览器客户端
+
+    ![img](http://img.zhufengpeixun.cn/cache4.png)
+相比较Last-Modified，ETag更准确，但是也最消耗性能。因为每次请求过来都要计算文件的hash与请求头中的If-None-Match的值来比较。
+
+
+

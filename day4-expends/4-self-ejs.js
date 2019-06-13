@@ -23,7 +23,6 @@ http.createServer((req, resp) => {
         str = str.replace(/<%=([\s\S]*?)%>/g, function () {
             return '${' + arguments[1] + '}'
         });
-
         let head = 'let str;\r\nwith(obj) {\r\n'
         let tail = '`\r\n}\r\nreturn str;'
         head += 'str=`';

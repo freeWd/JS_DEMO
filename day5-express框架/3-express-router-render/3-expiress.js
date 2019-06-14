@@ -12,7 +12,7 @@ app.set('views',__dirname);
 app.use('/router1', router1);
 app.use('/router2', router2);
 
-app.get('/', function (req,res) {
+app.get('/index', function (req,res) {
     // res.render('index.ejs',{title:'hello'});
     res.render('3-index',{title:'hello'},function(err,data){
         console.log(data);

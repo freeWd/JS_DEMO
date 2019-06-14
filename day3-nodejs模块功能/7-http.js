@@ -7,7 +7,7 @@ let server = http.createServer(function(req, res) {
     console.log(req.url); // 获取一个完整链接端口号后面的内容，但是拿不到hash
     console.log(req.httpVersion);
     console.log(req.headers); // 所有的属性名都是小写的
-
+    
     let arr = [];
     req.on('data', function(data) {
         arr.push(data);

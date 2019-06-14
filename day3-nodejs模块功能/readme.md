@@ -573,3 +573,6 @@ resp.setHeader('Access-Control-Max-Age', 20);
 // 允许请求带上cookie，且要求origin头不能为 *
 resp.setHeader('Access-Control-Allow-Credentials', true); 
 ```
+
+
+资源分享： [Nodejs入门](https://www.nodebeginner.org/index-zh-cn.html#javascript-and-nodejs) 

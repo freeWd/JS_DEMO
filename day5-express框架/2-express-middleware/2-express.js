@@ -1,8 +1,8 @@
 const express = require('express');
-let path = require('path');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const app = express();
-
 
 /**
  * /abc?d            `/abcd` and `/abd`:
@@ -15,6 +15,8 @@ const app = express();
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/static'));
 app.use('/page/static', express.static(__dirname));
+
+app.use(cookieParser('secret'));
 
 app.use(function(req,res,next){
     console.log('中间件');
@@ -29,10 +31,19 @@ app.use('/static2', function(req,res,next){
     next('stone is too big'); // next里面带参数就会抛异常
 });
 
+
+
 app.get('/redirect', (req, res) => {
     res.redirect('https://www.baidu.com');
 });
-
+app.get('/test', (req, res) => {
+  console.log('Cookies: ', req.cookies);
+  console.log('Signed Cookies: ', req.signedCookies);
+  res.cookie('token1', '123');
+  res.cookie('token2', '234');
+  res.cookie('token3', '345', {signed: true});
+  res.send(Object.assign({}, req.cookies, req.signedCookies));
+});
 app.get('/page/static', (req, res) => {
     let filePath = path.join(__dirname, '2-express.html')
     console.log(filePath);

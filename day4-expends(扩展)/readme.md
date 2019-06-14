@@ -1,3 +1,5 @@
+> 天下古今之庸人，皆以一惰字致败。天下古今之才人，皆以一傲字致败 - 曾国藩
+
 ## Cookie & Session
 - cookie 客户端 每次发请求的时候，浏览器正常的请求中会自动将cookie的值放在请求头中带给服务端
 - cookie既可以在客户端设置（domain.cookie） 也 可以在服务端设置（response header set-cookie）

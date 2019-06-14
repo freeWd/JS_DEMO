@@ -1,3 +1,5 @@
+> 盛时常做衰时想，上场当念下场时 - 曾国藩
+
 ### Express
 基于 Node.js 平台，快速、开放、极简的 Web 开发框架,  它提供一系列强大的功能，比如：
 * 模板解析
@@ -8,6 +10,7 @@
 我们先来了解下express基本的使用，然后自己试着写代码，用原生的nodejs来试着模拟实现它,
 
 ```js
+// express 基本路由，参数的获取。
 const express = require('express');
 const bodyparser = require('body-parser');
 
@@ -61,5 +64,173 @@ app.listen(3003);
 第二个参数为处理请求的回调函数
 
 
+
+```js
+// express 中间件。
+const express = require('express');
+let path = require('path');
+
+const app = express();
+
+app.use(express.static(__dirname));
+app.use(express.static(__dirname + '/static'));
+app.use('/page/static', express.static(__dirname));
+
+app.use(function(req,res,next){
+    console.log('中间件');
+    next();
+});
+app.use('/static', function(req,res,next){
+    console.log('带路径过滤的中间件');
+    next();
+});
+app.use('/static2', function(req,res,next){
+    console.log('带路径过滤的中间件2');
+    next('stone is too big'); // next里面带参数就会抛异常
+});
+
+app.get('/redirect', (req, res) => {
+    res.redirect('https://www.baidu.com');
+});
+
+app.get('/page/static', (req, res) => {
+    let filePath = path.join(__dirname, '2-express.html')
+    console.log(filePath);
+    res.sendFile(filePath, function (err) {
+        if (err) {
+            next(err);
+        } else {
+            console.log('Sent:', '2-express.html');
+        }
+    });
+});
+
+app.listen(3003);
+```
+中间件就是处理HTTP请求的函数，用来完成各种特定的任务 比如检查用户是否登录、检测用户是否有权限访问等，它的特点是
+* 一个中间件处理完请求和响应可以把相应数据再传递给下一个中间件
+* 回调函数的next参数,表示接受其他中间件的调用，函数体中的next(),表示将请求数据传递给下一个中间件
+* 还可以根据路径来区分进行返回执行不同的中间件
+从上面的代码中，我们可以看到使用 ==app.use== 添加中间件，参数包括 “path”, "subApp (router)", "callBack方法"，
+callBack方法中 （req, res, next）=> {} 包含next参数，可以通过调用next()在执行完当前中间件逻辑后将请求传给下一个中间件或路由
+
+
+如果要在网页中加载静态文件（css、js、img），就需要另外指定一个存放静态文件的目录，当浏览器发出非HTML文件请求时，服务器端就会到这个目录下去寻找相关文件。
+* express.static是 Express 内置的唯一一个中间件。是基于 serve-static 开发的，负责托管 Express 应用内的静态资源, 可以定义多个。表示定义静态资源的目录。
+    ```js
+    // 将根目录下的图片、CSS 文件、JavaScript 文件对外开放访问
+    app.use(express.static(__dirname));
+    // 将/static目录下的图片、CSS 文件、JavaScript 文件对外开放访问
+    app.use(express.static(__dirname + '/static'));
+    // 通过/page/static 前缀地址来访问根目录中的文件了。
+    app.use('/page/static', express.static(__dirname));
+    ```
+* 除了Express内置的静态资源中间件，还有一些常用的第三方开发的中间件或者express团队维护（需要npm另安装）
+    *  body-parser中间件。 body-parser是非常常用的一个express中间件，作用是对post请求的请求体进行解析。使用非常简单，以下两行代码已经覆盖了大部分的使用场景
+    ```js
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    ```
+    * cookie-parser中间件。
+    解析Cookie标头并将值解析为一个对象（key是cookie的name）填充入req.cookies属性。
+    或者，您可以通过传递一个秘密字符串来启用签名的cookie支持，该字符串分配req.secret，以便其他中间件可以使用它。
+    ```js
+    var express = require('express')
+    var cookieParser = require('cookie-parser')
+
+    var app = express()
+    app.use(cookieParser())
+
+    app.get('/', function (req, res) {
+    // Cookies that have not been signed
+    console.log('Cookies: ', req.cookies)
+
+    // Cookies that have been signed
+    console.log('Signed Cookies: ', req.signedCookies)
+    })
+
+    app.listen(8080)
+    ```
+    * express-session中间件
+    * 更多中间件参考：http://www.expressjs.com.cn/resources/middleware.html
+    ...
+
+
+
+express的基本功能中除了上面的这些外还有路由和模板渲染功能
+```js
+// ---- express.js
+//  路由  | 模板 
+const express = require('express');
+const path = require('path');
+const router1 = require('./3-router1');
+const router2 = require('./3-router2');
+
+
+const app = express();
+app.set('view engine','ejs');
+app.set('views',__dirname);
+
+app.use('/router1', router1);
+app.use('/router2', router2);
+
+app.get('/index', function (req,res) {
+    // res.render('index.ejs',{title:'hello'});
+    res.render('3-index',{title:'hello'},function(err,data){
+        console.log(data);
+        res.send(data);
+    });
+});
+
+app.listen(3003);
+
+// ---- router1.js
+const express = require('express');
+const router1 = express.Router();
+
+router1.get('/test1', (req, resp) => {
+    resp.send('router1 test1 page');
+});
+router1.route('/test2')
+    .get((req, resp) => {
+        resp.send('get router1 test2 page');
+    })
+    .post((req, resp) => {
+        resp.send('post router1 test2 page');
+    })
+module.exports = router1;
+
+// ---- router2.js
+const express = require('express');
+const router2 = express.Router();
+router2.get('/test1', (req, resp) => {
+    resp.send('router2 test1 page');
+});
+module.exports = router2;
+```
+
+在之前的使用中如果要匹配浏览器访问的链接是使用app.all / app.get / app.post / app.use等方法，这些方法的调用都是基于 app(express()返回值)，如果我们开发一个实际的应用，虽然这样写也能实现功能。但随着项目规模越来越大，维护起来也比较麻烦。这时候解耦和模块拆分是必然的。express已经给我们提供了Router()方法来支持模块的拆分。
+
+* app.Router()  
+使用express.Router类可以创建模块化，可安装的路由处理程序。 Router实例是一个完整的中间件和路由系统; 因此，它通常被称为“迷你app”。
+上面的代码示例将路由器创建为模块，定义一些路由，并将路由器模块安装在主应用程序中的路径上。
+在app目录中创建名为router1.js, router2.js的路由器文件，其中包含以下内容
+
+* 如果我们使用restfulAPI风格的代码，或其他一些原因。导致 不同的api的url相同但请求方法不同，这是可以通过 
+app[router].route(path).get((req, resp) => {}).post((req, resp) => {}) ... 来简化代码
+
+* express支持使用模板 - 模板引擎使您可以在应用程序中使用静态模板文件。
+在运行时，模板引擎用实际值替换模板文件中的变量，并将模板转换为发送到客户端的HTML文件。
+这种方法可以更轻松地设计HTML页面。
+    * 使用模板的关键代码：app.set('view engine','ejs'); app.set('views',__dirname);
+      __dirname 此处是你静态文件的实际目录，ejs是你使用的模板引擎，常用的是（ejs, Pug, Mustache),也可以是html
+    * 如何渲染？ 
+    ```js
+    // 调用render渲染模板，文件后缀名可以省略，回调可以不写
+    res.render('3-index',{title:'hello'},function(err,data){
+        console.log(data);
+        res.send(data);
+    });
+    ```
 
 

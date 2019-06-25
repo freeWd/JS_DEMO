@@ -1,0 +1,11 @@
+{
+  "name": "day6-express-self",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "methods": "^1.1.2",
+    "mime": "^2.4.4"
+  }
+}

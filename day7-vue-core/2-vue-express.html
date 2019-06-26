@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- vue中的取值表达式 -->
+    <!-- 
+        1 运算 
+        2 取值
+        3 三元表达式
+    -->
+    <div id="app">
+        <!-- 取值 -->
+        <p>{{ msg }}</p>
+        <p>{{ obj.name }} {{ obj.test }} {{ obj.test2 }}</p>
+        <p>{{ arr }}</p>
+
+        <!-- 计算 -->
+        <p>{{ obj.age + 2 }}</p>
+
+        <!-- 三元表达式 -->
+        <p>{{ msg === 'hello'? '你好' : '才怪' }}</p>
+
+        <!-- js -->
+        <p>{{ {name : 1} }}</p>
+
+        <!-- Warning: 这样写虽然生效，但是规范上来说是不和法的，每次数据的变化都会导致方法的执行  -->
+        <p>{{ (function() {return 100})() }}</p>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello',
+                obj: {
+                    name: 'z3',
+                    age: 16
+                },
+                arr: [1, 2, 3]
+            }
+        });
+        // 因为目前vue数据监听的机制是参考 observer.js 使用Object.defineProperty(), 这样会存在数据变化不触发更新的情况
+        // 情况1： 直接根据数组的index来修改值，视图不刷新
+        vm.arr[0] = '4';
+        // 情况2： 数组通过长度来修改，视图不刷新
+        vm.arr.length = 2;
+        // 情况3： 如果属性初始化定义时不存在，后来增加的内容，并不会刷新视图
+        vm.obj.test = '234';
+
+
+        // vue中常见的属性和方法
+        // 1 vm.$set(); - 是全局 Vue.set 的别名
+        // 向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。它必须用于向响应式对象上添加新属性，因为 Vue 无法探测普通的新增属性
+        vm.$set(vm.obj, 'test2', '100');
+
+        // 2 vm.$watch(); 
+        // 观察 Vue 实例变化的一个表达式或计算属性函数。回调函数得到的参数为新值和旧值。表达式只接受监督的键路径。对于更复杂的表达式，用一个函数取代
+        vm.$watch('obj.name', function (oldValue, newValue) {
+            console.log(oldValue, newValue, '<-----watch---');
+        });
+        // 如果变化在监听函数之前执行，监听函数就无法监听到
+        // 如果值变化多次，监听函数只会执行一次，newValue是最后的值
+        vm.obj.name = 'l4';  
+        vm.obj.name = 'w5'; 
+
+        // 3 vm.$mount();
+        // 如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，没有关联的 DOM 元素。可以使用 vm.$mount() 手动地挂载一个未挂载的实例。
+        // let vm = new Vue({
+        //     data:{state:{count:0}}
+        // });
+        // vm.$mount('#app');
+
+        // 4 vm.$nextTick();
+        // 将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。它跟全局方法 Vue.nextTick 一样，不同的是回调的 this 自动绑定到调用它的实例上
+        vm.obj.name = 'zhao6'; // 更高数据后会将更改的内容缓存起来
+        // 在下一个事件循环tick中 刷新队列
+        vm.$nextTick(function(){
+            console.log(vm.$el.innerHTML);
+        });
+
+        // 5 vm.$data - 属性 - 原始数据对象
+        console.log(vm.$data, '<----- $data ----');
+
+        // 6 vm.$el - 属性 - Vue 实例使用的根 DOM 元素
+        console.log(vm.$el, '<----- $el -----');
+    </script>
+</body>
+
+</html>

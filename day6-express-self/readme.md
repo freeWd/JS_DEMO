@@ -30,7 +30,6 @@ function express() {
             }
         }
     }; 
-
     return app;
 }
 ```
@@ -41,7 +40,72 @@ function express() {
 
 get等方法中无法直接执行回调函数的逻辑，我们可以用一个变量，将数据都缓存起来，每次客户端请求过来的时候，在nodejs原生的回调中根据配置的路径和请求方法，从缓存的数据中找到要执行的函数去执行，这样就解决了上面遇到的问题。
 
+``` js
+const server = http.createServer((req, resp) => {
+    const { pathname } = url.parse(req.url, true);
+    const reqMethod = req.method.toLowerCase();
+
+    app.routes.forEach((routeItem) => {
+        if (routeItem.path === pathname && routeItem.method = reqMethod) {
+            routeItem.handle(req, resp);
+        }
+    });
+});
+
+const app = {
+    routes = [];
+    // ...
+    get: function(path, callBackFn) {
+        let obj = {
+            path,
+            method: 'get',
+            handler: callBackFn
+        }
+        app.routes.push(obj);
+    }
+    // ...
+}
+```
+
 后面的路会越来越难走~
+
+另一个问题马上出来了，调用handle函数的时候，传的是req 和 resp。 但是实际上express里面还带有next, 一但在函数内调用next(),就会携带req, resp信息进入下一个匹配的路由的逻辑中。
+比如现在声明了
+```js
+app.get('/test', (req, resp, next) => {
+    // ....
+    next();
+});
+
+app.all('*', (req, resp, next) => {
+    resp.end('end end');
+});
+```
+这时候该怎么办呢？
+想一想， 我们既然可以传两个参数（req, resp） 那么也可以传三个参数。 这个问题不好解决的点在于
+* 如何判断用户调用了next
+* 如果确认了，那么在执行next之后，怎么确认下一个要执行的函数
+是的，我们如何知到使用者在使用过程中，什么时候调用了next函数。 我也想不出来，那就看看源码，或者在网上找找看吧。
+最后知道了一种很巧妙的方法，如果我们代码内部的逻辑执行的函数就叫next, 如果使用者没有调用自己的next函数，就正常执行逻辑。否则就相当于又一次调用了内部的next函数。
+
+```js
+const server = http.createServer((req, resp) => {
+    const { pathname } = url.parse(req.url, true);
+    const reqMethod = req.method.toLowerCase();
+
+    let index = 0;
+    function next() {
+        const routeItem = app.routes[i++];
+        if (routeItem.path === pathname && routeItem.method = reqMethod) {
+            // 匹配到正确的路径就执行回调函数，return的目的是在此结束，不继续执行后面的。
+            return routeItem.haneld(req, resp, next);
+        }
+        // 如果上面没有匹配到就继续递归执行next() 此时index已经 +1，能获取到下一个路径的配置信息
+        next();
+    }
+    next();
+});
+```
 
 
 

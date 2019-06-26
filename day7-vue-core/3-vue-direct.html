@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <!-- 3-vue-direct.html -->
+    <div id="app">
+        <p>demo</p>
+        <p v-once>{{ test }}</p>
+        <p>{{ test2 }}</p>
+        <p v-html="test3"></p>
+        <p v-if="test4">{{ test4 }}</p>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                test: 'hello',
+                test2: 'hello2',
+                test3: '<h1>你好</h1>',
+                test4: true
+            }
+        });
+
+        // 在vue中 指令 (Directives) 是带有 v- 前缀的特殊特性,主要的功能就是操作DOM
+        // vue 指令：v-once, v-html, v-show, v-if  
+        // 1. v-once 数据只渲染一次
+        vm.test = 'hello-1';
+        vm.test2 = 'hello2-1';
+
+        // 2. v-html 将内容按照html格式渲染出来
+        // <p v-html="test3"></p>
+
+        // 3. v-text 将内容正常显示
+        // <p v-html="test3"></p> === <p>{{ test3 }}</p>
+
+        // 4 v-if 判断是否展示此dom元素 - 根据表达式的值的真假条件渲染元素。在切换时元素及它的数据绑定 / 组件被销毁并重建。
+        // 注意v-if 和 v-show的区别，一个控制dom的存在与否，一个控制显示与否
+
+    </script>
+</body>
+</html>

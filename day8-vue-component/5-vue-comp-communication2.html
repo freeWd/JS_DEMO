@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <style>
+        .wrap {
+            border: 1px solid #000;
+        }
+        .title {
+            border: 1px solid red;
+            cursor: pointer;
+        }
+    </style>
+    <title>组件交互的综合实验</title>
+</head>
+<body>
+    <!-- 考虑到打开某个导航条时要关闭其他所有的导航条 - 涉及到平级组件之间的通信 - 解决方法：都共有一个父组件，在父组件中解决平级的问题 -->
+    <!-- $children获取所有的子组件信息 -->
+    <div id="app">
+        <collapse>
+            <collapse-item title="angular">内容一</collapse-item>
+            <collapse-item title="react">内容二</collapse-item>
+            <collapse-item title="vue">内容三</collapse-item>
+        </collapse>
+    </div>
+    <script>
+        Vue.component('Collapse', {
+            methods: {
+                cut(childrenId) {
+                    this.$children.forEach(childItem => {
+                        if (childItem._uid !== childrenId) {
+                            childItem.isShow = false;
+                        }
+                    });
+                }
+            },
+            template: `
+                <div class="wrap">
+                    <slot></slot>
+                </div>
+            `
+        });
+        Vue.component('CollapseItem', {
+            props: ['title'],
+            data() {
+                return { isShow: false }
+            },
+            methods: {
+                toggleShow() {
+                    this.isShow = !this.isShow;
+                    this.$parent.cut(this._uid);
+                }
+            },
+            template: `
+                <div>
+                    <div class="title" @click="toggleShow">
+                        <h4>{{title}}</h4>
+                    </div>
+                    <div v-if="isShow">
+                        <slot></slot>
+                    </div>
+                </div>
+            `
+        });
+        let vm = new Vue({
+            el: '#app'
+        });
+    </script>
+</body>
+</html>

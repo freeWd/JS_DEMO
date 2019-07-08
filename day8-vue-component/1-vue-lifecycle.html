@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue组件生命周期</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ demo }}, {{ a }}
+    </div>
+    
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                a: 'hello world',
+                demo: {
+                    firstName: '123',
+                    lastName: '456'
+                }
+            },
+            // 钩子函数 - 组件在从无到有的过程 再从有到无 是组件的一个完整的生命周期。在生命周期中，vue会定义一些函数来表示组件此时
+            // 所处的不同阶段。 以便于人们在不同的阶段利用对应的函数处理不同的逻辑。 这些函数被称为钩子函数
+            // 钩子函数  beforeXXX  xxxed
+
+            // 在实例初始化之后，但还没有创建。数据观测(data observer) 和 event/watcher 事件配置之前被调用
+            beforeCreate() { 
+                console.log("创建前");
+                // Vue undefined undefined
+                console.log(this, this.$el, this.$data);
+            },
+            // 实例已经创建完成之后被调用。在这一步，实例已完成以下的配置：数据观测(data observer)，属性和方法的运算， watch/event 事件回调。这里没有$el
+            created() { 
+                console.log("创建后");
+                // undefiend  data值
+                console.log(this.$el, this.$data);
+            },
+            // 在挂载开始之前被调用：相关的 render 函数首次被调用
+            beforeMount() {
+                console.log('渲染前');
+                // dom已经出现，但变量还没有被渲染上去   data值
+                console.log(this.$el, this.$data);
+            },
+            //  el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子
+            mounted() { 
+                console.log('渲染后');
+                this.a = 100;  // --> 促使update变化
+                // dom已经出现，但变量也被渲染上去  data值
+                console.log(this.$el, this.$data);
+            },
+            // 数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前
+            beforeUpdate() {
+                console.log("更新前");
+                this.demo.firstName = 'w5';
+                console.log(this.$el, this.$data);
+            },
+            // 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子
+            updated() { //一般这里不操作数据，可能导致死循环 - 操作数据 -》 beforeUpdate -> update -> 操作数据 （死循环）
+                console.log("更新后");
+            },
+            // 实例销毁之前调用。在这一步，实例仍然完全可用
+            beforeDestroy() {
+                console.log("销毁前");
+            },
+            // 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。 该钩子在服务器端渲染期间不被调用。
+            // 销毁的方法： 第一种是路由切换，另一种是手动销毁
+            destroyed() {
+                console.log("销毁后");
+            }
+        });
+
+        // created - 实例已经创建完成，因为它是最早触发的原因可以进行一些数据，资源的请求。
+        // mounted 实例已经挂载完成，可以进行一些DOM操作
+        // beforeUpdate - 可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程
+        // updated 可以执行依赖于 DOM 的操作。然而在大多数情况下，你应该避免在此期间更改状态，因为这可能会导致更新无限循环。 该钩子在服务器端渲染期间不被调用。
+        // beforeDestory  - 可以执行一些优化操作,清空定时器，解除绑定事件
+    </script>
+</body>
+</html>

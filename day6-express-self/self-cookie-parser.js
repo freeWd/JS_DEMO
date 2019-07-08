@@ -30,7 +30,7 @@ cookieParser.json = function () {
 
 cookieParser.urlencoded = function (options) {
     return function(req, resp, next) {
-
+        // url encode
         next();
     }
 }

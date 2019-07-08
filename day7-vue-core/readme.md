@@ -59,6 +59,63 @@ Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进
 </html>
 ```
 
+vue的思维导图
+1 vue hello world
+
+2 vue 表达式使用 
+ 2.1 取值
+ 2.2 计算
+ 2.3 三元
+ 2.4 js
+ tip: 取值的问题：什么情况下修改值，值不会发生变化
+
+常见的属性和方法
+属性：$el, $data
+方法：$set(), $mount(), $nextTick(), $watch();
+
+指令：v-once, v-if <--> v-else-if <--> v-else,  v-html, v-for(key的作用), v-text, v-bind:, v-on:
+
+vue 内的属性 data, methods, el, computed (存取器 getter, setter), watch(监听器)
+
+computed: {
+   test() {
+       return ''
+   } ,
+   test2: {
+       get: function() {
+           
+       }
+   }
+}
+
+v-bind - 数据 - v-bind:test = "test" - :test="tst"
+
+v-on - 事件 - v-on:click="test()" - @click="test($event)"
+修饰符：prevent, stop, self, once, capture...
+
+表单元素双向绑定： v-model="test" - 实现原理：v-bind  v-on
+修饰符：trim., number lazy
+
+生命周期：beforeCreate  created,  beforeMount, mounted, beforeUpdate, updated, beforeDestory, destoryed
+区别： beforeCreate - 初始化，还未创建 data和el都是undefined, 数据监控还未配置
+      create - 创建成果，数据有了，观测 配置和方法 watch事件回调 - ajax数据操作
+      beforeMounte - 挂载之前，相关的render函数被调用，dom出现但数据没有渲染上去。
+      mounted - 数据已经渲染。 dom操作
+      beforeUpdate - 更新之前 ，虚拟dom重新渲染之前
+      updated - 渲染后，不要在此处添加变量变化的逻辑
+      beforeDestory: 销毁之前，实例任然可以使用，可以执行优化操作
+      destoryed: 销毁后
+
+
+组件交互：
+属性输入：校验 validator - validator - 当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。
+
+
+
+
+
+
+
 
 
 

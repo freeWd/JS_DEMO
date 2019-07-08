@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>组件之间的交互</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- native 事件绑定在子组件的根元素上 -->
+        <my-button @click.native="change" v-bind="info"></my-button>
+
+        <!-- 通过$listeners.自定义方法名称(此处是test)() 来执行，子组件在哪些，事件就绑定到哪个元素上 -->
+        <my-button @test="change2" v-bind="info"></my-button>
+
+        <!-- 通过$emit(自定义方法名称) 来执行-->
+        <my-button @test2="change3" v-bind="info"></my-button>
+
+        <!-- 批量绑定方法 -->
+        <my-button @click="change2" @mouseup="change3" v-bind="info"></my-button>
+        <!-- 总结 v-bind="$attrs" == 绑定所有属性， v-on="$listeners" == 绑定所有方法 -->
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                info: {
+                    name: '姜文',
+                    age: 18
+                }
+            },
+            methods: {
+                change() {
+                    alert('hello world');
+                },
+                change2() {
+                    alert('hello world222');
+                },
+                change3() {
+                    alert('hello world33333');
+                }
+            },
+            components: {
+                'MyButton': {
+                    props: ['name', 'age'],
+                    template: `
+                        <div style="border:1px solid red">
+                            <button @click="$listeners.test()">{{name}} {{age}} </button>
+                            <button @click="$emit('test2')">{{name}} {{age}} - 002 </button>
+                            <button v-on="$listeners">{{name}} {{age}} - 003</button>
+                        </div>
+                    `
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

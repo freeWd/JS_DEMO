@@ -28,16 +28,39 @@
 // fn();
 
 
-function test() {
-    var a1 = 123;
-    let a1 = 234;
-    if (true) {
-        let a1 = 456;
+// function test() {
+//     var a1 = 123;
+//     let a1 = 234;
+//     if (true) {
+//         let a1 = 456;
 
-        function test1() {
-            console.log(a1);
+//         function test1() {
+//             console.log(a1);
+//         }
+
+//         tesst1();
+//     }
+// }
+
+
+let obj = {
+    b: 2,
+    methods: {
+        a: 1,
+        fn: () => {
+            console.log(this);
+        },
+        fn1: function() {
+            console.log(this);
         }
-
-        tesst1();
+    },
+    func: function() {
+        console.log(this);
+    },
+    func1: () => {
+        console.log(this);
     }
 }
+
+obj.func();
+

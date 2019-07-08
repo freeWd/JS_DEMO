@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>Vue组件</title>
+</head>
+<body>
+    <!-- 组件就是一些html标签和逻辑处理的集合，可以复用 -->
+    <!-- 组件化的好处：解耦，方便协作，可以复用（数据是根据传入的数据做展示） -->
+    <!-- vue组件一共有两种： 全局组件， 局部组件 -->
+    <!-- HTML不支持自闭合的自定义元素，在DOM模板里永远不要使用自闭和组件,在HTML中也不支持MyButton的写法，所以组件调用全部使用短横线连接的方式！ -->
+    <div id="app">
+        <my-button></my-button>
+        <my2-button></my2-button> 
+    </div>
+    <script>
+        // 此组件定义若写在 vue实例的后面，会报错 提示找不到 my-button
+
+        // 全局组件
+        Vue.component('my-button', {
+            // 组件之间应该是相互独立的，如果定义的data用对象会有相互引用的可能，所有用方法的返回值定义data
+            data() {
+                return {msg: 'my的按钮'}
+            },
+            template: `<button>{{ msg }}</button>`
+        });
+
+        // 相当于根实例
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                test: '12345'
+            },
+
+            // 局部组件 - 局部组件只能在其父组件中使用，此处的vue实例（#app）相当于此父组件
+            components: {
+                'My2Button': {
+                    data() {
+                        return {msg: 'my2的按钮'}
+                    },
+                    template: `<button>{{ msg }}</button>`
+                }
+            }
+        });
+    </script>
+</body>
+</html>

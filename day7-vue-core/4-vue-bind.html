@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 属性绑定, 单引号里面的内容 都可以去掉单引号使用动态变量 -->
+        <div :class="['apple', 'banana']">band1</div>
+        <div :class="{banana:true}">band2</div>
+        <div :style="[{background:'red'}, {color: 'blue'}]">band3</div>
+        <div :style="{color: 'pink'}">band4</div>
+        <hr>
+
+        <!-- 事件绑定， 事件绑定的方法逻辑可以直接写在 -->
+        <button @click="clickMethod">事件绑定</button>
+        <input type="text" @input="inputMethod($event)">
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="onSubmit">
+            <button type="submit">submit</button>
+        </form>
+        <!-- 阻止单击事件继续传播 -->
+        <a v-on:click.stop="doThis"></a>
+        <!-- 修饰符可以串联 -->
+        <a v-on:click.stop.prevent="doThat"></a>
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数   即事件不是从内部元素触发的-->
+        <div v-on:click.self="doThat"></div>
+        <!-- 添加事件监听器时使用事件捕获模式  即元素自身触发的事件先在此处理，然后才交由内部元素进行处理-->
+        <div v-on:click.capture="doThis"></div>
+        <hr>
+
+        <!-- 双向绑定 -->
+        <input type="text" :value="value1" @input="input($event)">
+        <!-- 语法糖 - input -->
+        <input type="text" v-model="value1">
+        <!-- select -->
+        <select v-model="select">
+            <option value="0" disabled>请选择</option>
+            <option :value="selectItem" v-for="selectItem in selectArr">{{ selectItem }}</option>
+        </select>
+        <!-- radio -->
+        <input type="radio" v-model="radio" value="0"> 男
+        <input type="radio" v-model="radio" value="1"> 女
+        <!-- checkbox -->
+        <input type="checkbox" v-model="checks" value="0">游泳
+        <input type="checkbox" v-model="checks" value="1">篮球
+        <input type="checkbox" v-model="checks" value="2">跑步
+        <!-- 修饰符 -->
+        <input type="text" v-model.trim.number="value1">
+        <hr>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                value1: '123',
+                select: 0,
+                selectArr: ['q', 'w', 'e', 'r'],
+                radio: '1',
+                checks: [0, 2],
+                firstName: 'a',
+                lastName: 'b'
+            },
+            methods: {
+                // 此处不要使用箭头函数
+                // 因为箭头函数的this指向问题，箭头函数自身没有this，this是在函数定义时所在的对象
+                // 所以如果mehtods是一个object，其中定义的箭头函数的this指向当前mehtods对象所在的上下文 - 当前就是windows
+                clickMethod: function () {
+                    alert(1);
+                },
+                inputMethod: function (e) {
+                    e.target.value = '12345';
+                    console.log(this);
+                },
+                onSubmit: function () {
+                    console.log(this);
+                },
+
+                // 双向绑定
+                input: function(e) {
+                    this.value1 = e.target.value;
+                }
+            }
+        });
+
+        // 1 属性绑定 :（v-bind） - 针对标签的属值得动态绑定, v-bind可以省略不写
+        // class与style绑定
+
+        // 2 事件绑定:（v-on） - v-on可以省略不写。 语法糖为@
+        // 在事件处理程序中调用 event.preventDefault() 或 event.stopPropagation() 是非常常见的需求。
+        // 尽管我们可以在方法中轻松实现这点，但更好的方式是：方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
+        // 为了解决这个问题，Vue.js 为 v-on 提供了事件修饰符:
+        // .stop, .prevent, .capture, .self, .once, .passive
+
+        // 3 双向绑定 - data数据变动影响模板，模板数据变动影响也影响data。此为双向绑定。
+        // 既然是双向，那么模板中的html就一定要是可输入、变化的标签 - 表单类型的标签
+
+        // 修饰符
+        // .lazy - 在默认情况下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步 。你可以添加 lazy 修饰符，从而转变为使用 change 事件进行同步
+        // .number - 如果想自动将用户的输入值转为数值类型，可以给 v-model 添加 number 修饰符 (因为即使在 type="number" 时，HTML 输入元素的值默认也总会返回字符串)
+        // .trim - 如果要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符
+    </script>
+</body>
+
+</html>

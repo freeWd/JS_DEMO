@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+         <!-- 方法写在模板中，只要数据发生变化（不管是否和当前方法有关）就会被调用一次，为了解决这个问题，引出了compute(计算属性) -->
+         <span>{{ getFullName() }}</span>
+         <span>{{ fullName }}</span>
+         <span>{{ computeTest }}</span>
+        <hr>
+
+        <!-- 除了计算属性，我们还可以使用监听属性来解决问题  -->
+        {{ fullName1 }}
+
+
+        <!-- computed 与 method的区别 --》 computed有缓存 -->
+        <!-- computed 与 watch的区别 --》 watch支持异步，computed不支持 -->
+        <!-- 对于实现的一些简单的功能会优先去考虑能不能用computed来实现 -->
+
+        <!-- 下面来一个全选的例子 -->
+        全选 <input type="checkbox" v-model="checkAll"> 
+        跑步 <input type="checkbox" value="1" v-model="checkValue"> 
+        游泳 <input type="checkbox" value="2" v-model="checkValue"> 
+        篮球 <input type="checkbox" value="3" v-model="checkValue"> 
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                firstName: 'Bob',
+                lastName: 'Jack',
+                fullName1: 'Bob Jack',
+                computeAgm1: 'hello world',
+                checkValue: []
+            },
+            computed: {
+                // 模板内的表达式非常便利，但是设计它们的初衷是用于简单运算的。在模板中放入太多的逻辑会让模板过重且难以维护
+                // 所以，对于任何复杂逻辑，你都应当使用计算属性。
+                // 计算属性是基于它们的响应式依赖进行缓存的
+                // 写的是方法，实际是属性
+                fullName: function() { // 存取器 get方法，有缓存。如果值没有更改会从缓存中取值
+                    console.log('computed full name');
+                    return this.firstName + this.lastName;
+                },
+
+                // 计算属性默认只有 getter ，不过在需要时你也可以提供一个 setter 
+                computeTest: {
+                    // getter
+                    get: function () {
+                        return this.computeAgm1 + '!!!';
+
+                        // 无效 - 计算属性不支持异步
+                        // setTimeout(() => {
+                        //     return this.computeAgm1 + '!!!';
+                        // }, 1000);
+                    },
+                    // setter  vm.computeTest = 'xxx'时 setter会被执行
+                    set: function (newValue) {
+                        console.log(newValue);
+                        this.computeAgm1 = 'javascript';
+                    }
+                },
+                checkAll: {
+                    get() {
+                        return this.checkValue.length === 3;
+                    },
+                    set(newValue) {
+                        this.checkValue = newValue ? [1,2,3] : []
+                    }
+                }
+            },
+            watch: { // vm.watch('firstName', () => {})
+                // 下面两种写法都可以，第一种是完整版，第二种是简洁版
+                firstName: {
+                    handler(newValue) {
+                       this.fullName1 = this.firstName + this.lastName;
+                    }
+                },
+                lastName() {
+                    this.fullName1 = this.firstName + this.lastName;
+                }
+            },
+            methods: {
+                getFullName: function() {
+                    console.log('get full name');
+                    return this.firstName + this.lastName;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

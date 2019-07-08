@@ -90,6 +90,7 @@ function express() {
     },
 
     use: function (path, handler) {
+      // 如果有子路由， 处理子路由
       if (typeof handler === 'object' && typeof handler !== null) {
         handler.routes.forEach((item) => {
           item.path = path + item.path;
@@ -114,6 +115,8 @@ function express() {
     app[method] = function (path, handler) {
       let pathParams = [];
       if (path.includes(':')) {
+        // [^ ]  - 否定的字符种类. 匹配除了方括号里的任意字符
+        // 用正则表达式将匹配到的 : + 非/的任意长度的字符 将匹配到的转化为 非任意长度的字符
         path = path.replace(/:([^\/]*)/g, function () {
           pathParams.push(arguments[1]);
           return '([^\/]*)';

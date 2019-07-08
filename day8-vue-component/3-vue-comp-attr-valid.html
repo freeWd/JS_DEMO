@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>组件属性传递 - 校验</title>
+    <style>
+        .test2 {
+            margin: 8px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <!-- 组件之前的属性传递 -->
+    <!-- 属性在组件标签上需要使用短横线命名法，在组件中声明需要采用驼峰命名法 -->
+    <!-- 父 到 子 props: 对象 或者 数组 -->
+    <!-- 
+        爷 到 孙  ---》 先爷给子，子再给孙。 
+        具体方法: 1 props一层一层往下传
+                2 爷到子 用props，子到后面所有的都是不写props，用 v-bind="$attrs" 来批量的传。 最后再用props继承$attrs中具体的值
+    -->
+    <!-- 校验失败不会阻止渲染，但会在console报错，给开发看的 -->
+    <div id="app">
+        <my-test :data1="name" :param2="param2"></my-test>
+        <my-test2 :age="age" :sex="sex"></my-test2>
+        <my-test3 :age="age" :sex="sex"></my-test3>
+    </div>
+    <script>
+        Vue.component('MyTest', {
+            props: {
+                data1: Object,
+                param1: {
+                    type: String,
+                    default: 'default value'
+                },
+                param2: {
+                    type: Number,
+                    validator(value) {
+                        return value < 123456;
+                    }
+                },
+                param3: {
+                    type: Array,
+                    default: () => ['a','b','c']
+                }
+            },
+            template: `
+                <div>
+                    <button>mytest {{ data1 }} --- {{ param1 }} --- {{ param2 }}</button></br>
+                    <template v-for="(param3Item, index) in param3">
+                        <a :key="index">{{param3Item}} {{index}}</a>
+                        <br/>
+                    </template>
+                </div>
+                
+            `
+        });
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                name: {
+                    firstName: 'hello',
+                    lastName: 'world'
+                },
+                param2: 12345678,
+                age: '18',
+                sex: 'male'
+            },
+            components: {
+                "MyTest2": {
+                    props: ['age','sex'],
+                    template: `
+                        <div class="test2">
+                            <my-test2-child :age="age" :sex="sex"></my-test2-child>                            
+                        </div>
+                        `,                        
+                    components: {
+                        "MyTest2Child": {
+                            props: ['age','sex'],
+                            template: `<span>{{age}} {{sex}}</span>`
+                        }
+                    }
+                },
+                "MyTest3": {
+                    mounted() {
+                        console.log(this.$attrs);
+                    },
+                    template: `
+                        <div class="test2">
+                            <my-test3-child v-bind="$attrs"></my-test3-child>                            
+                        </div>
+                    `,
+                    components: {
+                        "MyTest3Child": {
+                            props: ["age", "sex"],
+                            template: `<span>{{age}} {{sex}}</span>`
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
         .wrap {
             border: 1px solid #000;
         }
+
         .title {
             border: 1px solid red;
             cursor: pointer;
@@ -16,6 +18,7 @@
     </style>
     <title>组件交互的综合实验</title>
 </head>
+
 <body>
     <!-- 考虑到打开某个导航条时要关闭其他所有的导航条 - 涉及到平级组件之间的通信 - 解决方法：都共有一个父组件，在父组件中解决平级的问题 -->
     <!-- $children获取所有的子组件信息 -->
@@ -46,7 +49,9 @@
         Vue.component('CollapseItem', {
             props: ['title'],
             data() {
-                return { isShow: false }
+                return {
+                    isShow: false
+                }
             },
             methods: {
                 toggleShow() {
@@ -70,4 +75,5 @@
         });
     </script>
 </body>
+
 </html>

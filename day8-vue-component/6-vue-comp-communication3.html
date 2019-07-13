@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>组件通信 - 其他方法</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 其他通信方法：provide, inject 跨组件数据传递，主要为高阶插件/组件库提供用例 -->
+        <!-- 一般自己在写一些底层的库的时候才用到，一般不要使用 -->
+        <test></test>
+
+        <!-- 其他通信方法: ref 放在dom上表示获取当前dom元素,放到组件上表示获取当前组件实例 -->
+        <!-- ref一般是不能给多个元素设置相同的ref的，只识别一个。在v-for中获取的是集合 -->
+        <test ref="com"></test>
+        <div v-for="i in 3">
+            <div ref="my">{{i}}</div>
+        </div>
+        
+    </div>
+
+    <script>
+        Vue.component('test', {
+            inject: ['demo'],
+            methods: {
+                show() {
+                    console.log(this.demo, '<----demo');
+                }
+            },
+            template: `<h1>{{demo}}</h1>`
+        });
+        let vm = new Vue({
+            el: '#app',
+            // 在根上面提供一个demo属性，全局所有的组件都可以使用
+            provide: {
+                demo: 'hello world'
+            },
+            mounted() {
+                console.log(this.$refs.my);
+                console.log(this.$refs.com.show());
+            }
+        });
+    </script>
+</body>
+</html>

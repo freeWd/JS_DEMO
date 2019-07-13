@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义指令</title>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- <input type="text" v-model="msg" v-split="msg"> -->
+
+        <input type="text" v-split2.5="msg">
+
+        <button @click="isShow=!isShow">visual / hidden</button>
+        <input v-if="isShow" type="text" v-focus>
+    </div>
+    <script>
+        // 自定义指令 - 输入框最多只能输入3个字符
+        Vue.directive('split', function(el, bindings, vnode) {
+            let ctx = vnode.context; // Vue实例上下文
+            ctx[bindings.expression] = el.value.slice(0, 3); // vue.msg = "abc".slice(0,3);
+        });
+
+        // 自定义指令 - 输入框最多只能输入3个字符 - 升级版 - 不依赖v-model - 同时可以使用修饰符动态设置拦截长度
+        Vue.directive('split2', function(el, bindings, vnode) {
+            let [, letterLength] = bindings.rawName.split('.');
+            let ctx = vnode.context;
+            console.log(vnode);
+            el.value = ctx[bindings.expression].slice(0, letterLength);
+            el.addEventListener('input', function(e) {
+                let targetValue = e.target.value;
+                ctx[bindings.expression] = targetValue.slice(0,letterLength);
+                el.value = ctx[bindings.expression];
+            });
+        });
+
+        // 自定义指令 指令的钩子函数 生命周期
+        // 注意：上面指令的函数写法是简写，在很多时候，你可能想在 bind 和 update 时触发相同行为，而不关心其它的钩子。就可以写成函数的形式
+        // 一个指令定义对象可以提供如下几个钩子函数 (均为可选)：
+        // bind：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置
+        // inserted：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
+        // update：所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。指令的值可能发生了改变，也可能没有
+        // 上面三个比较常用，下面平时两个几乎不用，不过还是要有所了解
+        // componentUpdated：指令所在组件的 VNode 及其子 VNode 全部更新后调用。
+        // unbind：只调用一次，指令与元素解绑时调用。
+        Vue.directive('focus', {
+            // bind(el, binding, vnode) {
+            //     console.log(el);
+            //     Vue.nextTick(()=>{
+            //         el.focus();
+            //     })
+            // }
+
+            // 这个时机会比bind晚一点 在dom渲染完成后执行
+            inserted(el, binding, vnode) {
+                console.log(el);
+                el.focus();
+            }
+        });
+
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'abc',
+                isShow: true
+            }
+        });
+    </script>
+</body>
+</html>

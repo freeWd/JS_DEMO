@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <title>Slot插槽</title>
+</head>
+
+<body>
+    <!-- slot在vue中是个很重要的概念，vue2.6后也对其做了很多更新，添加新内容，废弃就内容 -->
+    <div id="app">
+        <!-- 普通插槽，如果我们在用组件时，需要在组件的标签内写东西 并且这些内容需要映射到组件渲染的html上，就需要用到插槽 -->
+        <list>
+            123456
+        </list>
+        <hr />
+
+        <!-- 具名插槽: 有时我们需要多个插槽。 对于这样的情况，<slot> 元素有一个特殊的特性：name。这个特性可以用来定义额外的插槽 -->
+        <list2>
+            <template v-slot:temp1>
+                我是展示在temp1插槽中的内容
+            </template>
+            <template v-slot:temp2>
+                我是展示在temp2插槽中的内容
+            </template>
+        </list2>
+
+        <!--作用域插槽: 有时让插槽内容能够访问子组件中才有的数据是很有用的。  -->
+        <!--虽然最后插槽的内容和子组件内容是用一级别展示的，但是插槽的内容是在父组件中写的。 有时需要插槽中的内容获取子组件的数据  -->
+        <!-- v-slot:default 可以简写成 #default -->
+        <hr />
+        <list3>
+            <template v-slot:temp1="slotProps">
+                {{ slotProps.user.lastName }} + 'xxxxx'
+            </template>
+            <template v-slot:temp2="slotProps">
+                {{ slotProps.user.firstName }} + 'yyyyyy'
+            </template>
+        </list3>
+        <list3>
+            <template #temp1="slotProps">
+                {{ slotProps.user.lastName }} + 'xxxxx'
+            </template>
+            <template #temp2="slotProps">
+                {{ slotProps.user.firstName }} + 'yyyyyy'
+            </template>
+        </list3>
+
+    </div>
+
+    <script>
+        Vue.component('List', {
+            template: `
+                <div>
+                    <slot></slot>    
+                </div>
+            `
+        });
+
+        Vue.component('List2', {
+            template: `
+                <div>
+                    <slot name="temp1"></slot>
+                    <hr/>
+                    <slot name="temp2"></slot>
+                </div>
+            `
+        });
+
+        Vue.component('List3', {
+            template: `
+                <div>
+                   <slot v-bind:user="user" name="temp1">
+                      {{ user.firstName }} 
+                   </slot> 
+                   <slot :user="user" name="temp2">
+                      {{ user.lastName  }} 
+                   </slot> 
+                </div>
+            `,
+            data() {
+                return {
+                    user: {
+                        firstName: 'z3',
+                        lastName: 'l4'
+                    }
+                }
+            }
+        });
+
+        let vm = new Vue({
+            el: '#app'
+        });
+    </script>
+</body>
+
+</html>

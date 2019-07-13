@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 过滤器 管道</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ msg | capital }}</h1>
+        <h1>{{ msg | capital(1) }}</h1>
+        <my></my>
+    </div>
+
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script>
+        // 过滤器也有全局和局部之分，创建的写法上和 组件以及指令几乎一致
+        // 过滤器只改变数据的展示形式，不改变数据。 - 用compute 计算属性也可以做到，但不能通用
+        // 全局过滤器 - 功能：字母大写
+        Vue.filter('capital', function(value, length) {
+            length = length ? length : value.length;
+            return value.slice(0, length).toUpperCase() + value.slice(length);
+        });
+
+        // 异步组件 - 组件过一段时间再加载 - 一般使用场景: 配合webpack懒加载来使用，一般不像下面这么写，下面只是一个demo
+        Vue.component('my', function(resolve) {
+            setTimeout(() => {
+                resolve({
+                    template: '<h1>Async Component</h1>'
+                })
+            }, 3000);
+        });
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello'
+            }
+        })
+    </script>
+</body>
+</html>

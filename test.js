@@ -64,3 +64,15 @@ let obj = {
 
 obj.func();
 
+
+
+console.log(123);
+let p = new Promise((resolve) => {
+    console.log('xxx');
+    resolve(123);
+});
+p.then(() => {
+    console.log(123)
+})
+console.log(234);
+

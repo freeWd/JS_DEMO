@@ -101,3 +101,20 @@ module.exports = {
 用创建好的实例调用 beforeRouteEnter 守卫中传给 next 的回调函数。
 
 
+### Vuex流程
+https://vuex.vuejs.org/zh/
+
+![image](../static/vuex.png)
+
+vuex的内容存储在新建的文件夹store中, 图片中的vuex的状态和行为，依次创建不同的文件
+
+* state类比组件中的状态
+* getters类比组件中的计算属性
+* mutation突变，唯一修改状态的方式
+* actions就是用来处理异步的请求，异步更新状态
+
+
+
+
+
+

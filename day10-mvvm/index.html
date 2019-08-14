@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 引用vuejs -->
+    <!-- <script src="./node_modules/vue/dist/vue.js"></script> -->
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="user.name">
+        <p>{{ user.name }}</p>
+        <p>{{ user.sex }}</p>
+        {{ user.age }} {{ user.comment }}
+        <p>
+            {{ userName }}
+        </p>
+        <button v-on:click="test">click</button>
+    </div>
+
+    <!-- 引用自己实现的mvvm.js -->
+    <script src="./self-mvvm/mvvm3.js" ></script>
+    <script>
+        let vue = new Vue({
+            el: '#app',
+            data: {
+                user: {
+                    name: '张三',
+                    sex: '男',
+                    age: 18,
+                    comment: 'hello'
+                }
+            },
+            computed: {
+                userName() {
+                    console.log(this.user.name);
+                    return this.user.name + '!! - hello world';
+                }
+            },
+            methods: {
+                test() {
+                    console.log(this.user.comment);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -56,8 +56,9 @@ export default {
     },
     ...mapActions('user', ['change_user2']),
     change2() {
-      this['change_user2']('async new name')
-      // this.$store.dispatch('user/change_user2', 'async new name')
+      this['change_user2']('async new name').then(msg => {
+        console.log(msg);
+      });
     }
   }
 }

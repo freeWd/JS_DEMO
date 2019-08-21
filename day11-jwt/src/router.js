@@ -21,6 +21,7 @@ export default new Router({
     }, {
       path: '/profile',
       name: 'profile',
+      meta: { needLogin: true },
       component: () => import('./views/Profile.vue')
     }
   ]

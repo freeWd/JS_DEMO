@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from '../store';
+import { getLocal } from './storage';
 
 // 当第一次请求显示loading, 剩下的请求都不调用，当都请求完毕后，再隐藏loading
 class AjaxRequest {
@@ -24,7 +25,7 @@ class AjaxRequest {
         // 请求拦截器 - 可以添加自定义的请求头
         if (axios.interceptors.request.handlers.length === 0) {
             axios.interceptors.request.use(req => {
-                req.headers.Authorization = 'xxx';
+                req.headers.authorization = getLocal('token');
                 if (Object.keys(this.queue).length === 0) {
                     store.commit('showLoading');
                 }

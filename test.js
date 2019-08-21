@@ -352,4 +352,8 @@ let object = {
     }
 }
 
+var b = new Buffer('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTY2MzUyMDYwLCJleHAiOjE1NjYzNTIwODB9.v_IGmPIIOLaFO3oF6jLGUfop_lrzykoEqYkUvplRFTI', 'base64')
+var s = b.toString();
+console.log(s);
+
 

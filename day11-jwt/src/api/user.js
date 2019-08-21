@@ -1,12 +1,5 @@
 import axios from '../libs/ajaxRequest';
 
-export const getUser = () => {
-    return axios.request({
-        url: '/user',
-        method: 'get',
-    })
-}
-
 export const login = (username) => {
     return axios.request({
         url: '/login',
@@ -14,5 +7,12 @@ export const login = (username) => {
         data: {
             username
         }
+    })
+}
+
+export const valideUser = () => {
+    return axios.request({
+        url: '/verify',
+        method: 'get',
     })
 }

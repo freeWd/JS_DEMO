@@ -24,10 +24,10 @@ export default {
   methods: {
     ...mapActions(['toLogin']),
     login(username) {
-      this['toLogin'](username).then((msg) => {
-        console.log(msg, '<----msg');
-      }).catch((msg) => {
-        console.log(msg, '<----msg1');
+      this['toLogin'](username).then(() => {
+        this.$router.push('/');
+      }, (msg) => {
+        this.$Message.error(msg);
       })
     }
   }

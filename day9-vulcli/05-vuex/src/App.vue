@@ -59,6 +59,7 @@ export default {
       this['change_user2']('async new name').then(msg => {
         console.log(msg);
       });
+      // this.$store.dispatch('user/change_user2', 'async new name');
     }
   }
 }

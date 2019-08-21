@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-
+const SECURITY_KEY = 'test';
  
 app.use(bodyParser.json());
 app.use((req, resp, next) => {
@@ -23,7 +23,7 @@ app.post('/login', (req, resp) => {
         resp.json({
             code: 0,
             username: 'admin',
-            token: jwt.sign({username}, 'test', {
+            token: jwt.sign({username}, SECURITY_KEY, {
                 expiresIn: 20
             })
         })
@@ -33,6 +33,27 @@ app.post('/login', (req, resp) => {
             data: '用户名不存在'
         })
     }
+});
+
+app.get('/verify', (req, resp) => {
+    let token = req.headers.authorization;
+    jwt.verify(token, SECURITY_KEY, (err, decode)=> {
+        if (err) {
+            resp.json({
+                code: 1,
+                data: 'token失效了'
+            })
+        } else {
+            resp.json({
+                code: 0,
+                username: decode.username,
+                token: jwt.sign({username: decode.username}, SECURITY_KEY, {
+                    expiresIn: 20
+                })
+            })
+        }
+    });
+   
 });
 
 app.listen(3000);

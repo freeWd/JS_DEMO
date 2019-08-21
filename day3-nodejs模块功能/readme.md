@@ -478,8 +478,7 @@ let server = http.createServer((req, resp) => {
                 spanEle.textContent = JSON.stringify(xhr.response);
             }
         }
-        xhr.se
-        nd();
+        xhr.send();
     </script>
 ```
 

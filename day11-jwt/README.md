@@ -53,9 +53,6 @@ v_IGmPIIOLaFO3oF6jLGUfop_lrzykoEqYkUvplRFTI
     * 密钥secret是保存在服务端的，服务端会根据这个密钥进行生成token和验证，所以需要保护好。
 
 
-
-
-
 ### 应用场景
 结合vue，看看JWT在前后端分离中的使用
 JWT - json web token 用于表示登录用户身份的唯一凭证。

@@ -1,3 +1,5 @@
+> 言尽于此，愿君之勿忘也 ······ 临颖神驰，书不成字，纸短情长，伏惟珍重 - 徐枕亚《玉梨魂》
+
 后面相当长的一段时间，我会学习vuejs的相关内容。
 说来惭愧，vuejs应该是绝大部分前端都会的框架，但我的学习路径确是从angular (不是angularjs)开始的。
 虽然angular在我看来，除了比较“重”以外，没有什么明显的缺点。但vuejs的大热还是倒推着我去学习它。抛开语法不说，它们的核心思想和理念有很多异曲同工的地方。有一定基础的上手起来应该会稍微轻松点吧。
@@ -5,7 +7,7 @@
 Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架
 > 比较自豪的一点是它的创作者是一位中国人，我想这个因素也是为它这么火加了不少分吧
 
-这里先确认两个概念，
+### 这里先确认两个概念，
 * 什么是库？什么是框架？
     * 库（jquery）将代码集合成一个产品，我们来调用库中的方法来实现自己的功能（我们是主导方）
     * 框架（react, angular, vue）为解决一类问题而开发出来的产品，我们遵循框架的规则和语法，在指定的位置填写对应的代码。框架来帮我们调用（框架是主导方）
@@ -59,24 +61,34 @@ Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进
 </html>
 ```
 
-vue的思维导图
-1 vue hello world
+### vue的思维导图
+* vue hello world
+* vue 表达式使用 
+    * 取值
+    * 计算
+    * 三元
+    * js
 
-2 vue 表达式使用 
- 2.1 取值
- 2.2 计算
- 2.3 三元
- 2.4 js
- tip: 取值的问题：什么情况下修改值，值不会发生变化
+tip: 
+* 取值的问题：什么情况下修改值，值不会发生变化
+* 常见的属性和方法
+* 属性：$el, $data
+* 方法：$set(), $mount(), $nextTick(), $watch();
 
-常见的属性和方法
-属性：$el, $data
-方法：$set(), $mount(), $nextTick(), $watch();
-
-指令：v-once, v-if <--> v-else-if <--> v-else,  v-html, v-for(key的作用), v-text, v-bind:, v-on:
+#### 指令：
+```
+v-once
+v-if <--> v-else-if <--> v-else
+v-html
+v-for(key的作用)
+v-text
+v-bind:
+v-on:
+```
 
 vue 内的属性 data, methods, el, computed (存取器 getter, setter), watch(监听器)
 
+```
 computed: {
    test() {
        return ''
@@ -87,6 +99,7 @@ computed: {
        }
    }
 }
+```
 
 v-bind - 数据 - v-bind:test = "test" - :test="tst"
 
@@ -96,19 +109,22 @@ v-on - 事件 - v-on:click="test()" - @click="test($event)"
 表单元素双向绑定： v-model="test" - 实现原理：v-bind  v-on
 修饰符：trim., number lazy
 
-生命周期：beforeCreate  created,  beforeMount, mounted, beforeUpdate, updated, beforeDestory, destoryed
-区别： beforeCreate - 初始化，还未创建 data和el都是undefined, 数据监控还未配置
-      create - 创建成果，数据有了，观测 配置和方法 watch事件回调 - ajax数据操作
-      beforeMounte - 挂载之前，相关的render函数被调用，dom出现但数据没有渲染上去。
-      mounted - 数据已经渲染。 dom操作
-      beforeUpdate - 更新之前 ，虚拟dom重新渲染之前
-      updated - 渲染后，不要在此处添加变量变化的逻辑
-      beforeDestory: 销毁之前，实例任然可以使用，可以执行优化操作
-      destoryed: 销毁后
-
+生命周期：
+* beforeCreate - 初始化，还未创建 data和el都是undefined, 数据监控还未配置
+* created - 创建成果，数据有了，观测 配置和方法 watch事件回调 - ajax数据操作
+* beforeMount - 挂载之前，相关的render函数被调用，dom出现但数据没有渲染上去。
+* mounted - 数据已经渲染。 dom操作
+* beforeUpdate - 更新之前 ，虚拟dom重新渲染之前
+* updated - 渲染后，不要在此处添加变量变化的逻辑
+* beforeDestory - 销毁之前，实例任然可以使用，可以执行优化操作
+* destoryed - 销毁后
 
 组件交互：
 属性输入：校验 validator - validator - 当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。
+
+
+### 初步了解vue数据监听的机制
+
 
 
 

@@ -1,3 +1,11 @@
+* 01-demo.vue简单的展示了下在.vue的文件中如何编写代码
+* 02-menu则是自定义了菜单组件并展示，这个自定义的菜单组件展示了面对可能无限向下纵深的层层子菜单。如何通过递归的方式将这些菜单信息较好的展示出来
+* 03-real-vuecli 就是利用vue-cli真正搭建的一个vue小项目 主要展示了vue.config.js中一些配置的用法
+* 04-vue-router 展示了vue中路由的用法
+* 05-vuex 展示了vuex的用法
+* 06-render展示了脚手架中的mian.js中render函数的概念 - 主要内容在其main.js处
+
+
 ```linux
 sudo npm install @vue/cli -g
 sudo npm install -g @vue/cli-service-global

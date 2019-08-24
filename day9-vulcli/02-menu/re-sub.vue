@@ -6,8 +6,8 @@
                 {{ data.title }}
             </template>
             <template v-for="child in data.subChild">
-            <menu-item v-if="!child.subChild" :key="child.title">{{ child.title }}</menu-item>
-            <re-sub v-else :key="child.title" :data="child"></re-sub>
+                <menu-item v-if="!child.subChild" :key="child.title">{{ child.title }}</menu-item>
+                <re-sub v-else :key="child.title" :data="child"></re-sub>
             </template>
         </sub-menu>
     </div>

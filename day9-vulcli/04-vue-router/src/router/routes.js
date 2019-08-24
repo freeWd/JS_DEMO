@@ -43,7 +43,10 @@ export default [
             {
                 path: 'list',
                 name: 'userList',
-                component: () => import('_views/users/UserList.vue')
+                component: () => import('_views/users/UserList.vue'),
+                beforeEnter: (to, from, next) => {
+                    next();
+                }
             },
             {
                 path: 'add',

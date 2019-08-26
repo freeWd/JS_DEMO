@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="manifest" href="./manifest.json">
+    <title>Document</title>
+    <style>
+        li {
+            float: left;
+            list-style: none;
+        }
+        img {
+            width: 20%;
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+    <script src="./main.js"></script>
+    <script>
+        // 需要加载serviceWorker
+        window.addEventListener('load', () => {
+            // 解决离线缓存的问题
+            if('serviceWorker' in navigator) { // 检测当前浏览器是否支持serviceWorker
+                navigator.serviceWorker.register('/sw.js').then(
+                    registeration => {
+                        console.log(registeration);
+                    }
+                )
+            }
+        })
+    </script>
+</body>
+</html>

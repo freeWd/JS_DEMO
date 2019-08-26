@@ -1,0 +1,13 @@
+{
+    "name":"Manifest测试应用",
+    "short_name":"wd",
+    "display":"standalone",
+    "start_url":"/index.html",
+    "icons":[{
+        "src": "manifest.png",
+        "sizes": "144x144",
+        "type": "image/png"
+    }],
+    "background_color":"#aaa",
+    "theme_color":"#aaa"
+}

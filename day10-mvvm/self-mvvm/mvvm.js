@@ -46,7 +46,6 @@ class Vue {
         for (const key in methods) {
             Object.defineProperty(this, key, {
                 get() {
-                    console.log(key);
                     return methods[key];
                 }
             });

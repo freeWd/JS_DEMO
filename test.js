@@ -357,3 +357,13 @@ var s = b.toString();
 console.log(s);
 
 
+
+
+function test() {
+    var a = 1;
+    return function() {
+        console.log(a);
+    }
+}
+
+test()();

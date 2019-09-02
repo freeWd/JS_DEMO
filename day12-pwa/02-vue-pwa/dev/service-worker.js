@@ -21,6 +21,4 @@ workbox.routing.registerRoute(
 
 
 // workbox 专门做缓存的库 
-
-
 // 首屏加载 - 骨架屏 app-skeleton

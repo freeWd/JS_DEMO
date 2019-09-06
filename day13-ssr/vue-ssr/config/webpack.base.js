@@ -1,14 +1,12 @@
 let path = require('path');
-let HtmlWebpackPlugin = require('html-webpack-plugin');
 let VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-    // 入口
-    entry: path.resolve(__dirname, 'src/app.js'),
+    mode: 'production',
     // 出口
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, '../dist')
     },
     // 对模块的处理
     module: {
@@ -32,10 +30,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new VueLoaderPlugin(),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: path.resolve(__dirname, 'public/index.html')
-        })
+        new VueLoaderPlugin()
     ]
 }

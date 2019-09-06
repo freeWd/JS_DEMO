@@ -47,4 +47,13 @@ module.export = {
 实现没有问题，但实际的开发中是通过这种方式在server中写vue模板渲染的代码是不方便的，真正实际的开发需要配合webpack去做
 
 ## webpack ssr
+安装的模块
+- webpack webpack-cli webpack-dev-server webpack需要的
+- babel-loader @babel/core @babel/preset-env 处理es6语法的
+- vue vue-loader vue-template-compiler 处理编译vue的
+- vue-style-loader css-loader 处理样式的 （与 style-loader用法一致，但相比于style-loader 它能用于服务端渲染）
+- html-webapck-plugin 处理html的
+- webpack-merge 合并webpack配置 configureWebpack
+
+npx webpack-dev-server
 

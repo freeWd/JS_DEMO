@@ -3,9 +3,26 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "client:dev":  "webpack-dev-server --config ./config/webpack.client.js",
+    "client:build": "webpack --config ./config/webpack.client.js",
+    "server:build": "webpack --config ./config/webpack.server.js"
+  },
   "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
     "express": "^4.17.1",
+    "html-webpack-plugin": "^3.2.0",
     "vue": "^2.6.10",
-    "vue-server-renderer": "^2.6.10"
+    "vue-loader": "^15.7.1",
+    "vue-server-renderer": "^2.6.10",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0",
+    "webpack-merge": "^4.2.2"
   }
 }

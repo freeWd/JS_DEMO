@@ -4,7 +4,7 @@ let VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     // 入口
-    entry: path.resolve(__dirname, 'src/app.js'),
+    entry: path.resolve(__dirname, 'src/client-entry.js'),
     // 出口
     output: {
         filename: 'bundle.js',
@@ -12,24 +12,22 @@ module.exports = {
     },
     // 对模块的处理
     module: {
-        rules: [
-            {
-                test: /\.js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                },
-                exclude: /node_modules/
-            }, {
-                test: /\.css$/,
-                use: ['vue-style-loader', 'css-loader']
-            }, {
-                test: /\.vue$/,
-                use: 'vue-loader'
-            }
-        ]
+        rules: [{
+            test: /\.js$/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env']
+                }
+            },
+            exclude: /node_modules/
+        }, {
+            test: /\.css$/,
+            use: ['vue-style-loader', 'css-loader']
+        }, {
+            test: /\.vue$/,
+            use: 'vue-loader'
+        }]
     },
     plugins: [
         new VueLoaderPlugin(),
@@ -37,5 +35,9 @@ module.exports = {
             filename: 'index.html',
             template: path.resolve(__dirname, 'public/index.html')
         })
-    ]
+    ],
+    devServer: {
+        // webpack server支持 history mode的路由
+        historyApiFallback: true
+    }
 }

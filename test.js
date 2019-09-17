@@ -367,3 +367,14 @@ function test() {
 }
 
 test()();
+
+
+var p = new Promise((resolve) => {
+    resolve(123);
+});
+
+var a = p.then((value) => {
+    return value;
+})
+
+console.log(a);

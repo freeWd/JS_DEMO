@@ -12,7 +12,7 @@ module.exports = merge(base, {
     output: {
         // 打包出来不是使用闭包函数 而是module.export = server.entry.js.... 这样的nodejs的用法
         libraryTarget: 'commonjs2'
-    },
+    }
     // plugins: [
     //     // 把public目录下的index-ssr内容拷贝到dist目录
     //     new HtmlWebpackPlugin({

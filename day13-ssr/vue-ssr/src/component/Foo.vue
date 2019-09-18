@@ -7,8 +7,7 @@
 <script>
 export default {
     metaInfo: {
-      title: 'Foo Page 123',
-      titleTemplate: '%s | Vue Meta Examples',
+      title: 'Foo Page 123'
     }
 }
 </script>

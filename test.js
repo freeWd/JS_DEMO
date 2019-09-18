@@ -378,3 +378,16 @@ var a = p.then((value) => {
 })
 
 console.log(a);
+
+
+
+var arr = new Array(5);
+function insertRandonNum(index) {
+    if (index < arr.length) {
+        var randomNums = Math.floor(Math.random()*30 + 2);
+        arr[index++] = randomNums;
+        insertRandonNum(index);
+    }
+}
+insertRandonNum(0);
+console.log(arr);

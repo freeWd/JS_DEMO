@@ -26,7 +26,6 @@ export default (context) => {
 
                 // Vue-meta - 
                 context.meta = app.$meta();
-                console.log(app.$meta(), '<===123');
 
                 // Promise 应该 resolve 应用程序实例，以便它可以渲染
                 resolve(app)

@@ -5,7 +5,7 @@
 - 先在本地跑一个无头浏览器 - 提前将内容渲染出来，获取渲染后的完整的dom元素存储到html里面去，爬虫的原理 
 - 不实时，只适用于纯静态的页面，如果是有请求数据的动态页面，它获取到数据后存起来，build后访问的就是上次构建的存储过的静态页面的数据。
 Vue预渲染的基本使用：
-```
+```js
 npm install prerender-spa-plugin 
 
 // -- vue.config.js
@@ -259,23 +259,8 @@ module.exports = merge(base, {
     output: {
         // 打包出来不是使用闭包函数 而是module.export = server.entry.js.... 这样的nodejs的用法
         libraryTarget: 'commonjs2'
-    }
-});
-
-
-// -- config/webpack.client.js
-let merge = require('webpack-merge');
-let path = require('path');
-let HtmlWebpackPlugin = require('html-webpack-plugin');
-let base = require('./webpack.base');
-
-module.exports = merge(base, {
-    // 入口
-    entry: {
-        client: path.resolve(__dirname, '../src/client-entry.js')
     },
     plugins: [
-        // 把public目录下的index-ssr内容拷贝到dist目录
         new HtmlWebpackPlugin({
             filename: 'index-ssr.html',
             template: path.resolve(__dirname, '../public/index-ssr.html'),
@@ -285,10 +270,32 @@ module.exports = merge(base, {
 });
 
 
+// -- config/webpack.client.js
+let merge = require('webpack-merge');
+let path = require('path');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+
+let base = require('./webpack.base');
+
+module.exports = merge(base, {
+    // 入口
+    entry: {
+        client: path.resolve(__dirname, '../src/client-entry.js')
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: path.resolve(__dirname, '../public/index.html')
+        }) 
+    ]
+});
+
+// 在index-ssr.html中手动添加关于 client.build.js的引用
+<script src="./dist/client.bundle.js"></script>
 ```
 
 **既然是服务端渲染为什么还要打client的包呢？**  
-因为服务端包打出来的的js文件是给web服务调用的，虽然通过node server接收处理后能在浏览器显示出页面内容，但只是返回一个字符串，并没有vue的实际功能，如果要让vue的实际功能生效。所以需要client打包通过html插件，将client.js注入到index-ssr.html内。  
+因为服务端包打出来的的js文件是给web服务调用的，虽然通过node server接收处理后能在浏览器显示出页面内容，但只是返回一个字符串，并没有vue的实际功能，如果要让vue的实际功能生效(比如点击事件等)。所以需要client打包通过html插件，将client.js注入到index-ssr.html内。  
 这样服务端负责生成渲染的页面，客户端负责加载vue特性和一些交互的事件。
 
 **这样客户端js和服务端js都存在情况下，会不会让页面多渲染一次？**  
@@ -327,13 +334,214 @@ app.listen(3003);
 ```
 
 ### Vue路由 SSR
-路由打包
+* 使用vue-router正常构建一个路由
+* 在app.js中引用路由
+```js
+import Vue from 'vue';
+import App from './App.vue';
+import createRouter from './router';
+
+// 适用于服务端的新函数，不需要挂载
+export default () => {
+    let router = createRouter();
+    let  app = new Vue({
+        router,
+        render: (h) => h(App)
+    });
+    return {app, router};
+}
+```
+
+* 调整server-entry.js文件
+```js
+import createApp from './app';
+
+//  服务端会调用此函数产生新的app实例
+export default (context) => {
+    return new Promise((resolve, reject) => {
+        let {
+            app,
+            router
+        } = createApp();
+        router.push(context.url); // 跳转到路由
+        // 如果服务端启动时，直接访问 /foo, 返回的页面永远都是index.html 需要通过路由调整到指定路径
+        // 为了防止路由中的异步逻辑（懒加载），所以采用promise的形式，等待路由加载完成后，返回vue实例，服务端才可以渲染出完整的页面
+
+        // 需要把当前页面中匹配到的组件找到它的asyncData方法, 让它执行
+        router.onReady(() => {
+            // 获取当前路径匹配到的组件 看下组件中是否有asyncData方法
+            let matchComponents = router.getMatchedComponents();
+            // 匹配不到的路由，执行 reject 函数，并返回 404
+            if (!matchComponents.length) {
+                return reject({ code: 404 })
+            }
+            // Promise 应该 resolve 应用程序实例，以便它可以渲染
+            resolve(app)
+        }, reject)
+    });
+}
+```
+
+* 调整server-ssr.js文件
+```js
+const express = require('express');
+const app = express();
+
+const Vue = require('vue');
+const fs = require('fs');
+const path = require('path');
+const VueServerRender = require('vue-server-renderer');
+
+
+let serverBundle = fs.readFileSync('./dist/server.bundle.js', 'utf-8');
+let template = fs.readFileSync('./dist/index-ssr.html', 'utf-8');
+let render = VueServerRender.createBundleRenderer(serverBundle, {
+  template
+});
+
+app.get('/', (req, resp) => {
+  // 把渲染好的字符串传递给客户端，只是返回一个字符串，并没有vue的实际功能
+  let context = {
+    url: req.url
+  };
+
+  render.renderToString(context, (err, html) => {
+    resp.send(html);
+  });
+});
+
+// 顺序报在下面, 通过中间件设置路径，允许index-ssr.html加载client.js
+app.use(express.static(path.resolve(__dirname, 'dist')));
+app.use('/favicon.ico', (req, resp) => {
+  resp.end();
+});
+
+// 如果访问的路径不存在，默认渲染index-ssr.html 并且把路由定向到当前请求的路径
+app.get('*', (req, res) => {
+  const context = {
+    url: req.url
+  }
+  render.renderToString(context, (err, html) => {
+    res.send(html);
+  })
+});
+
+app.listen(3003);
+```
 
 ### Vuex SSR
+* 同Vue Router, 根据Vuex先构建个正常的store 但是有几个地方需要注意，写在下面代码的注释中
+```js
+import Vue from 'vue';
+import vuex from 'vuex';
+
+Vue.use(vuex);
+
+export default () => {
+    let store = new vuex.Store({
+        state: {
+            username: 'demo'
+        },
+        mutations: {
+            set_username(state, payload) {
+                state.username = payload
+            }
+        },
+        actions: {
+            set_username({
+                commit
+            }, payload) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        commit('set_username', payload);
+                        resolve();
+                    }, 1000);
+                })
+            }
+        }
+    });
+
+    // vuex代码会在前端和后端都被执行，所以后端修改后的值，前端存储的还是旧的，需要替换一下
+    //  window.__INITIAL_STATE__是服务端打包后后端渲染时，存储store值的地方
+    if (typeof window !== 'undefined' && window.__INITIAL_STATE__) {
+        store.replaceState(window.__INITIAL_STATE__);
+    }
+    return store;
+}
+```
+
+* 修改app.js
+```js
+import Vue from 'vue';
+import App from './App.vue';
+
+import createRouter from './router';
+import createVuex from './store';
+
+// 适用于服务端的新函数，不需要挂载
+export default () => {
+    let router = createRouter();
+    let store = createVuex();
+    let  app = new Vue({
+        router,
+        store,
+        render: (h) => h(App)
+    });
+    
+    return {app, router, store};
+}
+```
+
+* 修改server-entry.js
+```js
+import createApp from './app';
+
+//  服务端会调用此函数产生新的app实例
+export default (context) => {
+    return new Promise((resolve, reject) => {
+        let {
+            app,
+            router,
+            store
+        } = createApp();
+        router.push(context.url); // 跳转到路由
+        // 如果服务端启动时，直接访问 /foo, 返回的页面永远都是index.html 需要通过路由调整到指定路径
+        // 为了防止路由中的异步逻辑（懒加载），所以采用promise的形式，等待路由加载完成后，返回vue实例，服务端才可以渲染出完整的页面
+
+        // 需要把当前页面中匹配到的组件找到它的asyncData方法, 让它执行
+        router.onReady(() => {
+            // 获取当前路径匹配到的组件 看下组件中是否有asyncData方法
+            let matchComponents = router.getMatchedComponents();
+            Promise.all(matchComponents.map((component) => {
+                if (component.asyncData) {
+                    return component.asyncData({store});
+                }
+            })).then(() => {
+                // 将vuex中的状态 挂载到上下文的state中 - 打包后访问server会自动在window中挂载一个属性：__INITIAL_STATE__
+                context.state = store.state;
+
+                // Vue-meta - 
+                context.meta = app.$meta();
+
+                // Promise 应该 resolve 应用程序实例，以便它可以渲染
+                resolve(app)
+            });
+        }, reject)
+    });
+}
+```
 
 ### Vue-Meta
-
-
+* 一个第三方库，能方便的在客户端、服务端渲染下访问不同的路由替换页面的title和meta属性。并且server端渲染替换的title是在源码中真实存在并显示的。
+* 使用起来很简单，具体查看 https://github.com/nuxt/vue-meta
+* 需要注意的地方：
+    如果是ssr的meta需要再对应的html文件中添加以下类似的设置
+    ```html
+    <title>
+        {{{ meta.inject().title.text() }}}
+    </title>
+    ```
+    
 ### Event Bus
 
 

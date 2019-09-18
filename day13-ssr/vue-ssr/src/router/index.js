@@ -2,9 +2,10 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Meta from 'vue-meta'
 
-// import Foo from '../component/Foo.vue';
+
 import Bar from '../component/Bar.vue';
-const Foo = process.BROWSER  ? () => import('../component/Foo.vue') : require('../component/Foo.vue')
+import Foo from '../component/Foo.vue';
+// const Foo = process.BROWSER  ? () => import('../component/Foo.vue') : require('../component/Foo.vue')
 
 Vue.use(VueRouter);
 Vue.use(Meta);

@@ -391,3 +391,57 @@ function insertRandonNum(index) {
 }
 insertRandonNum(0);
 console.log(arr);
+
+
+const arr = [1,2];
+console.log(arr.slice(0, 3));
+console.log(arr.splice(3));
+
+
+
+class Observer {
+    constructor() {
+        this.subscriber = [];
+        this.data = null;
+    }
+
+    next(data) {
+        this.data = data;
+    }
+
+    addSub(sub) {
+        this.subscriber.push(sub);
+    }
+
+    emit(data) {
+        this.data = data;
+        this.subscriber.forEach(subscribeItem => {
+            subscribeItem.execute(data)
+        })
+    }
+}
+
+let observer = new Observer();
+
+class Subject {
+    constructor(fn) {
+        observer.addSub(this);
+        this.fn = fn;
+    }
+
+    execute(data) {
+        console.log(this);
+        this.fn(data);
+    }
+}
+
+const s1 = new Subject(function (data) {
+    console.log('a', data, this);
+})
+
+const s2 = new Subject(function (data) {
+    console.log('b', data, this);
+})
+
+observer.emit('123');
+

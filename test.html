@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>拖拽</title>
-  <style>
-    .column {
-      height: 200px;
-      width: 200px;
-      border: 1px solid red;
-      text-align: center;
-      line-height: 200px;
-    }
-  </style>
-</head>
-<body>
-  <div id="columns">
-    <div class="column" draggable="true">hello world</div>
-    <div class="column" draggable="true">hello world2</div>
-    <div class="column" draggable="true">hello world3</div>
-  </div>
-
-  <script>
-    const columns = document.querySelectorAll('#columns .column');
-    const dragEl = null;
-    columns.forEach(columnItem => {
-      columnItem.addEventListener('dragstart', domdrugstart);
-      columnItem.addEventListener('dragstart', domdrugstart);
-      columnItem.addEventListener('dragstart', domdrugstart);
-      columnItem.addEventListener('dragstart', domdrugstart);
-      columnItem.addEventListener('dragstart', domdrugstart);
-    })
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .left {
+          float: left;
+          width: 200px;
+          background: red;
+          margin-left: -100%;
+      }
+      .right {
+          float: left;
+          width: 300px;
+          background: pink;
+          margin-left: -300px;
+      }
+      .center {
+          width: 100%;
+          float: left;
+          background: powderblue;
+      }
+      .inner-center {
+          margin-left: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <div class="center">
+          <div class="inner-center">
+                456
+          </div>
+      </div>
+      <div class="left">123</div>
+      <div class="right">789</div>
+    </div>
+  </body>
 </html>

@@ -5,6 +5,8 @@ import router from './router';
 import 'bootstrap/dist/css/bootstrap.css'
 import './assets/common.css'
 
+import './event-bus';
+
 Vue.config.productionTip = false
 
 

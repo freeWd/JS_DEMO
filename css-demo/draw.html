@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>高级绘图技巧</title>
+    <style>
+        .tab {
+            width: 200px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            background-color: cornflowerblue;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 10px solid #999;
+        }
+
+        .tab::after {
+            content: '';
+            display: block;
+            width: calc(100% + 100px);
+            transform: translateX(-25%);
+            height: 10px;
+            background-color: cornflowerblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab">
+        hello world
+    </div>
+</body>
+</html>

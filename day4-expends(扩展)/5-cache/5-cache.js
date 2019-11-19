@@ -5,6 +5,7 @@ let path = require('path');
 
 
 http.createServer((req, resp) => {
+    console.log('123');
     let { pathname } = url.parse(req.url);
     let filePath = path.join(__dirname, pathname);
     // 强制缓存10s,可能导致内容是旧的内容

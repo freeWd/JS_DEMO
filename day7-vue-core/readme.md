@@ -116,8 +116,8 @@ v-on - 事件 - v-on:click="test()" - @click="test($event)"
 * mounted - 数据已经渲染。 dom操作
 * beforeUpdate - 更新之前 ，虚拟dom重新渲染之前
 * updated - 渲染后，不要在此处添加变量变化的逻辑
-* beforeDestory - 销毁之前，实例任然可以使用，可以执行优化操作
-* destoryed - 销毁后
+* beforeDestroy - 销毁之前，实例任然可以使用，可以执行优化操作
+* destroyed - 销毁后
 
 组件交互：
 属性输入：校验 validator - validator - 当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。

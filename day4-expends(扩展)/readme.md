@@ -136,7 +136,7 @@ http.createServer((req, resp) => {
 * 两类缓存规则可以同时存在，强制缓存优先级高于对比缓存，也就是说，当执行强制缓存的规则时，如果缓存生效，直接使用缓存，不再执行对比缓存规则
 
 1. 强制缓存(首页没法强制缓存)
-    * 响应头：Expires   ==resp.setHeader('Expires', new Date(Date.now() + 10000).toUTCString());== 设置到期时间
+    * 响应头：Expires  ==resp.setHeader('Expires', new Date(Date.now() + 10000).toUTCString());== 设置到期时间
     * 响应头：Cache-Control 与Expires的作用一致，都是指明当前资源的有效期, 其优先级高于Expires。 ==resp.setHeader('Cache-Control', 'max-age=10');== 设置到期时间
 
     ![img](http://img.zhufengpeixun.cn/cache2.png)

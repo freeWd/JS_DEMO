@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      /* 双飞翼布局 */
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .left {
+        float: left;
+        margin-left: -100%;
+        background: pink;
+        width: 200px;
+      }
+      .right {
+        float: right;
+        margin-left: -250px;
+        background: coral;
+        width: 250px;
+      }
+      .center {
+        float: left;
+        background: yellow;
+        width: 100%;
+      }
+      .inner-center {
+        margin-left: 200px;
+      }
+
+      .layout {
+        overflow: hidden;
+      }
+      .left,
+      .center,
+      .right {
+        padding-bottom: 9999px;
+        margin-bottom: -9999px;
+      }
+
+      /* flex布局 */
+      * {
+        box-sizing: border-box;
+      }
+      .flex-layout {
+        display: flex;
+        text-align: center;
+      }
+      .flex-left {
+        background: pink;
+        flex-basis: 200px;
+        height: 100px;
+        order: 0;
+      }
+      .flex-center {
+        background: yellow;
+        flex-grow: 1;
+        order: 1
+      }
+      .flex-right {
+        background: coral;
+        flex-basis: 250px;
+        order: 2
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 双飞翼布局 -->
+    <!-- 渲染 从上到下， 中间的内容比较重要 要优先显示出来 -->
+    <!-- 在布局出来的之后还要考虑一个问题，如何让div等高 -->
+    <div class="layout">
+      <div class="center">
+        <div class="inner-center">
+          456
+        </div>
+      </div>
+      <div class="left">
+        <p>123</p>
+        <p>123</p>
+      </div>
+      <div class="right">789</div>
+    </div>
+
+    <!-- flex布局 -->
+    <div style="margin-top:50px" class="flex-layout">
+      <div class="flex-center">
+        456
+      </div>
+      <div class="flex-left">
+        <div class="content">
+            <p>123</p>
+            <p>123</p>
+        </div>
+      </div>
+      <div class="flex-right">789</div>
+    </div>
+  </body>
+</html>

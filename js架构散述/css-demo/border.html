@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .test {
+            height: 150px;
+            width: 300px;
+            border-radius: .8rem;
+            background: yellowgreen;
+            padding: 20px;
+            outline: 10px solid red;
+            box-shadow: 0 0 0 .34rem red;
+        }
+
+        .test2 {
+            margin-top: 30px;
+            height: 300px;
+            width: 300px;
+            background: yellowgreen;
+            border-radius: 150px;
+            animation: 2s cubic-bezier(0.075, 0.82, 0.165, 1) infinite bounce;
+        }
+
+        @keyframes bounce {
+            60%, 80%, to {
+                transform: translateY(100px);
+            }
+            70% {
+                transform: translateY(50px);
+            }
+            90% {
+                transform: translateY(50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test"></div>
+
+    <div class="test2"></div>
+</body>
+</html>

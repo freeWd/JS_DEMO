@@ -528,19 +528,17 @@ mergePromise([ajax1, ajax2, ajax3]).then(data => {
   console.log(data);
 });
 
-
 var arr = Array(3);
 arr[0] = 2;
 var result = arr.map(function(elem) {
-  return '1'
+  return "1";
 });
 console.log(result);
 
-while(1) {
+while (1) {
   console.log(Math.random());
   return;
 }
-
 
 var length = 10;
 var obj = {
@@ -551,16 +549,17 @@ var obj = {
 };
 console.log(obj.method());
 
-
 var yi = new Date("2018-08-20"),
-    deng = new Date(2018, 08, 20);
+  deng = new Date(2018, 08, 20);
 console.log(yi, deng);
 console.log([yi.getDay() === deng.getDay()]);
 
-
-
-for (let i = (setTimeout(() => console.log('a ->', i)), 0); setTimeout(() => console.log('b ->', i)), i < 2; i++) {
-  console.log(i, '<---123');
+for (
+  let i = (setTimeout(() => console.log("a ->", i)), 0);
+  setTimeout(() => console.log("b ->", i)), i < 2;
+  i++
+) {
+  console.log(i, "<---123");
   i++;
 }
 
@@ -568,11 +567,9 @@ for (let index = 0; index < 3; index++) {
   console.log(index);
 }
 
-
-let i = setTimeout(() => console.log('a ->', i));
-let i = ('123', '0', 12)
+let i = setTimeout(() => console.log("a ->", i));
+let i = ("123", "0", 12);
 console.log(i);
-
 
 function test1(arr) {
   arr[0] = arr[1];
@@ -581,54 +578,100 @@ function test1(arr) {
 function test2(a, b, c = 3) {
   c = 10;
   test1(arguments);
-  console.log(a+b+c);
+  console.log(a + b + c);
 }
 
-test2(1,1,1)
-
-
+test2(1, 1, 1);
 
 test();
 var flag = true;
 if (flag) {
   function test() {
-    console.log('123');
+    console.log("123");
   }
 } else {
   function test() {
-    console.log('234');
+    console.log("234");
   }
 }
 
-
-
 function test() {
-  console.log('123');
+  console.log("123");
 }
 (function() {
   if (false) {
     function test() {
-      console.log('1234');
+      console.log("1234");
     }
   }
   test();
 })();
 
-
-
-var big = 'xxx';
+var big = "xxx";
 var obj = {
-  big: 'yyy',
+  big: "yyy",
   showBig: function() {
     return this.big;
   }
 };
 console.log(obj.showBig.call(big));
 
-var a = '234';
+var a = "234";
 function test() {
-  var a = '123';
+  var a = "123";
   var init = new Function("console.log(a)");
   init();
 }
 test();
+
+function foo(p1, p2) {
+  this.val = p1 + p2;
+}
+
+var bar = foo.bind(null, "p1");
+var baz = new bar("p2");
+console.log(baz.val);
+
+let sum = 0;
+function sum1(i) {
+  console.log(sum, i);
+  sum += i;
+  if (i === 1) return sum;
+  return sum1(i - 1);
+}
+console.log(sum1(3));
+
+function sum2(i, total) {
+  total += i;
+  if (i === 1) return total;
+  return sum2(i - 1, total);
+}
+console.log(sum2(5, 0));
+
+// --------------
+console.log(a);
+console.log(typeof yideng(a));
+var flag = true;
+if (!flag) {
+  var a = 1;
+}
+if (flag) {
+  function yideng(a) {
+    yideng = a;
+    console.log("yideng1");
+  }
+} else {
+  function yideng(a) {
+    yideng = a;
+    console.log("yideng2");
+  }
+}
+
+
+var Container = function(x) {
+  this._value = x;
+}
+Container.of = x => new Container(x);
+Container.prototype.map = function(f) {
+  
+}

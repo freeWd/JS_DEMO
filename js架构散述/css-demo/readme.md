@@ -24,4 +24,9 @@ BFC自身的一些规则：
 ## CSS绘制的高级技巧
 border && border-radius 造就万千可能
 
+- border-radius产生圆角
+如果在圆角矩形外产生一个非圆角的矩形包裹住圆角矩形，可以无需多使用一个div，而是使用属性：outline: 10px solid red 配合 box-shadow的外阴影来实现
+
+
+
 

@@ -15,4 +15,5 @@ let client =http.request({
     })
 });
 
+// end 中的data参数就是 request body的请求体数据
 client.end('name=123&pwd=234');

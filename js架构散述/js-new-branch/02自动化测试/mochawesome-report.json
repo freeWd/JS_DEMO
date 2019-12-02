@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2019-12-02T08:06:26.036Z",
+    "end": "2019-12-02T08:06:26.051Z",
+    "duration": 15,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "1a36a14a-2177-435b-84ce-5e8a1ad225c4",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "0ff73550-3fe8-4340-8ac4-ac6a508c9cf0",
+          "title": "Node 接口测试",
+          "fullFile": "/Users/free_wd/Documents/GitHub/JS_DEMO/js架构散述/js-new-branch/02自动化测试/tests/service/service.spec.js",
+          "file": "/tests/service/service.spec.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "/test 接口测试",
+              "fullTitle": "Node 接口测试 /test 接口测试",
+              "timedOut": false,
+              "duration": 2,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "request().get(\"/test\").expect(200).expect('Content-Type', /json/).end(function(err, res) {\n    if (err) {\n        done(err);\n    }\n    if (res.body.data == 'Hello World') {\n        done();\n    } else {\n        done(new Error('接口数据异常'))\n    }\n})",
+              "err": {
+                "message": "TypeError: app.listen is not a function",
+                "estack": "TypeError: app.listen is not a function\n    at request (tests/service/service.spec.js:5:27)\n    at Context.<anonymous> (tests/service/service.spec.js:10:5)",
+                "diff": null
+              },
+              "uuid": "11088522-3e0b-4de8-817a-c34f3102cb3a",
+              "parentUUID": "0ff73550-3fe8-4340-8ac4-ac6a508c9cf0",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "11088522-3e0b-4de8-817a-c34f3102cb3a"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 2,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "6.2.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "./coverage/mochawesome-report",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false
+      },
+      "version": "4.1.0"
+    },
+    "marge": {
+      "options": {
+        "reportFilename": "./coverage/mochawesome-report"
+      },
+      "version": "4.0.1"
+    }
+  }
+}

@@ -11,6 +11,7 @@ let server = http.createServer((req, resp) => {
 
     req.on('end', function() {
         let reqStr = Buffer.concat(reqBody).toString();
+        console.log(reqStr);
         if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
             let obj = querystring.parse(reqStr);
             resp.setHeader('content-type', 'application/json;charset=urf-8');

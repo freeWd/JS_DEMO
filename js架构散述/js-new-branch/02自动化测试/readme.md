@@ -50,5 +50,41 @@ karma start 运行
 npm install karma-coverage --save-dev
 
 
-## 用户的真实性测试（e2e）
+## 用户的真实性测试（e2e） - 模拟用户的操作
+```sh
 npm install selenium-webdriver --save-dev
+
+# 安装一个二进制的驱动 - 不同浏览器不一样
+https://www.npmjs.com/package/selenium-webdriver
+# 在电脑上配置此驱动的全局变量路径
+
+# 运行
+node ./tests/e2e/index.js
+```
+
+## UI测试
+```sh
+# 安装第三方库
+npm install backstopjs
+
+# 初始化配置文件和文件夹 - backstop_data || backstop.json
+backstop init
+
+# 对backstop.json的配置
+viewports - 设置渲染对比的终端尺寸
+paths - bitmaps_reference - 设置原型图的保存路径
+paths - html_report - 设置报告的保存路径
+
+# 执行测试命令
+backstop test
+```
+
+## service测试 - 接口测试
+```
+# 安装第三方库 mocha - 测试框架， mochawesome - 生成报告
+npm install mocha mochawesome --save-dev
+npm install supertest --save-dev
+
+# 新建mochaRunner.js 配置测试参数和文件，报告路径等 - 测试文件：./tests/service/service.spec.js
+node mochaRunner.js
+```

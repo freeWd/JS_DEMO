@@ -1,0 +1,101 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2019-12-02T09:41:42.945Z",
+    "end": "2019-12-02T09:41:42.981Z",
+    "duration": 36,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "38d76b80-bacc-4d45-9175-59376793db00",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "57afa3f5-d77e-4150-9ff8-65760ff7b918",
+          "title": "Node 接口测试",
+          "fullFile": "/Users/free_wd/Documents/GitHub/JS_DEMO/js架构散述/js-new-branch/02自动化测试/tests/service/service.spec.js",
+          "file": "/tests/service/service.spec.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "/test 接口测试",
+              "fullTitle": "Node 接口测试 /test 接口测试",
+              "timedOut": false,
+              "duration": 25,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "request().get(\"/test\").expect(200).expect('Content-Type', /html/).end(function(err, res) {\n    if (err) {\n        done(err);\n    }\n    console.log(res.text);\n    if (res.text == 'hello world') {\n        done();\n    } else {\n        done(new Error('接口数据异常'))\n    }\n})",
+              "err": {},
+              "uuid": "2161569d-1af7-4407-8e29-58e797e0a022",
+              "parentUUID": "57afa3f5-d77e-4150-9ff8-65760ff7b918",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "2161569d-1af7-4407-8e29-58e797e0a022"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 25,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "6.2.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false
+      },
+      "version": "4.1.0"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "./coverage/mochawesome-report"
+      },
+      "version": "4.0.1"
+    }
+  }
+}

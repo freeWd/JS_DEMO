@@ -64,6 +64,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    // 无头浏览器 js环境
     browsers: ['PhantomJS'],
 
 

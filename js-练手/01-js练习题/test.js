@@ -1,23 +1,3 @@
-// 01
-// console.log(a);
-// console.log(fn);
-
-// var flag = true;
-// if (!flag) {
-//   var a = 1;
-// }
-// if (flag) {
-//   function fn(a) {
-//     fn = a;
-//     console.log("test1");
-//   }
-// } else {
-//   function fn(a) {
-//     fn = a;
-//     console.log("test2");
-//   }
-// }
-
 // 02 - 函数的父级作用域是其定义的时候的作用域而非执行时，要和this区分开
 // function fn() {
 //   console.log("hello world");

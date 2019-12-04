@@ -680,3 +680,4 @@ Container.prototype.map = function(f) {
 for (let index = 0; index < 100; index++) {
   console.log(Math.round(Math.random() * 5));
 }
+

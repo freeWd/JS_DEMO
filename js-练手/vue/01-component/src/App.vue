@@ -10,8 +10,15 @@
       <li>
         <router-link :to="{path: '/formvalid-custom'}">表单校验-模仿UI库-自定义</router-link>
       </li> 
+      <li>
+        <router-link :to="{ path: '/search' }">搜索列表</router-link>
+      </li> 
+      <li>
+        <router-link :to="{ path: '/testvuex' }">Vuex测试</router-link>
+      </li> 
     </ul>
     <router-view></router-view>
+    <router-view name="footer"></router-view>
   </div>
 </template>
 

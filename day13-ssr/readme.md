@@ -81,7 +81,7 @@ app.get('/', (req, resp) => {
 
 // --- 方法二 模板渲染 
 // 需要在对应的html中要被替换内容的地方添加  <!---vue-ssr-outlet-->标记,
-// 方法一种的html基本骨架标签都是在 send的时候手写的，实际有更好的办法能处理，就是提前写好一个index.html模板
+// 方法一中的html基本骨架标签都是在 send的时候手写的，实际有更好的办法能处理，就是提前写好一个index.html模板
 // 在createRenderer时候将模板的值传递进去
 let template = fs.readFileSync('index.html','utf8');
 let render = VueServerRender.createRenderer(template);

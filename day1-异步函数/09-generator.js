@@ -51,14 +51,14 @@
 let fs = require('fs');
 
 let p1 = new Promise(function(resolve, reject) {
-    fs.readFile('./day1/static/name.txt', 'utf8', function(error, data) {
+    fs.readFile('./day1-异步函数/static/name.txt', 'utf8', function(error, data) {
         if (error) reject(error);
         resolve(data);
     })
 });
 
 let p2 = new Promise(function(resolve, reject) {
-    fs.readFile('./day1/static/age.txt', 'utf8', function(error, data) {
+    fs.readFile('./day1-异步函数/static/age.txt', 'utf8', function(error, data) {
         if (error) reject(error);
         resolve(data);
     });
@@ -85,14 +85,14 @@ value.then(data => {
 let fs = require('fs');
 
 let p1 = new Promise(function(resolve, reject) {
-    fs.readFile('./day1/static/name.txt', 'utf8', function(error, data) {
+    fs.readFile('./day1-异步函数/static/name.txt', 'utf8', function(error, data) {
         if (error) reject(error);
         resolve(data);
     })
 });
 
 let p2 = new Promise(function(resolve, reject) {
-    fs.readFile('./day1/static/age.txt', 'utf8', function(error, data) {
+    fs.readFile('./day1-异步函数/static/age.txt', 'utf8', function(error, data) {
         if (error) reject(error);
         resolve(data);
     });

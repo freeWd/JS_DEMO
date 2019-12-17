@@ -2,7 +2,7 @@
 
 ## Cookie & Session
 - cookie 客户端 每次发请求的时候，浏览器正常的请求中会自动将cookie的值放在请求头中带给服务端
-- cookie既可以在客户端设置（domain.cookie） 也 可以在服务端设置（response header set-cookie）
+- cookie既可以在客户端设置（document.cookie） 也 可以在服务端设置（response header set-cookie）
     - domain 可以访问此cookie的域名。 (默认为设定该Cookie的域名)， 所指定的域名必须是当前发送Cookie的域名的一部分，比如当前访问的域名是example.com，就不能将其设为google.com。只有访问的域名匹配domain属性，Cookie才会发送到服务器。
     - path 字段为可以访问此cookie的页面路径。 比如domain是abc.com,path是/test，那么只有/test路径下的页面可以读取此
     cookie。 mac上可以通过 ==sudo vi /etc/hosts==设置本地映射不同的域名来测试

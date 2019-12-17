@@ -37,3 +37,17 @@ fn2(yideng2, 10, 20, 30);
 // arguments.length  ==> fn2的实参 就是 4
 // arguments.callee 就是明确为当前的函数 fn2， fn2.length 是fn2的形参数量 就是 1
 // 结果 4 1
+
+
+
+let privateArg = '234';
+class Test {
+  constructor() {
+    let privateArg = 123;
+  }
+
+  getPrivateArg() {
+    return privateArg;
+  }
+}
+

@@ -1,3 +1,12 @@
+// nodejs使用event
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
+eventEmitter.on('handle', function() {
+    console.log('handle被使用');
+});
+eventEmitter.emit('handle');
+
+// 自定义实现Event
 class EventEmitter {
     constructor() {
         this._events = {};

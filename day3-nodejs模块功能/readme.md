@@ -8,8 +8,8 @@ buffer(缓冲器) -  Buffer 类是作为 Node.js API 的一部分引入的，用
 let buffer = Buffer.from('测试');
 
 // 将16进制的buffer转化为字符串,node只支持utf8格式 默认值: 'utf8'。
-console.log(buffer.toString());
-console.log(buffer.toString('base64'));
+console.log(buffer.toString()); // 测试
+console.log(buffer.toString('base64')); // 5rWL6K+V
 ```
 
 * 编码的问题
@@ -74,8 +74,10 @@ console.log(buffer.toString('base64'));
 * buffer声明方式
 ```js
 let buffer = Buffer.from('测试');
+
 // <Buffer ff ff ff>
 let buffer2 = Buffer.from([255, 255, 255]); 
+
 // 开辟3个字节的存储空间 <Buffer 00 00 00>
 let buffer2 = Buffer.alloc(3);
 ```
@@ -216,7 +218,6 @@ rs.on('end', function() {
 setTimeout(() => {
     rs.resume(); // 恢复 data 事件的触发
 }, 1000);
-
 ```
 
 

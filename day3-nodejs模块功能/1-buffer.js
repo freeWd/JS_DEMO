@@ -22,6 +22,7 @@ console.log("ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLocaleLowerCase());
 
 let buffer = Buffer.from('测');
 console.log(buffer);
+console.log(buffer.toString());
 console.log(buffer.toString('base64'));
 
 console.log(parseInt('111111',2))

@@ -11,12 +11,13 @@ let rs = fs.createReadStream(path.resolve(__dirname , './static/1.txt'), {
 
 let bufferArr = [];
 rs.on('data', function(chunk) {
+    console.log(chunk);
     bufferArr.push(chunk);
     rs.pause();
 });
 
 rs.on('end', function() {
-    console.log(Buffer.concat(bufferArr).toString());
+    console.log('---->', Buffer.concat(bufferArr).toString());
 });
 
 setTimeout(() => {

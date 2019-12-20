@@ -10,7 +10,7 @@ let ws = fs.createWriteStream(path.resolve(__dirname, './static/2.txt'), {
 });
 
 let flag = ws.write('1你2好3', function(err) {
-    console.log('写入');
+    console.log('写入123');
 });
 
 ws.on('drain', function() {

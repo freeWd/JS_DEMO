@@ -267,7 +267,6 @@ process.cwd(); // 当前工作目录. 在哪里执行，就显示出位置
 process.env; // 显示当前进程的整个运行环境
 process.argv; //  属性返回一个数组，其中包含当启动 Node.js 进程时传入的命令行参数。 第一个元素是 process.execPath。 如果需要访问 argv[0] 的原始值，参阅 process.argv0。 第二个元素将是正在执行的 JavaScript 文件的路径。
 process.nextTick(callback[, ...args]); // 方法将 callback 添加到下一个时间点的队列。 一旦当轮的事件循环全部完成，则调用下一个时间点的队列中的所有回调。 它将callBack方法推入的是微任务队列，执行优先级比setTimeout更高
-process.env; //属性返回包含用户环境的对象
 ```
 
 小例子：

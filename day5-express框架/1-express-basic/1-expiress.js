@@ -39,8 +39,8 @@ app.all('/params', (req, res) => {
     res.end('hello world');
 });
 
-app.all('*', (req, resp) => {
-    resp.end('404');
-});
+// app.all('*', (req, resp) => {
+//     resp.end('404');
+// });
 
 app.listen(3003);

@@ -64,6 +64,17 @@ app.listen(3003);
 第二个参数为处理请求的回调函数
 
 
+res.download(); // 提示要下载的文件。
+res.end(); // 结束响应过程。
+res.json(); // 发送JSON响应。!!
+res.jsonp(); // 用JSONP支持发送JSON响应。
+res.redirect(); // 重定向请求。!!
+res.render(); // 呈现视图模板。!!
+res.send(); // 发送各种类型的响应。!!
+res.sendFile(); // 以八位字节流的形式发送文件。
+res.sendStatus(); // 设置响应状态代码并将其字符串表示形式作为响应主体发送。
+
+
 
 ```js
 // express 中间件。

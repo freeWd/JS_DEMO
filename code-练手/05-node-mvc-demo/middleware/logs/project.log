@@ -53,3 +53,8 @@
     at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
     at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:36:12
     at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:351:31)
+[2019-12-31T10:37:45.231] [ERROR] cheese - { code: 1, msg: '通讯异常', data: null }
+[2019-12-31T10:39:26.089] [ERROR] cheese - { code: 1, msg: '通讯异常', data: null }
+[2019-12-31T10:40:39.480] [ERROR] cheese - { code: 1, msg: '通讯异常', data: null }
+[2019-12-31T10:51:12.319] [ERROR] cheese - { code: 1, msg: '通讯异常', data: null }
+[2019-12-31T10:51:54.053] [ERROR] cheese - { code: 1, msg: '通讯异常', data: null }

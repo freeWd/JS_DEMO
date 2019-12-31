@@ -39,3 +39,5 @@ app.use(router.routes()).use(router.allowedMethods());
 app.listen(config.port, () => {
   console.log("启动成功");
 });
+
+module.exports = app;

@@ -5,9 +5,9 @@
     "passes": 1,
     "pending": 0,
     "failures": 0,
-    "start": "2019-12-31T02:47:34.347Z",
-    "end": "2019-12-31T02:47:34.389Z",
-    "duration": 42,
+    "start": "2019-12-31T02:55:10.443Z",
+    "end": "2019-12-31T02:55:10.508Z",
+    "duration": 65,
     "testsRegistered": 1,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "68817091-f729-449c-8789-c07f03499a12",
+      "uuid": "6680eb69-0362-4be7-b7e5-9c7ad7c25757",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,40 +27,40 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "6f81946c-d6f5-40a9-824d-5cc74c08df61",
+          "uuid": "8f43038c-1b50-407c-9bf9-0717a7f70d84",
           "title": "Node 接口测试",
-          "fullFile": "/Users/free_wd/Documents/GitHub/JS_DEMO/js架构散述/02自动化测试/tests/service/service.spec.js",
+          "fullFile": "/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/tests/service/service.spec.js",
           "file": "/tests/service/service.spec.js",
           "beforeHooks": [],
           "afterHooks": [],
           "tests": [
             {
-              "title": "/test 接口测试",
-              "fullTitle": "Node 接口测试 /test 接口测试",
+              "title": "/home接口测试",
+              "fullTitle": "Node 接口测试 /home接口测试",
               "timedOut": false,
-              "duration": 31,
+              "duration": 53,
               "state": "passed",
-              "speed": "fast",
+              "speed": "medium",
               "pass": true,
               "fail": false,
               "pending": false,
               "context": null,
-              "code": "// 后台是nodejs\nrequest().get(\"/test\").expect(200).expect('Content-Type', /html/).end(function(err, res) {\n    if (err) {\n        done(err);\n    }\n    console.log(res.text);\n    if (res.text == 'hello world') {\n        done();\n    } else {\n        done(new Error('接口数据异常'))\n    }\n})\n// 后台用其他语言\n// fetch('localhost:3000/test').then(function(res) {\n//     if (res.text == 'hello world') {\n//         done();\n//     } else {\n//         done(new Error('接口数据异常'))\n//     }\n// }, (err) => {\n//     done(err);\n// })",
+              "code": "request()\n  .get(\"/home\")\n  .expect(200)\n  .expect(\"Content-Type\", /html/)\n  .end(function(err, res) {\n    if (err) {\n      done(err);\n    }\n    done();\n  });",
               "err": {},
-              "uuid": "b97fb1a7-eeef-47ff-b754-15fdd7089fe6",
-              "parentUUID": "6f81946c-d6f5-40a9-824d-5cc74c08df61",
+              "uuid": "9609828d-4db4-4e22-8e7a-bf3bc2118e87",
+              "parentUUID": "8f43038c-1b50-407c-9bf9-0717a7f70d84",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "b97fb1a7-eeef-47ff-b754-15fdd7089fe6"
+            "9609828d-4db4-4e22-8e7a-bf3bc2118e87"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 31,
+          "duration": 53,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
@@ -95,7 +95,7 @@
       "options": {
         "reportDir": "./coverage/mochawesome-report"
       },
-      "version": "4.0.1"
+      "version": "4.1.0"
     }
   }
 }

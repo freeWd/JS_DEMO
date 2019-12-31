@@ -9,7 +9,6 @@ class BookController {
   homePage() {
     return async (ctx, next) => {
       const bookList = await new BookModel().getBookList();
-      console.log(bookList);
       ctx.body = await ctx.render("home", {
         bookList: bookList.data
       });

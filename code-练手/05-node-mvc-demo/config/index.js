@@ -5,7 +5,8 @@ let config = {
   viewDir: path.resolve(__dirname, "../views"),
   staticDir: path.resolve(__dirname, "../assets"),
   logDir: path.resolve(__dirname, "../middleware/logs/project.log"),
-  mockDir: path.resolve(__dirname, "../mock")
+  mockDir: path.resolve(__dirname, "../mock"),
+  baseUrl: 'http://localhost:3003'
 };
 
 if (process.env.NODE_ENV === "dev") {

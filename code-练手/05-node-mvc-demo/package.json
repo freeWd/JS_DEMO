@@ -9,7 +9,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=dev nodemon app.js",
-    "doc": "jsdoc ./**/*.js -d ./docs/jsdocs"
+    "doc": "jsdoc ./**/*.js -d ./docs/jsdocs",
+    "unit": "karma start",
+    "service-test": "node ./mochaRunner.js"
   },
   "keywords": [],
   "author": "",
@@ -30,7 +32,15 @@
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "cross-env": "^6.0.3",
+    "jasmine-core": "^3.5.0",
     "jsdoc": "^3.6.3",
-    "karma": "^4.4.1"
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.1",
+    "karma-jasmine": "^2.0.1",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "mocha": "^6.2.2",
+    "mochawesome": "^4.1.0",
+    "supertest": "^4.0.2"
   }
 }

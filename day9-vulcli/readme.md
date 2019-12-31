@@ -407,7 +407,7 @@ meta: {needLogin: true},
 
 https://vuex.vuejs.org/zh/
 
-![image](../static/vuex.png)
+![image](/static/vuex.png)
 
 vuex的内容存储在新建的文件夹store中, 图片中的vuex的状态和行为，依次创建不同的文件
 

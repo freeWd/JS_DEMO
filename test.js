@@ -667,17 +667,60 @@ if (flag) {
   }
 }
 
-
 var Container = function(x) {
   this._value = x;
-}
+};
 Container.of = x => new Container(x);
-Container.prototype.map = function(f) {
-  
-}
-
+Container.prototype.map = function(f) {};
 
 for (let index = 0; index < 100; index++) {
   console.log(Math.round(Math.random() * 5));
 }
 
+
+
+
+function debounce(fn) {
+  let timer;
+  return () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn();
+    }, 1000);
+  }
+} 
+
+function option() {
+  console.log('xxx');
+}
+
+const f = debounce(option);
+f();
+f();
+
+
+
+
+function test() {
+  return new Promise(resolve => {
+    resolve('123');
+  }).then(() => {
+    return Promise.resolve(null);
+  });
+}
+console.log(test());
+
+function* test() {
+  let a = yield 3;
+  console.log('xxx');
+  let b = yield 4;
+  return a + b;
+}
+
+const a = test();
+for (const item of a) {
+  console.log(item);
+}
+console.log(a.next());
+console.log(a.next(8));
+console.log(a.next(10));

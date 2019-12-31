@@ -14,9 +14,9 @@ Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进
 * mv-c 和 mv-vm (这里的mvc是前端的mvc和 java后端语言的mvc有细微的区别)
     * m - model (模型层), v - view(视图层)，c - controller(控制层)， vm - viewmodel(视图模型层)
     * mvc如下：
-        ![image](../static/mvc.png)
+        ![image](/static/mvc.png)
     * mvvm 如下
-        ![image](../static/mvvm.png)
+        ![image](/static/mvvm.png)
     * 区别：在传统的mvc中除了model和view以外的逻辑都放在了controller中，导致controller逻辑复杂难以维护,在mvvm中view和model没有直接的关系，全部通过viewModel进行交互
 
 开始安装&运行 vue（先不使用vue-cli）
@@ -88,7 +88,7 @@ v-on:
 
 vue 内的属性 data, methods, el, computed (存取器 getter, setter), watch(监听器)
 
-```
+```js
 computed: {
    test() {
        return ''

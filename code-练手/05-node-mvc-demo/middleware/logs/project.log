@@ -1,0 +1,55 @@
+[2019-12-30T23:52:36.781] [ERROR] cheese - SyntaxError: Duplicate parameter name not allowed in this context
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/controllers/bookController.js:26:44
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at next (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:45:18)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:346:16
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:36:12
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:351:31)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+    at serve (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-static/index.js:53:15)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+[2019-12-30T23:52:51.843] [ERROR] cheese - SyntaxError: Duplicate parameter name not allowed in this context
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/controllers/bookController.js:26:44
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at next (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:45:18)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:346:16
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:36:12
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:351:31)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+    at serve (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-static/index.js:53:15)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+[2019-12-30T23:52:58.612] [ERROR] cheese - SyntaxError: Duplicate parameter name not allowed in this context
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/controllers/bookController.js:26:44
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at next (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:45:18)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:346:16
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:36:12
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:351:31)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+    at serve (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-static/index.js:53:15)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+[2019-12-30T23:53:09.729] [ERROR] cheese - SyntaxError: Duplicate parameter name not allowed in this context
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/controllers/bookController.js:26:44
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at next (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:45:18)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:346:16
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:36:12
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:351:31)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+    at serve (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-static/index.js:53:15)
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-compose/index.js:42:32)
+[2019-12-30T23:53:51.726] [ERROR] cheese - ReferenceError: path is not defined
+    at Promise (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/models/index.js:15:42)
+    at new Promise (<anonymous>)
+    at BookModel.addBookItem (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/models/index.js:13:16)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/controllers/bookController.js:26:44
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at next (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:45:18)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:346:16
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:44:32)
+    at /Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/node_modules/koa-compose/index.js:36:12
+    at dispatch (/Users/free_wd/Documents/GitHub/JS_DEMO/code-练手/05-node-mvc-demo/node_modules/koa-router/lib/router.js:351:31)

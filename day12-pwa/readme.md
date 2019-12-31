@@ -59,7 +59,7 @@ Service Worker特点：
 - 所有的api都基于promise
 
 service worker的生命周期
-![image](../static/worker.png)
+![image](/static/worker.png)
 
 - 安装( installing )：这个状态发生在 Service Worker 注册之后，表示开始安装，触发 install 事件回调指定一些静态资源进行离线缓存。
 - 安装后( installed )：Service Worker 已经完成了安装，并且等待其他的 Service Worker 线程被关闭。

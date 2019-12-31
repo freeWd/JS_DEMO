@@ -36,7 +36,7 @@ module.export = {
 - SSR占用更多的CPU和内存资源
 - 一些常用的浏览器API可能无法正常使用
 - 在vue中只支持beforeCreate和created两个生命周期
-![image](../static/ssr.png)
+![image](/static/ssr.png)
 
 ## SSR基本实现
 通过vue-server-renderer 配合 express看看vue ssr的基本实现情况

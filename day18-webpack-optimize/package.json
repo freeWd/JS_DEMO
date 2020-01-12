@@ -1,0 +1,28 @@
+{
+  "name": "day18-webpack-optimize",
+  "version": "1.0.0",
+  "description": "### webpack常见的优化方案 1 尽量减小搜索的范围 当引入一个模块的时候要进行解析 - resolve     - extensions - 指定extension之后可以不用在require或是import的时候加文件扩展名,会依次尝试添加扩展名进行匹配     - alias - 配置别名可以加快webpack查找模块的速度     - modules - 对于直接声明依赖名的模块（如 react ），webpack 会类似 Node.js 一样进行路径搜索，搜索node_modules目录, 这个目录就是使用resolve.modules字段进行配置的 默认配置     - mainFields 默认情况下package.json 文件则按照文件中 main 字段的文件名来查找文件",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-build": "webpack --config webpack.config.js --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.8.0",
+    "@babel/plugin-transform-runtime": "^7.8.0",
+    "@babel/preset-env": "^7.8.0",
+    "@babel/preset-react": "^7.8.0",
+    "@babel/preset-stage-0": "^7.8.0",
+    "babel-loader": "^8.0.6",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}

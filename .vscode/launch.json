@@ -1,14 +1,23 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "启动程序",
-            "program": "${workspaceFolder}/day2-nodejs/require.js"
-        }
-    ]
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "启动程序",
+      "program": "${workspaceFolder}/day2-nodejs/require.js"
+    },
+    {
+      // // /Users/free_wd/Documents/GitHub/JS_DEMO/day17-webpack/package.json
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Webpack",
+      "program": "${workspaceFolder}/day17-webpack/node_modules/webpack/bin/webpack.js",
+      "args": ["--config", "${workspaceFolder}/day17-webpack/webpack.config.js"],
+      "env": { "NODE_ENV": "production" }
+    }
+  ]
 }

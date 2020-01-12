@@ -724,3 +724,26 @@ for (const item of a) {
 console.log(a.next());
 console.log(a.next(8));
 console.log(a.next(10));
+
+
+var o = '12';
+console.log(/^(0|1)$/.test(o));
+
+
+const regex = /^([^\s][^\/:\*\?"<>\|][^.])$/;
+const regex2 =/^[^\s]+[^\/:\*\?"<>\|]+[^.]$/;
+const regex3 = /^[^\s\/:\*\?"<>\|\.]([^\/:\*\?"<>\|])*?[^\/:\*\?"<>\|^\.]*$/
+const regex3 = /^([^\s\/:\*\?"<>\|\.]{1}|([^\s\/:\*\?"<>\|\.][^\/:\*\?"<>\|]*[^\/:\*\?"<>\|\.]))$/
+console.log(regex3.test('<11'));
+console.log(regex3.test('1 23'));
+console.log(regex3.test('1.2  34'));
+console.log(regex3.test('123.3.'));
+console.log(regex3.test('.sdfdsf<'));
+console.log(regex3.test(' 123.3'));
+
+
+let blob = new Blob(['<xx>123</xx>'], {type: 'text/xml'});
+let formdata = new FormData();
+let reader = new FileReader();
+let test = reader.readAsDataURL(blob);
+console.log(test);

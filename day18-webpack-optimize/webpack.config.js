@@ -1,34 +1,15 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
+const base = require('./webpack.base');
+const merge = require('webpack-merge');
 
-module.exports = {
-  entry: "./src/index.js",
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js"
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              "@babel/preset-env",
-              "@babel/preset-react"
-            ],
-            plugins: ["@babel/plugin-transform-runtime"]
-          }
-        }
-      }
-    ]
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-      filename: "base.html"
-    })
-  ]
-};
+const NODE_ENV = process.env.NODE_ENV;
+
+let build;
+if (NODE_ENV === 'development') {
+  build = require('./webpack.dev.config');
+} else {
+  build = require('./webpack.prod.config');
+}
+
+module.exports = merge(base, build);

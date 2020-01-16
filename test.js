@@ -747,3 +747,8 @@ let formdata = new FormData();
 let reader = new FileReader();
 let test = reader.readAsDataURL(blob);
 console.log(test);
+
+
+var arr = [1,2,3];
+console.log(arr.join('xxx'));
+console.log(arr.concat(1));

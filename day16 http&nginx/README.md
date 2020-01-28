@@ -138,7 +138,7 @@ TLS协议是SSL协议的后续版本，SSL协议默认是TLS协议1.2版本。
 - 服务器主动推送，减少请求延迟
 - 默认使用加密
 
-Http2伪头字段: 伪头部字段是http2内置的几个特殊的以”:”开始的 key，用于替代HTTP/1.x中请求行/响应行中的信 息，比如请求方法，响应状态码等
+Http2伪头字段: 伪头部字段是http2内置的几个特殊的以”:”开始的 key，用于替代HTTP/1.x中请求行/响应行中的信息，比如请求方法，响应状态码等
 - :method 目标URL模式部分(请求)
 - :scheme 目标URL模式部分(请求)
 - :authority 目标RUL认证部分(请求)
@@ -192,6 +192,18 @@ location /crm {
     proxy_http_version 1.1
     ...
     ...
+}
+```
+
+#### nginx浏览器请求、响应缓存配置
+```sh
+http {
+    # ...
+    #缓存配置信息
+    etag  off; #默认是on
+    expires 38d; #默认是off
+    if_modified_since off;
+    add_header Cache-control no-cache;
 }
 ```
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .paint {
+            border: 3px solid red;
+            width: 200px;
+            height: 300px;
+            padding: 2px;
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="paint"></div>
+    </div>
+    </div>
+    <div class="re-paint"></div>
+    
+    
+    <script>
+        (function() {
+            let paint = document.querySelector('.paint');
+            let rePaint = document.querySelector('.re-paint');
+            let container = document.querySelector('.container');
+
+            const style = window.getComputedStyle(paint);
+            requestAnimationFrame(() => {
+                const width = style.width;
+                // const height = style.height;
+                const height = paint.scrollWidth;
+
+                rePaint.style.width = parseFloat(width) + 100 + 'px';
+                rePaint.style.height = parseFloat(height) + 50 + 'px';
+                rePaint.style.border = "3px solid #000";
+            });
+
+            container.addEventListener('click', function() {
+                console.log(
+                    container.offsetWidth,
+                    container.scrollWidth,
+                    container.clientWidth);
+                console.log(container.clientTop, container.offsetTop);
+            });
+
+        })();
+    </script>
+</body>
+</html>

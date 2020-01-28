@@ -1,13 +1,15 @@
 let http = require('http');
-let querystring = require('querystring');
+let url = require('url');
+let querystring = require('querystring'); 
 
+// mock : post http://localhost:3003/xx  body: a=1&b=2
 let server = http.createServer(function(req, res) {
     console.log('ok');
     console.log(req.method); // method后面的方法名是大写的
     console.log(req.url); // 获取一个完整链接端口号后面的内容，但是拿不到hash
     console.log(req.httpVersion);
     console.log(req.headers); // 所有的属性名都是小写的
-    
+
     let arr = [];
     req.on('data', function(data) {
         arr.push(data);

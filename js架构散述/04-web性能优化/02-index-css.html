@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        position: relative;
+      }
+      .ball {
+        position: absolute;
+        top: 100px;
+        right: 200px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 5px red;
+        animation: ball-anim 4s infinite;
+      }
+
+      @keyframes ball-anim {
+        0% {
+          /* top: 100px;
+          right: 200px; */
+          transform: translate(0, 0);
+        }
+        25% {
+          /* top: 100px;
+          right: 300px; */
+          transform: translate(-100px, 0);
+        }
+        50% {
+          /* top: 200px;
+          right: 300px; */
+          transform: translate(-100px, 100px);
+        }
+        75% {
+          /* top: 200px;
+          right: 200px; */
+          transform: translate(0, 100px);
+        }
+      }
+
+      .container {
+        position: relative;
+        width: 500px;
+        height: 150px;
+        margin: 0 auto;
+        border: 1px solid red;
+        overflow: hidden;
+      }
+
+      .slip-wrapper {
+        animation: slid 4s  2s infinite;
+      }
+
+      @keyframes slid {
+        0% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(-500px);
+        }
+      }
+
+      .slip-wrapper {
+          width: 200%;
+      }
+      .slip-wrapper > li {
+        list-style: none;
+        float: left;
+      }
+      .show1 {
+        width: 500px;
+        height: 150px;
+        background-color: pink;
+      }
+      .show2 {
+        width: 500px;
+        height: 150px;
+        background-color: rosybrown;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ball"></div>
+
+    <div class="container">
+      <ul class="slip-wrapper">
+        <li>
+          <div class="show1">我是图片一</div>
+        </li>
+        <li>
+          <div class="show2">我是图片二</div>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

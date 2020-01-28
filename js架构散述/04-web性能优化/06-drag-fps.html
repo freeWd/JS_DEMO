@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Drag拖拽 FPS - RenderLayer & RenderObject的区别</title>
+    <style>
+      .drag {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        top: 30px;
+        left: 200px;
+        background-color: pink;
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="drag">123</div>
+    <button class="btn">test</button>
+
+    <script>
+      var isMouseDown, initX, initY;
+      var draggable = document.querySelector(".drag");
+      var btn = document.querySelector(".btn");
+
+      draggable.addEventListener("mousedown", function(e) {
+        isMouseDown = true;
+        initX = e.offsetX;
+        initY = e.offsetY;
+      });
+
+      draggable.addEventListener("mouseup", function() {
+        isMouseDown = false;
+      });
+
+      document.addEventListener("mousemove", function(e) {
+        if (isMouseDown) {
+          draggable.style.left = e.clientX - initX + "px";
+          draggable.style.top = e.clientY - initY + "px";
+        }
+      });
+
+      btn.addEventListener("click", function(e) {
+        var style = window.getComputedStyle(draggable);
+        var top = parseFloat(draggable.style.top || style.top);
+        var left = parseFloat(draggable.style.left || style.left);
+        console.log(top, left);
+        draggable.style.left = left + e.clientX + "px";
+        draggable.style.top = top + e.clientY + "px";
+      });
+    </script>
+  </body>
+</html>

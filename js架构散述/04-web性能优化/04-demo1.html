@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <script>
+            performance.mark('xxx')
+        </script>
+        hello world
+    </div>
+    <script src="./script/04-long-task.js"></script>
+    <script>
+        console.log(window.performance.getEntriesByType('paint'));    
+        const observer = new PerformanceObserver(list => {
+            for (const entry of list.getEntries()) {
+                console.log(entry);
+            }
+        });
+        const observer2 = new PerformanceObserver(list => {
+            for (const entry of list.getEntries()) {
+                console.log(entry);
+            }
+        });
+        const observer3 = new PerformanceObserver(list => {
+            for (const entry of list.getEntries()) {
+                console.log(entry);
+            }
+        });
+        observer.observe({entryTypes: ['paint']});
+        observer2.observe({entryTypes: ['longtask']});
+
+        const fmp = performance.getEntriesByName("xxx");
+        console.log(fmp.length, fmp);
+        performance.clearMarks();
+    </script>
+</body>
+</html>

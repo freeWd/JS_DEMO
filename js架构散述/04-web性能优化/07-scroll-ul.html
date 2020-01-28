@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+             margin: 0;
+             padding: 0;
+        }
+        .scroll {
+           height: 100px;
+           overflow: auto; 
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        ul > li {
+            height: 20px;
+            box-shadow: 0 0 1px 0 red;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll">
+        <div class="scroll-fake">
+            <ul class="ulEle">
+                <!-- <li>xxx1</li>
+                <li>xxx2</li>
+                <li>xxx3</li>
+                <li>xxx4</li>
+                <li>xxx5</li>
+                <li>xxx6</li>
+                <li>xxx7</li>
+                <li>xxx8</li>
+                <li>xxx9</li>
+                <li>xxx10</li> -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        var scrollEle = document.getElementsByClassName('scroll')[0];
+        var scrollFakeEle = document.getElementsByClassName('scroll-fake')[0];
+        var ulEle = document.getElementsByClassName('ulEle')[0];
+        var btnEle = document.getElementsByClassName('test')[0];
+        var liNums = 1000;
+
+        var startLiIndex = 1;
+        var endLiIndex = 5;
+        var startTop = 0;
+        var timer;
+        
+        function initLiRender(startIndex, endIndex) {
+            var fragment = document.createDocumentFragment();
+            for (var index = startIndex; index <= endIndex; index++) {
+                (function(index) {
+                    var liEle = document.createElement("li");
+                    liEle.innerText = 'xxx' + index;
+                    fragment.appendChild(liEle);
+                })(index);
+            }
+            ulEle.appendChild(fragment);
+
+            scrollFakeEle.style.height = '1000px';
+        }
+
+        initLiRender(startLiIndex, endLiIndex);
+        
+
+        scrollEle.addEventListener('scroll', function(e) {
+            if (timer) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+                var top = e.target.scrollTop;
+                var startNums = Math.floor((top - startTop) / 20);
+                var endNums = Math.ceil((top - startTop) / 20);
+                startLiIndex += startNums;
+                endLiIndex += endNums;
+                scrollFakeEle.style['padding-top'] = top + 'px';
+                ulEle.innerHTML = '';
+                console.log(startLiIndex, endLiIndex)
+                initLiRender(startLiIndex, endLiIndex);
+                startTop = top;
+            }, 1000);
+        });
+
+    </script>
+</body>
+</html>

@@ -20,6 +20,7 @@ Module.extNameList = {
        let content = fs.readFileSync(module.id, 'utf8');
        let fnStr = Module.wrapper[0] + content + Module.wrapper[1]; 
        let fn = vm.runInThisContext(fnStr);
+       // fnStr方法里面有写 module.export, 否则无效
        fn.call(module.exports, module.exports, module, req);
     },
     '.json': function(module) {

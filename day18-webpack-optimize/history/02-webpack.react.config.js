@@ -11,8 +11,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name]_dll.js",
-    library: '_dll_[name]'
+    filename: "[name]_dll.js", //输出的动态链接库的文件名称，[name] 代表当前动态链接库的名称
+    library: '_dll_[name]' //存放动态链接库的全局变量名称,例如对应 react 来说就是 _dll_react
   },
   module: {
     rules: [

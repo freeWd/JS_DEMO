@@ -5,6 +5,7 @@
 4 brower 管理安装依赖包
 5 browserify 能让前端使用由它build之后的node端的js文件
 
+一个文件就是一个chunk, chunk和module是多对多的关系 
 
 ## webpack
 WebPack可以看做是模块打包机：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，TypeScript等），并将其打包为合适的格式以供浏览器使用。
@@ -21,7 +22,7 @@ WebPack可以看做是模块打包机：它做的事情是，分析你的项目�
 - plugins：配置插件
 - devServer：配置开发服务器
 
-所有的配置信息请参考history文件夹 和 http://www.zhufengpeixun.cn/ahead/html/26.webpack-1-basic.html
+所有的配置信息请参考history文件夹 和 http://www.zhufengpeixun.cn/2020/html/26.webpack-1-basic.html
 
 历史文件的检索：
 - 01-webpack.config.js

@@ -103,7 +103,7 @@ nodemon server.js
 - babel-loader @babel/core @babel/preset-env 处理es6语法的
 - vue vue-loader vue-template-compiler 处理编译vue的
 - vue-style-loader css-loader 处理样式的 （与 style-loader用法一致，但相比于style-loader 它能用于服务端渲染）
-- html-webapck-plugin 处理html的
+- html-webpack-plugin 处理html的
 - webpack-merge 合并webpack配置 configureWebpack
 
 **npx webpack-dev-server ** 用于启动web服务

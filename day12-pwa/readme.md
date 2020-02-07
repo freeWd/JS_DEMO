@@ -50,8 +50,27 @@ webapp用户体验差（不能离线访问），用户粘性低（无法保存�
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /> 
 ```
 
-# Service Worker - pwd的核心
-Service Worker特点：
+
+
+# Service Worker - pwa的核心
+有啥用？
+
+- Service Worker（以下简称sw）是基于WEB Worker而来的。Web Worker 的作用,就是为 JavaScript 创造多线程环境,允许主线程创建 Worker 线程,将一些任务分配给后者运行。sw便是在web worker的基础上增加了离线缓存的能力。
+
+- sw是由事件驱动的,具有生命周期，可以拦截处理页面的所有网络请求(fetch)，可以访问cache和indexDB，支持推送，并且可以让开发者自己控制管理缓存的内容以及版本，为离线弱网环境下的 web 的运行提供了可能，让 web 在体验上更加贴近 native
+
+
+> 在了解SW之前，我们需要先简单的知道web worker（webworker）的功能和使用场景：
+
+### Web Worker
+Web Worker 的作用，就是为 JavaScript 创造多线程环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。在主线程运行的同时，Worker 线程在后台运行，两者互不干扰。等到 Worker 线程完成计算任务，再把结果返回给主线程。这样的好处是，一些计算密集型或高延迟的任务，被 Worker 线程负担了，主线程（通常负责 UI 交互）就会很流畅，不会被阻塞或拖慢。
+
+Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
+
+具体使用请看：http://www.ruanyifeng.com/blog/2018/07/web-worker.html
+
+
+### Service Worker简介：
 - 不能访问／操作dom
 - 会自动休眠，不会随浏览器关闭所失效(必须手动卸载)
 - 离线缓存内容开发者可控

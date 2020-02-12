@@ -18,7 +18,8 @@ import * as serviceWorker from './serviceWorker';
 // import './self-code/08-form'
 // import './self-code/09-lifting-state-up'
 
-import './self-code/10-compose-extends';
+// import './self-code/10-compose-extends';
+import './self-code/11.ref';
 
 
 // If you want your app to work offline and load faster, you can change

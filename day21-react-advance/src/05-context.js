@@ -30,6 +30,11 @@ const UserContext = React.createContext({
 class ThemeButton extends React.Component {
   static contextType = ThemeContext;
 
+  constructor(props, context) {
+    super(props);
+    console.log(context);
+  }
+
   render() {
     let props = this.props;
     let { theme } = this.context;

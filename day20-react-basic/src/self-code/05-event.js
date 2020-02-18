@@ -59,6 +59,7 @@ class EventParams extends React.Component {
 
   render() {
     return (
+      // (e) => this.delInfo(id, e)
       <button onClick={this.delInfo.bind(this, this.state.id)}>
         删除信息 - 事件带参数
       </button>

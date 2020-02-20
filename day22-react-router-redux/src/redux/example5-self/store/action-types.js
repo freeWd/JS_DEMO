@@ -1,0 +1,2 @@
+export const INCREMENT = 'INCREMENT';
+export const PROMISE_INCREMENT = 'PROMISE_INCREMENT';

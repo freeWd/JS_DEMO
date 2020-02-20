@@ -752,3 +752,40 @@ console.log(test);
 var arr = [1,2,3];
 console.log(arr.join('xxx'));
 console.log(arr.concat(1));
+
+
+
+function test1(value) {
+  return value + 'aaa';
+}
+function test2(value) {
+  return value + 'bbb';
+}
+function compose(...fn) {
+  return function (value) {
+    let returnValue = value;
+    const arr = [...fn];
+    for (let index = 0; index < arr.length; index++) {
+      returnValue = arr[index](returnValue);
+    }
+    return returnValue;
+  }
+}
+function compose2(...fn) {
+  return function(value) {
+    return [...fn].reduce((preFn, nextFn) => {
+      return nextFn(preFn(value));
+    });
+  }
+}
+
+console.log(compose2(test1, test2)('xxx'));
+
+
+
+async function test() {
+  await setTimeout(() => {
+    return 100;
+  }, 1000)
+}
+test().then(val => console.log(val))

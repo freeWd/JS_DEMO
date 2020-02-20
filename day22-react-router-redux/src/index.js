@@ -6,4 +6,6 @@
 // import './redux/example1/index';
 // import './redux/example2/index';
 // import './redux/example3/index';
-import './redux/example4-self/index';
+// import './redux/example4-self/index';
+// import './redux/example5-redux-middleware';
+import './redux/example5-self';

@@ -1,19 +1,17 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import Counter from "./components/Counter";
-import counterReactRedux from "./store/react-redux";
 import store from "./store/index";
-
-const App = connect(
-  counterReactRedux.mapStateToProps,
-  counterReactRedux.mapDispatchToProps
-)(Counter);
+import { persistor } from "./store/index";
 
 ReactDom.render(
   <Provider store={store}>
-    <App />
+    <PersistGate loading={null} persistor={persistor}>
+      <Counter />
+    </PersistGate>
   </Provider>,
   document.getElementById("root")
 );

@@ -6,9 +6,9 @@ import store from "../store";
 import counterAction from "../store/actions/counter";
 
 const newAction = bindActionCreators(counterAction, store.dispatch);
-function mapStateToProps() {
+function mapStateToProps(state) {
   return {
-    value: store.getState().number
+    value: state.number
   };
 }
 function mapDispatchToProps() {

@@ -8,4 +8,5 @@
 // import './redux/example3/index';
 // import './redux/example4-self/index';
 // import './redux/example5-redux-middleware';
-import './redux/example5-self';
+// import './redux/example5-self';
+import './redux/example6-redux-saga';

@@ -789,3 +789,31 @@ async function test() {
   }, 1000)
 }
 test().then(val => console.log(val))
+
+
+
+function f1() {
+  return new Promise(resolve => {
+    console.log('p1');
+    resolve('p11');
+  });
+}
+function f2() {
+  return new Promise(resolve => {
+    console.log('p2');
+    resolve('p22');
+  });
+}
+function* read2() {
+  let a = yield f1;
+  console.log(a);
+  let b = yield f2;
+  console.log(b);
+  return b;
+}
+let it2 = read2();
+console.log(it2.next());  
+console.log('----')
+console.log(it2.next('100'));
+console.log('----')
+console.log(it2.next('200'));

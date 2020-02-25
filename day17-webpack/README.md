@@ -10,6 +10,31 @@
 ## webpack
 WebPack可以看做是模块打包机：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，TypeScript等），并将其打包为合适的格式以供浏览器使用。
 
+了解一些常见的概念：
+- module：对于webpack来说，所有的资源(.js、.css、.png)都是module
+- chunk：是webpack内部`运行时`的概念；一个chunk是对依赖图的部分进行封装的结果。这是webpack内部的一个特殊定义的词语，用于描述webpack打包过程的模块文件叫做chunk,例如异步加载一个模块就是一个chunk
+- bundle: bundle是最后打包后的文件(bundles 包含了早已经过加载和编译的最终源文件版本),最终文件可以和chunk长的一模一样,但是部分情况下他是多个chunk的集合。
+
+eg:
+```js
+{
+  entry: {
+    foo: ['webpack/hot/only-dev-server.js', './src/foo.js'],
+    bar: ['./src/bar.js']
+  },
+  output: {
+    path: './dist',
+    filename: '[name].js'
+  }
+}
+// 上面的例子中只提供了入口文件的配置,操作了三个模块,输出了两个文件.
+// Modules: webpack/hot/only-dev-server.js, ./src/foo.js, ./src/bar.js 以及他们内部深入引用的其他文件
+// Chunks: foo, bar
+// Bundles: foo, bar (如何三个文件中没有引入其他文件，那么bundles和chunk的内容一致)
+// 为了优化最后生产出的bundle数量可能不等于chunk的数量因为有可能多个chunk被组合到了一个Bundle中
+```
+
+
 可以做的事情：
 > 代码转换， 文件优化， 代码分割，模块合并，自动刷新，代码校验，自动发布
 

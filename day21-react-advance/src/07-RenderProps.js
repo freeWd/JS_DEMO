@@ -101,7 +101,7 @@ class Mouse2 extends React.Component {
 //   document.getElementById("root")
 // );
 
-// ============== 使用HOC实现
+// ============== 使用HOC （高阶组件）实现
 const hocMouse = MouseComponent => {
   class HocMouse extends React.Component {
     constructor(props) {

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        display: block;
+        margin: 0 auto;
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        canvas.width = 800;
+        canvas.height = 800;
+        var context = canvas.getContext('2d');
+        // 线条的属性共有以下四个：
+        // 1、lineCap属性 - 定义上下文中线的端点 butt | round | square
+        // 2、lineJoin属性 - 定义两条线相交产生的拐角，可将其称为连接 miter | bevel | round
+        // 3、lineWidth属性 - 线宽
+        // 4、strokeStyle属性 - 线条颜色
+        context.lineWidth = 50;
+        context.strokeStyle = '#000';
+
+
+        // ====> lineCap
+        context.beginPath();
+        context.lineCap = 'butt';
+        context.moveTo(100, 100);
+        context.lineTo(500, 100);
+        context.stroke();
+
+        context.beginPath();
+        context.lineCap = 'round';
+        context.moveTo(100, 200);
+        context.lineTo(500, 200);
+        context.stroke();
+
+        context.beginPath();
+        context.lineCap = 'square';
+        context.moveTo(100, 300);
+        context.lineTo(500, 300);
+        context.stroke();
+
+
+        // ====> lineJoin
+        context.lineWidth = 20;
+
+        context.beginPath();
+        context.lineJoin = 'miter';
+        context.moveTo(100, 400);
+        context.lineTo(300, 500);
+        context.lineTo(100, 600);
+        context.stroke();
+
+        context.beginPath();
+        context.lineJoin = 'bevel';
+        context.moveTo(200, 400);
+        context.lineTo(400, 500);
+        context.lineTo(200, 600);
+        context.stroke();
+
+        context.beginPath();
+        context.lineJoin = 'round';
+        context.moveTo(300, 400);
+        context.lineTo(500, 500);
+        context.lineTo(300, 600);
+        context.stroke();
+    </script>
+  </body>
+</html>

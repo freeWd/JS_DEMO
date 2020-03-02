@@ -817,3 +817,11 @@ console.log('----')
 console.log(it2.next('100'));
 console.log('----')
 console.log(it2.next('200'));
+
+
+requestAnimationFrame(test)
+
+function test() {
+  console.log(Math.random());
+  requestAnimationFrame(test);
+}

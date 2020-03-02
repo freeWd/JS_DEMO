@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        display: block;
+        margin: 0 auto;
+        border: 5px solid #eaeaea;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      var canvas = document.getElementById("canvas");
+      canvas.width = 800;
+      canvas.height = 600;
+      var context = canvas.getContext("2d");
+
+      // ===> shadow
+      context.save();
+      context.shadowColor = "red";
+      context.shadowOffsetX = 5;
+      context.shadowOffsetY = 5;
+      context.shadowBlur = 2;
+      context.strokeRect(0, 0, 100, 100);
+      context.restore();
+
+      context.strokeRect(100, 100, 100, 100);
+
+      // ===> globalAlpha
+      context.globalAlpha = 0.5;
+    //   context.globalCompositeOperation = "source-out";
+      for (let index = 0; index < 50; index++) {
+        var R = Math.floor(Math.random() * 255);
+        var G = Math.floor(Math.random() * 255);
+        var B = Math.floor(Math.random() * 255);
+        context.fillStyle = `rgb(${R}, ${G}, ${B})`;
+        context.beginPath();
+        context.arc(
+          Math.random() * canvas.width,
+          Math.random() * canvas.height,
+          Math.random() * 100,
+          0,
+          Math.PI * 2
+        );
+        context.fill();
+      }
+    </script>
+  </body>
+</html>

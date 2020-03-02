@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        canvas.width = 800;
+        canvas.height = 800;
+        var context = canvas.getContext('2d');
+
+        drawTriangle(context, 10, 10, 'red', 'blue', 5);
+
+        for (let i = 0; i < 5; i++) {
+            drawRect(context, 300 + i*10, 200 + i*10, 100 - i*20, 100 - i*20, '#000', 5);
+        }
+
+        function drawTriangle(ctx, x, y, fillColor, borderColor, borderWidth) {
+            ctx.beginPath();
+            ctx.strokeStyle = borderColor;
+            ctx.lineWidth = borderWidth;
+            ctx.fillStyle = fillColor;
+            ctx.moveTo(x, y);
+            ctx.lineTo(x+ 100, y);
+            ctx.lineTo(x+100, y+100);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawRect(ctx, x, y, width, height, borderColor, borderWidth) {
+            ctx.beginPath();
+            ctx.strokeStyle = borderColor;
+            ctx.lineWidth = borderWidth;
+            ctx.rect(x, y, width, height);
+            ctx.stroke();
+        }
+    </script>
+</body>
+</html>

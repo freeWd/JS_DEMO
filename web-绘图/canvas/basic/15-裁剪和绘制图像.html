@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        display: block;
+        border: 3px solid #eaeaea;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      var canvas = document.getElementById("canvas");
+      canvas.width = 800;
+      canvas.height = 800;
+      var context = canvas.getContext("2d");
+
+      context.fillStyle = "#000";
+      context.fillRect(10, 10, 200, 200);
+
+      //裁剪画布从(0，0)点至(50，50)的正方形
+      context.save();
+      context.rect(0,0,50,50);
+      context.clip();
+
+      // 画一个红心圆 - 此时完整的红心圆只能显示出上面裁剪区域那块的弧形
+      context.beginPath();
+      context.strokeStyle = 'red';
+      context.lineWidth = 3;
+      context.arc(100, 100, 100, 0, Math.PI * 2);
+      context.stroke();
+      
+      // 先重置状态，再次裁切整个画布
+      context.restore();
+      context.rect(0,0,600,600);
+      context.clip();
+
+      context.beginPath();
+      context.strokeStyle = 'blue';
+      context.lineWidth = 5;
+      context.arc(100, 100, 50, 0, Math.PI*2);
+      context.stroke();
+
+
+
+      // =====> 剪切图像 生成相框
+      context.beginPath();
+      context.strokeStyle = '#fff';
+      context.lineWidth = 5;
+      context.moveTo(410, 100);
+      context.bezierCurveTo(310, 0, 150, 150, 410, 410);
+      context.moveTo(410, 100);
+      context.bezierCurveTo(510, 0, 670, 150, 410, 410);
+      context.closePath();
+      context.stroke();
+      context.clip();
+
+       // =====> 绘制图像drawImage()
+       var image = new Image();
+      image.src = '../bg.jpg';
+      image.onload = function() {
+          console.log(image.width, image.height);
+          context.drawImage(image, 250, 10);
+      }
+    </script>
+  </body>
+</html>

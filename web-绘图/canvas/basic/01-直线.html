@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        border: 1px solid #aaa;
+        display: block;
+        margin: 50px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1 布置画布：通过添加<canvas>标签，添加canvas元素 -->
+    <canvas id="canvas">
+      你的浏览器还不能支持Canvas, 请更换浏览器
+    </canvas>
+    <script>
+      // 2 获取画布：通过<canvas>标签的id，获得canvas对象
+      var canvas = document.getElementById("canvas");
+      canvas.width = 800;
+      canvas.height = 600;
+
+      // 3 获得画笔：通过canvas对象的getContext("2d")方法，获得2D环境
+      var context = canvas.getContext("2d");
+
+      // 画线条 - 怎么画？【Canvas是基于状态的绘制】
+      // 选择画笔（包括画笔的粗细和颜色等）
+      // 移动画笔，使画笔移动至绘画的开始处
+      // 确定第一笔的停止点
+      // 确定绘制
+      context.lineWidth = 5;
+      context.strokeStyle = "#AA394C";
+      context.moveTo(100, 100);
+      context.lineTo(600, 600);
+      context.stroke();
+    </script>
+  </body>
+</html>

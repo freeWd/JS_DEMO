@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        border: 1px solid #eaeaea;
+        margin: 0 auto;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="clearBtn">清空画布</button>
+    <canvas id="canvas"></canvas>
+    <script>
+      var canvas = document.getElementById("canvas");
+      var btn = document.getElementById("clearBtn");
+      var context = canvas.getContext("2d");
+      canvas.width = 800;
+      canvas.height = 600;
+
+      var ballArr = [];
+
+      btn.addEventListener("click", () => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      });
+
+      canvas.addEventListener('mousemove', () => {
+          var x = event.clientX - canvas.getBoundingClientRect().left;
+          var y = event.clientY - canvas.getBoundingClientRect().top;
+
+          for (let i = 0; i < 50; i++) {
+            context.beginPath();
+            context.arc(ballArr[i].x, ballArr[i].y, ballArr[i].r, 0, Math.PI * 2);
+
+            if (context.isPointInPath(x, y)) {
+                context.fillStyle = '#fff';
+                context.fill();
+            }
+          }
+      })
+
+      for (let i = 0; i < 50; i++) {
+        context.beginPath();
+        var R = Math.random() * 255;
+        var G = Math.random() * 255;
+        var B = Math.random() * 255;
+        context.fillStyle = `rgba(${R}, ${G}, ${B}, 0.5)`;
+        ballArr.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 100
+        });
+        
+        context.arc(
+          ballArr[i].x,
+          ballArr[i].y,
+          ballArr[i].r,
+          0,
+          Math.PI * 2
+        );
+        context.fill();
+      }
+    </script>
+  </body>
+</html>

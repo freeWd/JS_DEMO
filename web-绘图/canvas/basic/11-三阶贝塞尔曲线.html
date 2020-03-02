@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        display: block;
+        border: 5px solid #eaeaea;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      var canvas = document.getElementById("canvas");
+      canvas.width = 800;
+      canvas.height = 600;
+      var context = canvas.getContext("2d");
+
+      // 画一幅风景图
+      drawGrassland(context);
+      drawSky(context);
+      for(var i=0; i <5; i++){
+        var x = 500 * Math.random() + 100;
+        var y = 200 * Math.random() + 100;
+        var width = 100 * Math.random() + 100;
+        var height = width * 0.6;
+        drawCloud(context, x, y, width, height);
+      }
+
+      function drawGrassland(ctx) {
+        ctx.beginPath();
+        ctx.moveTo(0, 450);
+        ctx.bezierCurveTo(250, 300, 400, 600, 800, 450);
+        ctx.lineTo(800, 600);
+        ctx.lineTo(0, 600);
+        ctx.closePath();
+        
+        var lineStyle = ctx.createLinearGradient(0, 600, 600, 0);
+        lineStyle.addColorStop(0, "#00AA58");
+        lineStyle.addColorStop(0.3, "#63AA7B");
+        lineStyle.addColorStop(1, "#04AA00");
+        ctx.fillStyle = lineStyle;
+        
+        ctx.fill();
+      }
+
+      function drawSky(ctx) {
+        ctx.beginPath();
+        ctx.moveTo(0, 450);
+        ctx.bezierCurveTo(250, 300, 400, 600, 800, 450);
+        ctx.lineTo(800, 0);
+        ctx.lineTo(0, 0);
+        ctx.closePath();
+
+        var radialStyle = ctx.createRadialGradient(400, 100, 50, 400, 100, 300);
+        radialStyle .addColorStop(0, "#42A9AA");
+        radialStyle .addColorStop(1, "#2491AA");
+
+        ctx.fillStyle = radialStyle;
+        ctx.fill();
+      }
+
+      // 云朵的x轴位置，y轴位置，云朵的宽度
+      function drawCloud(ctx, x, y, width, height) {
+        ctx.beginPath();
+        var grd = ctx.createLinearGradient(0, 0, 0, y);
+        grd.addColorStop(0, 'rgba(255,255,255,0.8)');
+        grd.addColorStop(1, 'rgba(255,255,255,0.5)');
+        ctx.fillStyle = grd;
+
+         //在不同位置创建5个圆拼接成云朵现状
+         ctx.arc(x, y, width*0.19, 0, 360);
+         ctx.arc(x+width*0.08, y-height*0.3, width*0.11, 0, 360);
+         ctx.arc(x+width*0.3, y-height*0.25, width*0.25, 0, 360);
+         ctx.arc(x+width*0.6, y, width * 0.21, 0, 360);
+         ctx.arc(x+width*0.3, y-height*0.1, width*0.28, 0, 360);
+         ctx.fill();
+      }
+    </script>
+  </body>
+</html>

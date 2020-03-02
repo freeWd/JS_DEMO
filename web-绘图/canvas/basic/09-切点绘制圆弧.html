@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            display: block;
+            border: 1px solid #000;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        canvas.width = 800;
+        canvas.height = 600;
+        var context = canvas.getContext('2d');
+
+
+        function drawArcTo(ctx, x0, y0, x1, y1, x2, y2, r) {
+            context.moveTo(x0, y0);
+            context.arcTo(x1, y1, x2, y2, r);
+            context.stroke();
+
+            // 绘制辅助线
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#0088AA';
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+
+        // arcTo()绘制的起点是(x0, y0)，但(x0, y0)不一定是圆弧的切点。
+        // 真正的arcTo()函数只传入(x1, y1)和(x2, y2)。其中(x1, y1)称为控制点，(x2, y2)是圆弧终点的切点，它不一定在圆弧上。但(x0, y0)一定在圆弧上。
+        context.beginPath();
+        context.strokeStyle="red";
+        context.lineWidth = 5;
+        drawArcTo(context, 200, 200, 600, 200, 600, 400, 100);
+
+
+        // (x2, y2)不一定在弧线上
+        // context.beginPath();
+        // context.strokeStyle="red";
+        // context.lineWidth = 5;
+        // drawArcTo(context, 200, 100, 600, 100, 600, 400, 400);
+
+
+         // (x0, y0)一定在弧线上
+         // 挺有意思的，它为了经过(x0, y0)直接将切点和(x0, y0)连接起来形成线段。好执着的弧线
+        context.beginPath();
+        context.strokeStyle="red";
+        context.lineWidth = 5;
+        drawArcTo(context, 400, 100, 600, 100, 700, 400, 400);
+    </script>
+</body>
+</html>

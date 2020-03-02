@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        canvas.width = 800;
+        canvas.height = 800;
+        var context = canvas.getContext('2d');
+
+        var img = new Image();
+        img.src = '../women.jpg';
+        img.onload = function() {
+            var patten = context.createPattern(img, 'repeat');
+            context.fillStyle = patten;
+            context.fillRect(0, 0, 800, 800);
+        }
+    </script>
+</body>
+</html>

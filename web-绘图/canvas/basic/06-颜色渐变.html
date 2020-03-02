@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            border: 1px solid #000;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        canvas.width = 800;
+        canvas.height =1200;
+        var context = canvas.getContext('2d');
+
+        // ====> 线性渐变
+        context.beginPath();
+        context.lineWidth = 5;
+        context.strokeStyle = 'red';
+        context.rect(100, 100, 400, 400);
+        // 添加渐变线
+        var grd = context.createLinearGradient(100, 300, 500, 300);
+        // 添加颜色断点
+        grd.addColorStop(0, '#000');
+        grd.addColorStop(.5, '#fff');
+        grd.addColorStop(1, '#000');
+        // 应用渐变
+        context.fillStyle = grd;
+        context.fill();
+        context.stroke();
+
+        // 渐变2
+        context.beginPath();
+        context.lineWidth = 10;
+        var grd2 = context.createLinearGradient(100, 300, 700, 300);
+        grd2.addColorStop(0,"olive");
+        grd2.addColorStop(0.25,"maroon");
+        grd2.addColorStop(0.5,"aqua");
+        grd2.addColorStop(0.75,"fuchsia");
+        grd2.addColorStop(0.25,"teal");
+
+        context.fillStyle = grd2;
+        context.strokeStyle = grd2;
+
+        context.moveTo(100, 50);
+        context.lineTo(700, 50);
+        context.stroke();
+
+        context.fillRect(500, 100, 100, 100);
+        context.strokeRect(500, 300, 100, 100);
+
+
+        // ====> 径向渐变
+        var grd3 = context.createRadialGradient(300,700,100,300,700,200);
+        // 添加颜色断点
+        grd3.addColorStop(0,"olive");
+        grd3.addColorStop(0.25,"maroon");
+        grd3.addColorStop(0.5,"aqua");
+        grd3.addColorStop(0.75,"fuchsia");
+        grd3.addColorStop(1,"red");
+        // 应用渐变
+        context.fillStyle = grd3;
+        context.fillRect(100, 510, 400, 400);
+    </script>
+</body>
+</html>

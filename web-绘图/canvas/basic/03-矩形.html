@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            border: 1px solid red;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 800;
+
+        // 绘制闭合的图形
+        context.lineWidth = 5;
+        context.strokeStyle = 'red';
+        context.moveTo(100, 100);
+        context.lineTo(200, 100);
+        context.lineTo(200, 200);
+        context.closePath(); //使用closePath()闭合图形
+        context.stroke();
+
+        // 绘制矩形并上色
+        context.lineWidth = 5;
+        context.strokeStyle = 'green';
+        context.fillStyle='red';  //选择油漆桶的颜色
+        context.rect(300, 300, 100, 200);
+        context.fill(); //确定填充
+        context.stroke();
+    </script>
+</body>
+</html>

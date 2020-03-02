@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        display: block;
+        margin: 0 auto;
+        background: #fff;
+        border: 5px solid #eaeaea;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      var canvas = document.getElementById("canvas");
+      canvas.width = 800;
+      canvas.height = 1200;
+      var context = canvas.getContext("2d");
+
+      context.fillStyle = "green";
+      context.fillRect(0, 0, 100, 200);
+
+      // =====> 平移
+      context.fillStyle = "red";
+      context.translate(100, 100);
+      context.fillRect(0, 0, 100, 200);
+
+      // canvas是基于状态的，这个状态是上次已经移动过的状态
+      context.fillStyle = "blue";
+      context.translate(100, 100);
+      context.fillRect(0, 0, 100, 200);
+
+      // =====> 旋转 以（0，0）为圆心旋转
+      // Canvas是基于状态的绘制，所以每次旋转都是接着上次旋转的基础上继续旋转，所以在使用图形变换的时候必须搭配save()与restore()方法，一方面重置旋转角度，另一方面重置坐标系原点
+      context.save();
+      context.fillStyle = "pink";
+      context.fillRect(50, 50, 100, 100);
+      context.rotate(Math.PI / 4);
+      context.fillRect(50, 50, 100, 100); //基于状态，所以（0，0）是上一次平移的原点
+      context.restore();
+
+
+      context.translate(300, 0);
+      for (let index = 0; index < 10; index++) {
+        context.save();
+        context.fillStyle = "rgba(255,0,0,0.25)";
+        context.rotate(Math.PI+(Math.PI/5)*index);
+        context.fillRect(0, 0, 100, 100);
+        context.restore();    
+      }
+
+      // ===> 缩放变换
+      context.translate(-500, 250);
+      context.strokeStyle = 'red';
+      context.lineWidth = 5;
+      context.strokeRect(30, 30, 100, 100);
+      context.scale(2, 2);
+      context.strokeRect(30, 30, 100, 100);
+
+
+
+      // =====> 矩阵变换 平移translate()，缩放scale()，以及旋转rotate()都可以通过transform()做到
+      // ==> 平移变换
+      context.translate(0, 120);
+      context.beginPath();
+      context.lineWidth = 3;
+      context.strokeStyle = "green";
+      context.strokeRect(30, 30, 50, 50);
+      context.transform(1,0,0,1, 50,50); // 代替context.translate(50,50)
+      context.strokeRect(30, 30, 50, 50);
+
+    // ===> 缩放：context.transform(sx,0,0,sy,0,0)代替context.scale(sx, sy)
+    context.transform(2, 0, 0, 2, 0, 0);
+    context.strokeRect(30, 30, 50, 50);
+
+    // ===> 旋转：context.transform(0,b,c,0,0,0)
+    //水平方向向右倾斜宽度10%的距离，垂直方向向上倾斜高度50%的距离
+    context.transform(1, -0.5, 0.1, 1, 80, 0);
+    context.strokeRect(30, 30, 50, 50);
+    </script>
+  </body>
+</html>

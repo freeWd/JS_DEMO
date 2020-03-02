@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #eaeaea;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        canvas.width = 800;
+        canvas.height = 800;
+        var context = canvas.getContext('2d');
+        
+        // ====》 显示字体
+        // 1. 使用font设置字体
+        context.font = "50px serif";
+        // 2. 使用fillStyle设置字体
+        context.fillStyle="#00AAAA";
+        // 3. fillText() 绘制字体
+        context.fillText("《CANVAS--Draw on the Web》", 0, 50); // x，,y 位置
+
+        // ===> 更多字体样式
+        context.font = "50px Verdana";
+        context.strokeStyle = "#00AAAA";
+        context.strokeText("www.github.com", 0, 100);
+
+        var gradient = context.createLinearGradient(0, 0, 800, 0);
+        gradient.addColorStop("0","magenta");
+        gradient.addColorStop("0.5","blue");
+        gradient.addColorStop("1.0","red");
+        context.fillStyle = gradient;
+        context.fillText("www.github2.com", 0, 150);
+
+        // 限制宽度
+        context.fillText("www.github3.com", 0, 200, 250);
+        
+        // 填充图片为字体的颜色
+        context.beginPath();
+        var img = new Image();
+        img.src = '../bg.jpg';
+        img.onload = function() {
+            context.beginPath();
+            var pattern = context.createPattern(img, "repeat");
+            context.fillStyle = pattern;
+            context.font = "50px Verdana";
+            context.textAlign = "start";
+            context.textBaseline = "alphabetic";
+            context.fillText("www.github4.com", 0, 250);
+        }
+
+
+        // ====> 文本的对齐与度量
+        context.beginPath();
+        context.moveTo(300, 300);
+        context.lineTo(300, 600);
+        context.stroke();
+        context.font = "20px serif";
+
+        context.textAlign="start"; // 文本在指定位置开始
+        context.strokeText('Hello World', 300, 300);
+
+        context.textAlign="end"; // 文本在指定位置结束
+        context.strokeText('Hello World222', 300, 350);
+
+        context.textAlign="center"; // 文本中心被设置在某个位置
+        context.fillText("Hello World333", 300, 400);
+
+        context.textAlign="left";
+        context.fillText("Hello World444", 300, 450);
+
+        context.textAlign="right";
+        context.fillText("Hello World555", 300, 500);
+
+        // ==》垂直对齐
+        context.moveTo(0, 650);
+        context.lineTo(600, 650);
+        context.stroke();
+
+        context.textBaseline = "top";
+        context.fillText("Top",50,650);
+
+        context.textBaseline = "bottom";
+        context.fillText("bottom",150,650);
+
+        context.textBaseline = "middle";
+        context.fillText("middle",250,650);
+
+        context.textBaseline = "alphabetic";
+        context.fillText("alphabetic",350,650);
+
+        context.textBaseline = "hanging";
+        context.fillText("hanging",450,650);
+
+
+
+        // ===> 文本度量
+        context.beginPath();
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+
+        var txt = 'Hello Canvas';
+        context.fillText(txt, 550, 300);
+        context.fillText('Width:'+ context.measureText(txt).width, 550, 330);
+    </script>
+</body>
+</html>

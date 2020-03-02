@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            border: 1px solid red;
+            display: block;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        canvas.width = 800;
+        canvas.height = 800;
+        var context = canvas.getContext('2d');
+
+
+        // 画相同颜色的折线
+        context.beginPath();
+        context.lineWidth = 5;
+        context.strokeStyle = 'red';
+        context.moveTo(100, 100);
+        context.lineTo(100, 500);
+        context.lineTo(500, 500);
+        context.stroke();
+
+        // 画不同颜色的折线
+        context.beginPath();
+        context.lineWidth = 5;
+        context.strokeStyle = '#000';
+        context.moveTo(100, 100);
+        context.lineTo(300, 300);
+        context.stroke();
+
+        context.beginPath();
+        context.lineWidth = 5;
+        context.strokeStyle = 'blue';
+        context.moveTo(300, 300);
+        context.lineTo(300, 500);
+        context.stroke();
+    </script>
+</body>
+</html>

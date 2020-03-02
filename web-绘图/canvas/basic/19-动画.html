@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #canvas {
+        display: block;
+        border: 1px solid #eaeaea;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      window.requestAnimationFrame(() => {
+        drawClock();
+      });
+
+      function drawClock() {
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        canvas.width = 800;
+        canvas.height = 600;
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.translate(100, 100);
+        context.fillStyle = "#3E5F9D";
+        context.arc(0, 0, 100, 0, Math.PI * 2);
+        context.fill();
+        context.beginPath();
+        context.fillStyle = "#fff";
+        context.arc(0, 0, 90, 0, Math.PI * 2);
+        context.fill();
+
+        drawGraduate(context);
+        drawPointer(context);
+        drawGraduate(context);
+
+        function drawGraduate(context) {
+          context.strokeStyle = "#000";
+          context.lineWidth = 1;
+          for (let index = 0; index < 60; index++) {
+            context.save();
+            context.beginPath();
+            context.rotate((Math.PI / 30) * index);
+            if (index % 5 === 0) {
+              context.lineWidth = 3;
+              context.moveTo(0, 85);
+              context.lineTo(0, 75);
+            } else {
+              context.lineWidth = 1;
+              context.moveTo(0, 85);
+              context.lineTo(0, 80);
+            }
+            context.stroke();
+            context.restore();
+          }
+        }
+
+        function drawPointer(context) {
+          var date = new Date();
+          var h = date.getHours();
+          var m = date.getMinutes();
+          var s = date.getSeconds();
+
+          context.save();
+          context.beginPath();
+          context.lineWidth = 5;
+          context.rotate((Math.PI / 6) * h + (Math.PI / 30) * m / 12);
+          context.moveTo(0, 10);
+          context.lineTo(0, -60);
+          context.stroke();
+          context.restore();
+
+          context.save();
+          context.beginPath();
+          context.lineWidth = 3;
+          context.rotate((Math.PI / 30) * m + (Math.PI / 30) * s / 60);
+          context.moveTo(0, 10);
+          context.lineTo(0, -70);
+          context.stroke();
+          context.restore();
+
+          context.save();
+          context.beginPath();
+          context.strokeStyle = "red";
+          context.lineWidth = 3;
+          context.rotate((Math.PI / 30) * s);
+          context.arc(0, -75, 5, 0, Math.PI * 2);
+          context.moveTo(0, 10);
+          context.lineTo(0, -70);
+          context.stroke();
+          context.restore();
+        }
+
+        window.requestAnimationFrame(() => {
+          drawClock();
+        });
+      }
+    </script>
+  </body>
+</html>

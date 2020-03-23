@@ -11,13 +11,13 @@
 
 <body>
     <div id="app">
-        <!-- native 事件绑定在子组件的根元素上 -->
+        <!-- 1 native 事件绑定在子组件的根元素上 -->
         <my-button @click.native="change" v-bind="info"></my-button>
 
-        <!-- 通过$listeners.自定义方法名称(此处是test)() 来执行，子组件在哪些，事件就绑定到哪个元素上 -->
+        <!-- 2 通过$listeners.自定义方法名称(此处是test)() 来执行，子组件在哪些，事件就绑定到哪个元素上 -->
         <my-button @test="change2" v-bind="info"></my-button>
 
-        <!-- 通过$emit(自定义方法名称) 来执行-->
+        <!-- 3 通过$emit(自定义方法名称) 来执行-->
         <my-button @test2="change3" v-bind="info"></my-button>
 
         <!-- 批量绑定方法 -->

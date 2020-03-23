@@ -139,7 +139,7 @@ http.createServer((req, resp) => {
     * 响应头：Expires  ==resp.setHeader('Expires', new Date(Date.now() + 10000).toUTCString());== 设置到期时间
     * 响应头：Cache-Control 与Expires的作用一致，都是指明当前资源的有效期, 其优先级高于Expires。 ==resp.setHeader('Cache-Control', 'max-age=10');== 设置到期时间
 
-    ![img](http://img.zhufengpeixun.cn/cache2.png)
+    ![img](/static/cache2.png)
 
 2. 对比缓存
     * 响应头：Last-Modified。
@@ -153,8 +153,19 @@ http.createServer((req, resp) => {
     服务器收到请求，将服务器的中此文件的ETag,跟请求头中的If-None-Match相比较,如果值是一样的,说明缓存还是最新的,Web服务器将发送304 Not Modified响应码给客户端表示缓存未修改过，可以使用。
     如果不一样则Web服务器将发送该文档的最新版本给浏览器客户端
 
-    ![img](http://img.zhufengpeixun.cn/cache4.png)
+    ![img](/static/cache4.png)
 相比较Last-Modified，ETag更准确，但是也最消耗性能。因为每次请求过来都要计算文件的hash与请求头中的If-None-Match的值来比较。
+
+注意下面区别：
+- 200 from memory cache
+    - 不访问服务器，直接读缓存，从内存中读取缓存。此时的数据时缓存到内存中的，当kill进程后，也就是浏览器关闭以后，数据将不存在。但是这种方式只能缓存派生资源
+- 200 from disk cache
+    - 不访问服务器，直接读缓存，从磁盘中读取缓存，当kill进程时，数据还是存在。这种方式也只能缓存派生资源
+- 304 Not Modified
+    - 访问服务器，发现数据没有更新，服务器返回此状态码。然后从缓存中读取数据
+
+下面总结下整个缓存的完整流程：
+![img](/static/NetCacheFlow.jpg)
 
 
 

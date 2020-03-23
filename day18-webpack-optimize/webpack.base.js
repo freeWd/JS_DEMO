@@ -7,7 +7,7 @@ const glob = require("glob");
 const PurgecssPlugin = require("purgecss-webpack-plugin");
 
 // 配置dll自动将dll.js文件插入打包后的html中
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js",
@@ -63,6 +63,6 @@ module.exports = {
     new DllReferencePlugin({
       manifest: path.resolve(__dirname, "dist", "react.manifest.json")
     }),
-    new AddAssetHtmlPlugin({ filepath: require.resolve('./dist/react_dll.js') }),
+    new AddAssetHtmlPlugin({ filepath: require.resolve("./dist/react_dll.js") })
   ]
 };

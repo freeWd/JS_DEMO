@@ -1,9 +1,25 @@
 let http = require('http');
+let path = require('path');
 let url = require('url');
+let fs = require('fs');
 let querystring = require('querystring');
 
 let server = http.createServer((req, resp) => {
     let url = req.url;
+    if (url === '/index') {
+        const filePath = path.resolve(__dirname, "./1-cookie.html");
+        fs.stat(filePath, (error, stateObj) => {
+            if (error) {
+                resp.state = 404;
+                resp.end('Not Found')
+                return;
+            } 
+            if (stateObj.isFile()) {
+                resp.setHeader('content-type', "text/html;charset=utf-8");
+                fs.createReadStream(filePath).pipe(resp);
+            }
+        })
+    }
     if (url === '/read') {
         let cookieObj = querystring.parse(req.headers.cookie, '; ');
         resp.end(JSON.stringify(cookieObj));

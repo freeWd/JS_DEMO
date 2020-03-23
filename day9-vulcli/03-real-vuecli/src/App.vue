@@ -34,20 +34,20 @@ import ScrollBall from './components/ScrollBall.vue'
 
 export default {
   name: 'app',
-  data() {
+  data () {
     return {
       pos1: 10,
       pos2: 20,
       pos3: 30,
-      pos4: 40 
+      pos4: 40
     }
   },
   methods: {
-    refreshPos(value, target) {
-      this.$data[target] = value;
+    refreshPos (value, target) {
+      this.$data[target] = value
     },
-    stopFirstBall() {
-      this.$refs.ball1.stop();
+    stopFirstBall () {
+      this.$refs.ball1.stop()
     }
   },
   components: {

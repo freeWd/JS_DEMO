@@ -208,7 +208,7 @@ export default [
             version: Version
         }
     },
-    // 后面是有懒加载 - 默认情况下只显示首页，其他页面点击才加载
+    // 后面是有vue路由懒加载 - 默认情况下只显示首页，其他页面点击才加载
     {
         path: '/login',
         name: 'login',

@@ -69,9 +69,11 @@
                 },
                 checkAll: {
                     get() {
+                        console.log(this.checkValue, '<---get checkall')
                         return this.checkValue.length === 3;
                     },
                     set(newValue) {
+                        console.log(newValue, '<----newValue');
                         this.checkValue = newValue ? [1,2,3] : []
                     }
                 }

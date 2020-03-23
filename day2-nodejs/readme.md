@@ -518,8 +518,7 @@ let obj = req('./a.js');
 console.log(obj);
 ```
 通过上面我们自己写的简单的模拟require方法，我们知道了exports导出的内容是如何一步步转变问require接收到的内容的。
-同时通过 ==_extendsions== 的内部逻辑，可以看到 exports, module.exports 都指向同一个对象，这也就是为什么exports也能导出对象的原因了。但exports只能添加对象，如 ==exports.test = test==, 如果直接复制方法或者其他对象，指针发生变化，就无效了。
-
+同时通过 `_extendsions` 的内部逻辑，可以看到 exports, module.exports 都指向同一个对象，这也就是为什么exports也能导出对象的原因了。但exports只能添加对象，如 `exports.test = test`, 如果直接复制方法或者其他对象，指针发生变化，就无效了。
 
 
 ### npm的相关使用 & 全局模块 

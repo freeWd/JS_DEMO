@@ -50,7 +50,7 @@ app.listen(3000)
 
 - 上下文
 中间件函数中另外一个参数 ctx，是一个环境上下文参数，解决了中间件之间的依赖问题，是中间件之间的全局变量。
-两一个作用，ctx 包含了 HTTP 的请求和响应处理
+两个作用，ctx 包含了 HTTP 的请求和响应处理
 ```js
 app.use(async (ctx, next) => {
   ctx.a = 1
@@ -69,7 +69,7 @@ Koa 的文档 只要一页，很快就能看完，其中大幅在介绍 HTTP的�
 // -- Koa Request
 // header
 ctx.request.headers  
-ctx.request. protocol
+ctx.request.protocol
 ctx.request.type
 ctx.request.charset
 
@@ -156,7 +156,7 @@ app.use(async (ctx, next) => {
 })
 
 // 其他页面通过 router 加载
-let urls = fs.readdirSync(__dirname + '/urls')
+let urls = fs.readDirSync(__dirname + '/urls')
 urls.forEach((element) => {
     let module = require(__dirname + '/urls/' + element)
     /*

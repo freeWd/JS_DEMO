@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Read / Write Cookie</title>
+  </head>
+  <body>
+    <button id="write">写Cookie 访问 /write 请求</button>
+    <button id="read">显示Cookie 访问 /read 请求</button>
+    <button id="expire">将toekn字段有效期设置为0 检测（到期时间）</button>
+    <button id="httpOnly">用js读取token字段，检测（httpOnly）</button>
+
+    <script>
+      var writeBtn = document.getElementById('write');
+      var readBtn = document.getElementById("read");
+      var expireBtn = document.getElementById("expire");
+      var httpOnlyBtn = document.getElementById("httpOnly");
+
+      writeBtn.addEventListener('click', () => {
+          fetch('/write').then();
+      })
+
+      readBtn.addEventListener("click", () => {
+          fetch('/read').then(response => response.json()).then(body => {
+              console.log(body);
+          })
+      });
+
+      expireBtn.addEventListener("click", () => {
+        document.cookie = 'token=1234;max-age=0'
+      });
+
+      httpOnlyBtn.addEventListener("click", () => {
+        console.log(document.cookie);
+      });
+    </script>
+  </body>
+</html>

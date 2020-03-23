@@ -8,6 +8,7 @@ let crypto = require('crypto');
 http.createServer((req, resp) => {
     let { pathname } = url.parse(req.url);
     let filePath = path.join(__dirname, pathname);
+    console.log(filePath);
     fs.stat(filePath, (err, stats) => {
         if (err) {
             resp.statusCode = 404;
@@ -33,6 +34,8 @@ http.createServer((req, resp) => {
                 resp.setHeader('Etag', etag);
                 resp.end(Buffer.concat(arr));
             });
+        } else {
+            resp.end('404');
         }
     });
 

@@ -677,9 +677,6 @@ for (let index = 0; index < 100; index++) {
   console.log(Math.round(Math.random() * 5));
 }
 
-
-
-
 function debounce(fn) {
   let timer;
   return () => {
@@ -687,23 +684,20 @@ function debounce(fn) {
     timer = setTimeout(() => {
       fn();
     }, 1000);
-  }
-} 
+  };
+}
 
 function option() {
-  console.log('xxx');
+  console.log("xxx");
 }
 
 const f = debounce(option);
 f();
 f();
 
-
-
-
 function test() {
   return new Promise(resolve => {
-    resolve('123');
+    resolve("123");
   }).then(() => {
     return Promise.resolve(null);
   });
@@ -712,7 +706,7 @@ console.log(test());
 
 function* test() {
   let a = yield 3;
-  console.log('xxx');
+  console.log("xxx");
   let b = yield 4;
   return a + b;
 }
@@ -725,83 +719,73 @@ console.log(a.next());
 console.log(a.next(8));
 console.log(a.next(10));
 
-
-var o = '12';
+var o = "12";
 console.log(/^(0|1)$/.test(o));
 
-
 const regex = /^([^\s][^\/:\*\?"<>\|][^.])$/;
-const regex2 =/^[^\s]+[^\/:\*\?"<>\|]+[^.]$/;
-const regex3 = /^[^\s\/:\*\?"<>\|\.]([^\/:\*\?"<>\|])*?[^\/:\*\?"<>\|^\.]*$/
-const regex3 = /^([^\s\/:\*\?"<>\|\.]{1}|([^\s\/:\*\?"<>\|\.][^\/:\*\?"<>\|]*[^\/:\*\?"<>\|\.]))$/
-console.log(regex3.test('<11'));
-console.log(regex3.test('1 23'));
-console.log(regex3.test('1.2  34'));
-console.log(regex3.test('123.3.'));
-console.log(regex3.test('.sdfdsf<'));
-console.log(regex3.test(' 123.3'));
+const regex2 = /^[^\s]+[^\/:\*\?"<>\|]+[^.]$/;
+const regex3 = /^[^\s\/:\*\?"<>\|\.]([^\/:\*\?"<>\|])*?[^\/:\*\?"<>\|^\.]*$/;
+const regex3 = /^([^\s\/:\*\?"<>\|\.]{1}|([^\s\/:\*\?"<>\|\.][^\/:\*\?"<>\|]*[^\/:\*\?"<>\|\.]))$/;
+console.log(regex3.test("<11"));
+console.log(regex3.test("1 23"));
+console.log(regex3.test("1.2  34"));
+console.log(regex3.test("123.3."));
+console.log(regex3.test(".sdfdsf<"));
+console.log(regex3.test(" 123.3"));
 
-
-let blob = new Blob(['<xx>123</xx>'], {type: 'text/xml'});
+let blob = new Blob(["<xx>123</xx>"], { type: "text/xml" });
 let formdata = new FormData();
 let reader = new FileReader();
 let test = reader.readAsDataURL(blob);
 console.log(test);
 
-
-var arr = [1,2,3];
-console.log(arr.join('xxx'));
+var arr = [1, 2, 3];
+console.log(arr.join("xxx"));
 console.log(arr.concat(1));
 
-
-
 function test1(value) {
-  return value + 'aaa';
+  return value + "aaa";
 }
 function test2(value) {
-  return value + 'bbb';
+  return value + "bbb";
 }
 function compose(...fn) {
-  return function (value) {
+  return function(value) {
     let returnValue = value;
     const arr = [...fn];
     for (let index = 0; index < arr.length; index++) {
       returnValue = arr[index](returnValue);
     }
     return returnValue;
-  }
+  };
 }
 function compose2(...fn) {
   return function(value) {
     return [...fn].reduce((preFn, nextFn) => {
       return nextFn(preFn(value));
     });
-  }
+  };
 }
 
-console.log(compose2(test1, test2)('xxx'));
-
-
+console.log(compose2(test1, test2)("xxx"));
 
 async function test() {
   await setTimeout(() => {
     return 100;
-  }, 1000)
+  }, 1000);
 }
-test().then(val => console.log(val))
-
-
+test().then(val => console.log(val));
 
 function f1() {
   return new Promise(resolve => {
-    console.log('p1');
-    resolve('p11');
+    console.log("p1");
+    resolve("p11");
   });
 }
 function f2() {
   return new Promise(resolve => {
-    console.log('p2');
-    resolve('p22');
+    console.log("p2");
+    resolve("p22");
   });
 }
 function* read2() {
@@ -812,16 +796,67 @@ function* read2() {
   return b;
 }
 let it2 = read2();
-console.log(it2.next());  
-console.log('----')
-console.log(it2.next('100'));
-console.log('----')
-console.log(it2.next('200'));
+console.log(it2.next());
+console.log("----");
+console.log(it2.next("100"));
+console.log("----");
+console.log(it2.next("200"));
 
-
-requestAnimationFrame(test)
+requestAnimationFrame(test);
 
 function test() {
   console.log(Math.random());
   requestAnimationFrame(test);
 }
+
+let a = new Set([1, 2, 3, 4, 5]);
+let a1 = a.value();
+console.log(a1);
+
+Promise.resolve("123")
+  .catch(e => {
+    console.log(e);
+  })
+
+
+
+  const regex = /^(.)$/
+  const str = "wang.email@gmai-l.com";
+  console.log(regex.test(""));
+
+
+
+
+  const p = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('123')
+    }, 2000)
+  })
+
+  async function test1() {
+    const a = await p.catch()
+    console.log(a, '<-----xxx')
+    return '123'
+  }
+
+  const p2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject('1234')
+    }, 1000)
+  })
+
+  async function test2() {
+    const a = await p2.catch()
+    console.log(a, '<-----yyy')
+    return '1234'
+  }
+
+  function main() {
+    console.log('start')
+    test1();
+    test2();
+    console.log('end')
+  }
+  main();
+
+  

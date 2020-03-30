@@ -859,4 +859,12 @@ Promise.resolve("123")
   }
   main();
 
+
+
+  var arr = [];
+  arr['a'] = '123'
+  arr['b'] = '1234'
+  console.log(arr);
+  console.log(Object.keys(arr))
+
   

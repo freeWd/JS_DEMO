@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="module1">
+        module1 ------
+    </div>
+    <script>
+        fetch('/api/module1', {
+            method: 'GET'
+        }).then(resp => resp.json())
+        .then(data => {
+            const list = data;
+            const module1Node = document.querySelector('.module1')
+            const ulNode = document.createElement('ul');
+            for (const item of list) {
+                const liNode = document.createElement('li');
+                liNode.innerText = item.name;
+                ulNode.append(liNode)
+            }
+            module1Node.append(ulNode)
+        })
+    </script>
+</body>
+</html>

@@ -228,11 +228,11 @@ node 如何调试：
 - 针对 promise 的错误的捕获：(不用在每个 promise 上都写 catch)
 
 ```js
-window.addEveentListener("unhandlerjection", function(e) {
-  e.preventDefault();
-  console.log(e.reason);
+window.addEventListener('unhandledrejection', e => {
+  e.preventDefault()
+  console.warn(`UNHANDLED PROMISE REJECTION: ${event.reason}`)
   return true;
-});
+})
 ```
 
 ### 服务端异常捕获

@@ -10,6 +10,10 @@
 
 <script>
 export default {
+    created() {
+        // eslint-disable-next-line no-console
+        console.log(this.$route.name, '<---- router name');
+    },
     computed: {
         userId() {
             return this.$route.params.id;

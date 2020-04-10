@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="module2">
+        module2 ------
+    </div>
+    <script>
+        fetch('/api/module2', {
+            method: 'GET'
+        }).then(resp => resp.json())
+        .then(data => {
+            const ulNode = document.createElement('ul')
+            for (const item of data) {
+                const liNode = document.createElement('li')
+                liNode.innerText = item.name
+                ulNode.append(liNode)
+            }
+            document.querySelector('.module2').append(ulNode)
+        })
+    </script>
+</body>
+</html>

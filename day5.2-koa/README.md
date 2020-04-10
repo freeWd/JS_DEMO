@@ -346,3 +346,16 @@ app.use(async (ctx, next) => {
 打开里面的文件，可以看到我们刚刚记录的日志信息 [2018-10-30T17:18:51.450] [INFO] default - Something important。
 
 
+
+### Koa是如何写出来的?
+洋葱模型 & 一起看看Koa源码吧
+koa核心源码包含4个文件
+- application.js
+- context.js
+- request.js
+- response.js
+
+可以先看看这个：如何从头实现一个node.js的koa框架 [https://www.jb51.net/article/163208.htm]
+
+
+

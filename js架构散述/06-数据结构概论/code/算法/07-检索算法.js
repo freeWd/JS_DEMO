@@ -49,6 +49,7 @@ function findMin(arr) {
 }
 
 // 2 二分查找，每猜一个数字都会有三种结果：猜大了，猜小了，正确了，不断缩小查找范围
+// 此二分查找的前提是 数组中的值是按照一定规则排好序了
 function binaryFind(arr, data) {
   var downIndex = 0;
   var upIndex = arr.length - 1;

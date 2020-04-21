@@ -36,6 +36,7 @@ app.post('/post', (req, resp) => {
 
 app.all('/params', (req, res) => {
     console.log('hell world');
+    console.log(a)
     res.end('hello world');
 });
 

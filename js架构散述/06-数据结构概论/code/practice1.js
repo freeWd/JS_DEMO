@@ -68,10 +68,10 @@ function mergeSort(arr) {
       for (var i = leftStart; i < rightEnd; i++) {
         if (leftArr[m] < rightArr[n]) {
           arr[i] = leftArr[m];
-          m++
+          m++;
         } else {
           arr[i] = rightArr[n];
-          n++
+          n++;
         }
       }
 
@@ -83,6 +83,7 @@ function mergeSort(arr) {
   return arr;
 }
 
+// 写法简单，但是空间占用比较高
 function quickSort(arr) {
   if (arr.length === 0) {
     return [];
@@ -100,6 +101,7 @@ function quickSort(arr) {
   return quickSort(smallArr).concat(cursor, quickSort(bigArr));
 }
 
+// 上面那种的另一种递归写法，相对空间复杂度减小
 function quickSort2(arr, p, q) {
   var index = p + 1;
   var cursor = arr[p];
@@ -117,11 +119,37 @@ function quickSort2(arr, p, q) {
   return arr;
 }
 
-
+// 快速排序的非递归写法，用数组存储每次比较后的索引值，推荐这种写法
+// 另外可以每次去中间值作为比较值，能进一步降低时间复杂度变成 O(n^2)的概率
 function quickSort3(arr) {
- 
-}
+  // 3 2 1
+  if (arr.length === 0) return [];
+  if (arr.length === 1) return arr;
 
+  const indexArr = [0, arr.length];
+
+  while (indexArr.length > 0) {
+    const q = indexArr.pop();
+    const p = indexArr.pop();
+    const cursor = arr[p];
+    let index = p;
+
+    if (q - p > 1) {
+      for (let i = p; i < q; i++) {
+        if (arr[i] < cursor) {
+          swap(arr, i, index + 1);
+          index++;
+        }
+      }
+      swap(arr, p, index);
+      indexArr.push(p);
+      indexArr.push(index + 1);
+      indexArr.push(index + 1);
+      indexArr.push(q);
+    }
+  }
+  return arr;
+}
 
 function swap(arr, i, j) {
   var tmp = arr[i];
@@ -129,35 +157,35 @@ function swap(arr, i, j) {
   arr[j] = tmp;
 }
 
-
-console.log(quickSort2([3,2,1], 0, 3))
+// console.log(quickSort2([3, 2, 1], 0, 3));
 // console.log(quickSort2([5, 11, 3, 9, 8, 6], 0, 6));
 // console.log(quickSort([5, 11, 3, 9, 8, 6]));
 // console.log(mergeSort([5, 11, 3, 9, 8, 6]));
 
+console.log(quickSort3([5, 11, 3, 9, 8, 6]));
 
 // 二分查找 - 递归
 function splitFind(arr, value, start, end) {
-  if (arr.length === 0) return -1
+  if (arr.length === 0) return -1;
   if (arr.length === 1) return arr[0] === value ? 0 : -1;
   const midIndex = Math.floor((start + end) / 2);
   if (arr[midIndex] === value) {
     return midIndex;
   } else if (arr[midIndex] > value) {
-    return splitFind(arr, value, start, midIndex+1)
+    return splitFind(arr, value, start, midIndex + 1);
   } else {
-    return splitFind(arr, value, midIndex, end)
+    return splitFind(arr, value, midIndex, end);
   }
 }
 
 // 二分查找 - 非递归
 function splitFind2(arr, value) {
-  if (arr.length === 0) return -1
+  if (arr.length === 0) return -1;
   if (arr.length === 1) return arr[0] === value ? 0 : -1;
   var minIndex = 0;
   var maxIndex = arr.length;
-  while(minIndex < maxIndex) {
-    var midIndex = Math.floor((minIndex+maxIndex) / 2);
+  while (minIndex < maxIndex) {
+    var midIndex = Math.floor((minIndex + maxIndex) / 2);
     if (arr[midIndex] === value) {
       return midIndex;
     } else if (arr[midIndex] > value) {
@@ -169,6 +197,5 @@ function splitFind2(arr, value) {
   return -1;
 }
 
-
-var arr = [1,2,3,4,5,6,7,8,9];
-console.log(splitFind2(arr, 6, 0, 9))
+// var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+// console.log(splitFind2(arr, 6, 0, 9));

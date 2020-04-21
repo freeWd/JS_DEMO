@@ -24,7 +24,7 @@ function HashTable() {
   this.buildChians = buildChians;
 }
 
-// 简单散列函数 - 除留余数法
+// 简单散列函数（自定义hash算法） - 除留余数法
 function simpleHash(data) {
   var total = 0;
   for (let index = 0; index < data.length; index++) {

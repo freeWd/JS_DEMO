@@ -5,6 +5,8 @@
   "version": "0.2.0",
   "configurations": [
 
+  
+
     // {
     //   "type": "node",
     //   "request": "launch",
@@ -33,6 +35,12 @@
       "request": "launch",
       "name": "debug test",
       "program": "${workspaceFolder}/js架构散述/06-数据结构概论/code/practice1.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "debug koa",
+      "program": "${workspaceFolder}/day5.2-koa/self-koa/self-applications.js"
     }
   ]
 }

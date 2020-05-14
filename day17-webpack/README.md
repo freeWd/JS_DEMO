@@ -1,9 +1,10 @@
 > 目前市面上常见到的一些管理工具：
 1 webpack - 目前垄断主流 - 包管理工具 （核心loader）
-2 gulp / grunt (同一时期的，gulp基于流，更快，适合打包node，比较干净)
-3 yeoman 从0开始的脚手架-项目构建工具
-4 brower 管理安装依赖包
-5 browserify 能让前端使用由它build之后的node端的js文件
+2 rollupjs - 可以稍微关注，比较新的工具,可以将小块代码编译成大块复杂的代码，一般非业务的库性质的代码更适合使用它
+3 gulp / grunt (同一时期的，gulp基于流，更快，适合打包node，比较干净)
+4 yeoman 从0开始的脚手架-项目构建工具
+5 brower 管理安装依赖包
+6 browserify 能让前端使用由它build之后的node端的js文件
 
 一个文件就是一个chunk, chunk和module是多对多的关系 
 
@@ -53,7 +54,7 @@ eg:
 - 01-webpack.config.js
     ```js
     // 第一个webpack配置文件，一个入口文件index.js, js中导入css文件
-    // 使用css-loader解析css为模块，处理其中的url
+    // 使用css-loader解析css为模块，用来解析处理css文件中的url路径 & 把css文件变成模块(临时)
     // 使用style-loader - 在执行js时将css以<style></style>方式插入html中
     // devServer 配置webpack-dev-server，将文件打包到内存中以http方式访问
     // 没有index.html文件 需要手动创建
@@ -83,11 +84,15 @@ eg:
     // file-loader 解析图片的地址，把图片从源路径中拷贝到目标位置, 可以处理任意的二进制，包括字体等文件
     // url-loader处理图片
     // html-withimg-loader 处理html中src图片文件路径
+
+    // TIPS:
+    // file-loader vs url-loader ? url-loader内置了file-loader
+    // url-loader工作分两种情况：1.文件大小小于limit参数，url-loader将会把文件转为DataURL；2.文件大小大于limit，url-loader会调用file-loader进行处理，参数也会直接传给file-loader。因此我们只需要安装url-loader即可
     ```
 
 - 06-webpack.config.js
     ```js
-    // mini-css-extract-plugin 提取出css文件 - 在plugins中new MiniCssExtractPlugin, 同时module处理css的loader中用 MiniCssExtractPlugin 替换 style-loader （因为要将css提取出来）
+    // mini-css-extract-plugin 提取出css文件 - 在plugins中new MiniCssExtractPlugin, 同时module处理css的loader中用 MiniCssExtractPlugin。 此插件用来替换 style-loader （因为它可以将css提取出来， style-loader只是将css通过style标签内置在html中）
     // (1) optimize-css-assets-webpack-plugin - OptimizeCSSAssetsPlugin
     // (2) terser-webpack-plugin - TerserJSPlugin 在optimization中压缩css和js文件
     ```

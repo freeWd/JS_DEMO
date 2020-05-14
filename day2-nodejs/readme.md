@@ -241,8 +241,10 @@ setTimeout(() => {
 > 这道题的输出顺序是：then、setTimeout2、nextTick、setImmediate1、setImmediate2、setTimeout1，为什么是这样的顺序呢？微任务nextTick的输出是因为timers队列切换到check队列，setImmediate1和setImmediate2连续输出是因只有当前队列执行完毕后才能进去下一对列。
 
 
-### Node Core
-全局作用域 （全局作用域(global)可以定义一些不需要通过任何模块的加载即可使用的变量、函数或类）- 类似于浏览器中的windows(在浏览器中window代理了global)
+### Node Core (Node的三大部分：Global, Module, ECMAScript)
+#### 全局作用域 
+>（全局作用域(global)可以定义一些不需要通过任何模块的加载即可使用的变量、函数或类）- 类似于浏览器中的windows(在浏览器中window代理了global)
+
 * 定义全局变量时变量会成为global的属性
 * 永远不要不使用var关键字定义变量，以免污染全局作用域
 
@@ -307,8 +309,7 @@ console.log(obj);
 
 
 
-
-### Node 模块
+#### Node 模块
 * JS没有模块系统，不支持封闭的作用域和依赖管理
 * 没有标准库，没有文件系统和IO流API
 * 也没有包管理系统
@@ -329,6 +330,7 @@ http path fs util events 编译成二进制,加载速度最快，原生模块直
     * 第三方模块的查询路径包括module.paths和全局目录
 
 
+#### ECMAScript就无需再介绍了
 
 
 ### Node 如何实现模块化？
@@ -548,7 +550,7 @@ npm install {库名}@版本号 -g
 npm install {库名}@版本号
 ```
 
-当我们在一个文件中引入 ==require({第三方包})== 的时候，它会根据module.exports进行查找(查找node_modules文件夹内部的文件)，找到后返回，找不到就继续向上级（Module.paths 数组列表） 查找。 当找到文件夹名称相同后，查找文件夹内的package.json文件，找到对应的 ==main==参数的入口，如果没有package.json 或者package.json中没有key为main的值，就默认查找index.js
+当我们在一个文件中引入 `require({第三方包})` 的时候，它会根据module.exports进行查找(查找node_modules文件夹内部的文件)，找到后返回，找不到就继续向上级（Module.paths 数组列表） 查找。 当找到文件夹名称相同后，查找文件夹内的package.json文件，找到对应的 `main`参数的入口，如果没有package.json 或者package.json中没有key为main的值，就默认查找index.js
 
 
 * 卸载第三方包
@@ -564,12 +566,12 @@ npm uninstall {库名}
             "wd": "./wd-test.js"
         }
         ```
-    3) #！/usr/bin/env node (使用node来运行文件)
+    3) #/usr/bin/env node (使用node来运行文件)
         ```
-        #! /usr/bin/env node
+        #!/usr/bin/env node
         console.log('wd-test');
         ```
-    4) 拷贝到 ==npm root -g==所在目录下，或者本地调试的时候到需要使用的第三方库文件夹下 运行 ==npm link== 链接到全局安装目录去。
+    4) 拷贝到 `npm root -g` 所在目录下，或者本地调试的时候到需要使用的第三方库文件夹下 运行 `npm link` 链接到全局安装目录去。
 
 * 发布一个自己写的包到npm官网
     1) 将npm的源切换为官方的源（不要用taobao源或者cpm, 否则无法提交成功）- 可以使用nrm (npm源管理)来切换

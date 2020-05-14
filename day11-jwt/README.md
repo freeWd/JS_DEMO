@@ -1,3 +1,5 @@
+> 也许我的选择最终会被证明是错误。但至少现在，我想这样选,那么我便这样选
+
 ### JWT
 * JWT(json web token)是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准。
 * JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源。比如用在用户登录上。
@@ -49,8 +51,9 @@ v_IGmPIIOLaFO3oF6jLGUfop_lrzykoEqYkUvplRFTI
     HMACSHA256( base64UrlEncode(header) + "." + base64UrlEncode(payload), secret) 
     ```
     * 签名用于验证消息的发送者以及消息是没有经过篡改的
-    * 完整的JWT 完整的JWT格式的输出是以. 分隔的三段Base64编码
-    * 密钥secret是保存在服务端的，服务端会根据这个密钥进行生成token和验证，所以需要保护好。
+
+* 完整的JWT 完整的JWT格式的输出是以. 分隔的三段Base64编码
+* 密钥secret是保存在服务端的，服务端会根据这个密钥进行生成token和验证，所以需要保护好。
 
 
 ### 应用场景

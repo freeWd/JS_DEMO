@@ -64,7 +64,6 @@ module.exports = {
       },
       {
         test: /\.css/, // 转化文件的匹配正则
-        // css-loader: 用来解析处理css文件中的url路径 & 把css文件变成模块
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -72,6 +71,7 @@ module.exports = {
               esModule: true
             }
           },
+          // css-loader: 用来解析处理css文件中的url路径 & 把css文件变成模块
           "css-loader"
         ]
       },

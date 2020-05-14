@@ -22,7 +22,7 @@ img
 ![image](/static/reptile.png)
 
 
-## Node部署 搭配 nginx
+## Node部署（可以在前面再配合nginx）
 pm2动态监测文件(NODE.JS的高级生产过程管理器)
 - 能动态的监测文件的上传，0秒热启动
 - 能够负载均衡CPU

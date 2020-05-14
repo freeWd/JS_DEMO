@@ -24,7 +24,7 @@ webapp用户体验差（不能离线访问），用户粘性低（无法保存�
 
 // config信息
 {
-    "name":"珠峰课堂", // 应用名称  
+    "name":"课堂", // 应用名称  
     "short_name":"课堂", // 桌面应用的名称  ✓
     "display":"standalone", // fullScreen (standalone) minimal-ui browser ✓
     "start_url":"/index.html", // 打开时的网址  ✓

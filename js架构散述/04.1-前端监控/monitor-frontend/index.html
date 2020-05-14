@@ -1,0 +1,28 @@
+<!-- dev-server模式下用于测试 src/index.js是否可用 -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>hello world monitor2223</h1>
+
+    <!-- 测试 异常 errorCatch.js 中的 onerror -->
+    <script>
+        let a = b
+    </script>
+
+    <!-- 测试 异常 errorCatch.js 中的 onunhandledrejection -->
+    <script>
+        new Promise((resolve) => {
+            let a = b;
+            resolve(a);
+        })
+    </script>
+
+    <script src="../test.js"></script>
+  </body>
+</html>

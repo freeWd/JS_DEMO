@@ -116,3 +116,5 @@ var totalFruit = function (tree) {
 };
 
 console.log(totalFruit([0, 1, 2, 2])); // 3
+
+console.log(/\d+/.test(003))

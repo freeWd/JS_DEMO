@@ -1,6 +1,14 @@
 <html>
-	<img src="./images/计算机基础.svg"/>
+	<img src="./images/计算机基础.png"/>
 </html>
+
+> 123
+
+![image](./images/计算机基础.png)
+
+> 123
+
+![image](/01-计算机基础/images/计算机基础.png)
 
 # 计算机基础
 

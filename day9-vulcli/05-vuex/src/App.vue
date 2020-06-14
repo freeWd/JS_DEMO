@@ -14,6 +14,7 @@
 
       <p>{{ getNewName }}</p>
       <p>{{ getUserName }}</p>
+      <p>{{ $store.getters['user/getUserName'] }}</p>
 
       <button @click="change">change user name</button>
       <button @click="change2">async change user name</button>

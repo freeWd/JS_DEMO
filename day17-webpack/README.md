@@ -16,6 +16,9 @@ WebPack可以看做是模块打包机：它做的事情是，分析你的项目�
 - chunk：是webpack内部`运行时`的概念；一个chunk是对依赖图的部分进行封装的结果。这是webpack内部的一个特殊定义的词语，用于描述webpack打包过程的模块文件叫做chunk,例如异步加载一个模块就是一个chunk
 - bundle: bundle是最后打包后的文件(bundles 包含了早已经过加载和编译的最终源文件版本),最终文件可以和chunk长的一模一样,但是部分情况下他是多个chunk的集合。
 
+- loader 简单的对文件进行特定的处理
+- plugin 更复杂，深入到webpack不同的生命周期里面去执行更多的逻辑
+
 eg:
 ```js
 {

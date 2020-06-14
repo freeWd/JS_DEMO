@@ -2,7 +2,7 @@
 
 function Graph(v) {
   this.vertices = v; // v - 顶点的个数
-  this.edges = 0; // edge - 边的额个数
+  this.edges = 0; // edge - 边的个数
   this.adject = []; // 点与点的连接表
   this.marked = []; // 标记是否访问过，用于遍历
   for (let index = 0; index < this.vertices; index++) {
@@ -54,7 +54,7 @@ function deepSearch(v) {
 function scopeSearch(v) {
   const adjectArr = Array.isArray(v) ? [...v] : [v];
   const temp = [];
-  adjectArr.forEach(item => {
+  adjectArr.forEach((item) => {
     if (this.adject[item] !== undefined && !this.marked[item]) {
       this.marked[item] = true;
       console.log(item + "节点已经被访问");
@@ -75,7 +75,7 @@ function scopeSearch(v) {
 
 // 某个点是否有与其他点的连接边
 function hasPathTo(v) {
-    return this.marked[v]
+  return this.marked[v];
 }
 
 // 计算0到v最短路径
@@ -94,5 +94,5 @@ graph.addEdge(0, 2);
 graph.addEdge(1, 3);
 graph.addEdge(2, 4);
 // graph.showGraph()
-// graph.deepSearch(1);
-graph.scopeSearch(0);
+graph.deepSearch(1);
+// graph.scopeSearch(0);

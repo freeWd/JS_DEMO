@@ -157,5 +157,6 @@ tree.insert(99);
 // tree.afterOrder(tree.root);
 console.log(tree.getMin(tree.root), "<-----最小值");
 console.log(tree.getMax(tree.root), "<-----最大值");
-console.log(tree.find(37, tree.root));
-console.log(tree.remove(45, tree.root));
+console.log(tree.root);
+// console.log(tree.find(37, tree.root));
+// console.log(tree.remove(45, tree.root));

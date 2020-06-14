@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      iframe {
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="one()">test</button>
+    <p>this is 1 html</p>
+    <iframe name="childPage1" id="iframe" src="http://127.0.0.1:4203/2.html"></iframe>
+    <script>
+      function one() {
+        var iframe = window.frames["childPage1"];
+        if (iframe != null && iframe != undefined) {
+            iframe.childFunction();
+            var childEle = iframe.document.getElementsByTagName('p')[0]
+            childEle.style.color = 'red'
+            childEle.style.padding = '10px'
+            childEle.style.background = 'blue'
+        }
+      }
+      function test() {
+          alert('我是父页面的方法，被子页面调用了')
+      }
+
+      window.onload = function() {
+        var iframe = window.frames["childPage1"];
+        // orgin
+        iframe.postMessage('主页面的消息')
+      }
+
+      window.addEventListener('message', function(event) {
+        console.log(event, '<---- 接受者是父页面')
+      })
+    </script>
+  </body>
+</html>

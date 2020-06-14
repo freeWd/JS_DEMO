@@ -29,7 +29,7 @@
         </list2>
 
         <!--作用域插槽: 有时让插槽内容能够访问子组件中才有的数据是很有用的。-->
-        <!--虽然最后插槽的内容和子组件内容是用一级别展示的，但是插槽的内容是在父组件中写的。 有时需要插槽中的内容获取子组件的数据  -->
+        <!--虽然最后插槽的内容和子组件内容是用一级别展示的，但是插槽的代码是在父组件中写的。 有时需要插槽中的内容获取子组件的数据  -->
         <!-- v-slot:default 可以简写成 #default -->
         <hr />
         <list3>
@@ -73,12 +73,8 @@
         Vue.component('List3', {
             template: `
                 <div>
-                   <slot v-bind:user="user" name="temp1">
-                      {{ user.firstName }} + 'pppp'
-                   </slot> 
-                   <slot :user="user" name="temp2">
-                      {{ user.lastName  }} 
-                   </slot> 
+                   <slot v-bind:user="user" name="temp1"></slot> 
+                   <slot :user="user" name="temp2"></slot> 
                 </div>
             `,
             data() {

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div style="border: 1px solid red;">
+        <button onclick="test()">子页面调用父页面方法</button>
+        <p id="childPage">this is 2 html</p>
+        <button onclick="test2()">发送postmessage</button>
+    </div>
+    <script language="javascript" type="text/javascript">
+        function childFunction() {
+            alert("我是子页面,\n我需要使用 Iframe Name 调用！");
+        }
+
+        function test() {
+            window.parent.test()
+        }
+
+        function test2() {
+            window.parent.postMessage('子页面给父页面发送消息')
+        }
+
+        window.addEventListener('message', function(event) {
+            console.log(event, '<---- 接受者是子页面')
+        })
+    </script>
+</body>
+</html>

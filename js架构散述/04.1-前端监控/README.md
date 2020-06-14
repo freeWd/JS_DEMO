@@ -47,23 +47,6 @@ domComplete | 文档解析完成
 loadEventStart | load 事件发送前
 loadEventEnd | load 事件发送后
 
-浏览器对页面的加载细节：https://www.cnblogs.com/gg-qq/p/11327972.html
-
-一些模糊点的区别
-
-- 加载小细节：加载和解析
-
-  - 加载可以理解为下载
-  - 解析（构建）可以理解为将下载下来的文本按照其对应的类型由浏览器编译成对应的“东西”或者“结构”
-  - 浏览器执行的顺序
-    - 浏览器会对整个的 html 文件进行编译，转化成类似树形的结构
-    - 浏览器会对转化后的数据结构自上而下进行分析
-      - 首先开启下载线程，对所有的资源进行优先级排序下载（注意，这里仅仅是下载。
-      - 同时主线程会对文档进行解析
-    - 遇到 link，检测是否已下载，没下载就下载，下载了就构建 CSSOM（构建是不阻塞主线程对 dom 的解析的）
-    - 遇到 script, 检测是否下载，没下载就下载，下载了就执行代码（script 构建是阻塞主线程的解析的）
-    - 在 body 的第一个 script 资源下载完成之前，浏览器会进行首次渲染，将 script 标签之前的 DOM 和 CSSOM 合并为一颗 Render 树，渲染到页面，这是页面从白屏到首次渲染的时间节点，script 之后的 dom 要等到 script 解析之后才继续执行
-
 - 监听事件： DOMContentLoaded 和 load 的区别
 
   - DOMContentLoaded:
@@ -122,4 +105,5 @@ observer.observe({ entryTypes: ["resource"] });
 
 某些情况下还需要关注的属性：`XMLHttpRequest.onreadystatechange` (通常在写js原生ajax时对于返回的结果需要重写此函数)
 
-## 用户
+## 用户行为分析
+windows 监听click（其他更多的事件）事件，获取每次点击的 target ==> 从而获取对应的Xpath，重绘用户的操作流程

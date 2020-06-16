@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>hello world</h1>
+    <button onclick="sendMsg()">发送消息</button>
+    <script>
+        const ws = new WebSocket('ws://localhost:3004')
+        ws.onopen = function() {
+            console.log('客户端连接成功')
+        }
+        ws.onmessage = function(event) {
+            const data = event.data;
+            console.log(event)
+        }
+
+        function sendMsg() {
+            const msg = Math.random()
+            console.log(msg, '<---')
+            ws.send(msg)
+        }
+    </script>
+</body>
+</html>

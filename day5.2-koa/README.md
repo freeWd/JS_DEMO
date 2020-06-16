@@ -347,6 +347,8 @@ app.use(async (ctx, next) => {
 
 
 
+更详细的信息：https://chenshenhai.github.io/koa2-note/
+
 ### Koa是如何写出来的?
 洋葱模型 & 一起看看Koa源码吧
 koa核心源码包含4个文件

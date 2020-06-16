@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>hello world 2</h1>
+    <button onclick="sendMsg()">发送消息 ws1</button>
+    <button onclick="closeMsg()">关闭连接 ws1</button>
+
+    <button onclick="sendMsg2()">发送消息 ws2</button>
+    <button onclick="closeMsg2()">关闭连接 ws2</button>
+    <script>
+        const ws = new WebSocket('ws://localhost:3003/ws1')
+        ws.onopen = function() {
+            console.log('客户端ws1连接成功')
+        }
+        ws.onmessage = function(event) {
+            const data = event.data;
+            console.log(event)
+        }
+        ws.onclose = function() {
+            console.log('ws 连接已经关闭')
+        }
+
+        function sendMsg() {
+            const msg = Math.random()
+            console.log(msg, '<---')
+            ws.send(msg)
+        }
+        function closeMsg() {
+            ws.close()
+        }
+
+
+        const ws2 = new WebSocket('ws://localhost:3003/ws2')
+        ws2.onopen = function() {
+            console.log('客户端ws2连接成功')
+        }
+        ws2.onmessage = function(event) {
+            const data = event.data;
+            console.log(event)
+        }
+        ws2.onclose = function() {
+            console.log('ws2 连接已经关闭')
+        }
+
+        function sendMsg2() {
+            const msg = Math.random()
+            console.log(msg, '<---')
+            ws2.send(msg)
+        }
+        function closeMsg2() {
+            ws2.close()
+        }
+    </script>
+</body>
+</html>

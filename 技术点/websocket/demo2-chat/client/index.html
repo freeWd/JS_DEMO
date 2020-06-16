@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .send-msg {
+        position: absolute;
+        bottom: 30px;
+      }
+      .send-msg > input {
+        width: calc(100vw - 150px);
+        height: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div>
+        <button onclick="join('red')">进入红房间</button>
+        <button onclick="leave('red')">
+          离开红房间
+        </button>
+      </div>
+      <div>
+        <button onclick="join('green')">
+          进入绿房间
+        </button>
+        <button onclick="leave('green')">
+          进入绿房间
+        </button>
+      </div>
+      <div>
+        <button onclick="getRoomInfo()">
+          获取房间信息
+        </button>
+      </div>
+    </div>
+    <ul id="messages"></ul>
+    <div class="send-msg">
+      <input class="input" type="text" placeholder="[第一次输入请输入自己的名字] 请输入聊天内容..." />
+      <button class="btn">发送</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      function join(roomName) {
+        socket.emit("join", roomName);
+      }
+
+      function leave(roomName) {
+        socket.emot("leave", roomName);
+      }
+
+      function getRoomInfo() {
+        socket.emit("getRoomInfo");
+      }
+    </script>
+    <script>
+      var socket = io();
+      var messages = document.querySelector("#messages");
+      var input = document.querySelector(".input");
+      var btn = document.querySelector(".btn");
+
+      btn.addEventListener("click", function () {
+        var sendMsg = input.value;
+        socket.emit("connection", sendMsg);
+        input.value = "";
+      });
+
+      socket.on("message", function (data) {
+        console.log(data)
+        const { userName, content, create } = data;
+        var li = document.createElement("li");
+        li.innerHTML = `<small>${userName}</small>: ${content} - ${create}`;
+        messages.append(li);
+      });
+    </script>
+  </body>
+</html>

@@ -28,14 +28,30 @@ const ws2 = new WebSocket.Server({ noServer: true });
 ws1.on("connection", function connection(socket) {
   socket.on("message", function (message) {
     console.log("received: %s", message);
-    socket.send("ws1:服务端回应：我已经接受到你发的消息了，消息是：" + message);
+    //example1 : 发给当前浏览器自己
+    // socket.send("ws1:服务端回应：我已经接受到你发的消息了，消息是：" + message);
+
+    //example2 : 客户端WebSocket广播到所有连接的WebSocket客户端，包括其自身
+    ws1.clients.forEach(function (client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message)
+      }
+    })
   });
 });
 
 ws2.on("connection", function connection(socket) {
   socket.on("message", function (message) {
     console.log("received: %s", message);
-    socket.send("ws2:服务端回应：我已经接受到你发的消息了，消息是：" + message);
+    // example1 : 发给当前浏览器自己
+    // socket.send("ws2:服务端回应：我已经接受到你发的消息了，消息是：" + message);
+
+    //example2 : 客户端WebSocket广播到所有连接的WebSocket客户端，包括其自身
+    ws2.clients.forEach(function (client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message)
+      }
+    })
   });
 });
 
@@ -54,6 +70,7 @@ server.on("upgrade", function (request, socket, head) {
     });
   }
 });
+
 
 server.listen(3003, () => {
     console.log('启动成功')

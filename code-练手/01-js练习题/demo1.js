@@ -1,6 +1,6 @@
 // 01 输出内容
-console.log(a);
-console.log(typeof fn(a));
+console.log(a); // undefined
+console.log(typeof fn(a)); // 报错
 
 var flag = true;
 if (!flag) {

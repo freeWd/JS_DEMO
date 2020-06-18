@@ -14,7 +14,7 @@ var result = yideng.method.bind(null);
 result(fn, 1);
 
 // 1 window默认存在length属性，且默认值为0
-// 2 如果在方法中使用 严格模式，方法中的this默认不指向windows而是undefined
+// 2 如果在方法中使用 严格模式，方法中的this默认不指向windows而是undefined, 但不影响fn中的this, 全局的 严格模式会影响
 // 3 fn.bind(null) bind中的值为null，相当于没有绑定，是一种象征性的软绑的写法
 // 4 fn.bind({}) bind中的值为{} 空对象是，就是硬绑是有作用的
 

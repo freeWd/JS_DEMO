@@ -12,6 +12,10 @@
 
     <button onclick="sendMsg2()">发送消息 ws2</button>
     <button onclick="closeMsg2()">关闭连接 ws2</button>
+
+    <ul class="msg-ul">
+        
+    </ul>
     <script>
         const ws = new WebSocket('ws://localhost:3003/ws1')
         ws.onopen = function() {
@@ -20,6 +24,7 @@
         ws.onmessage = function(event) {
             const data = event.data;
             console.log(event)
+            appendContent(data, 'ws1')
         }
         ws.onclose = function() {
             console.log('ws 连接已经关闭')
@@ -42,6 +47,7 @@
         ws2.onmessage = function(event) {
             const data = event.data;
             console.log(event)
+            appendContent(data, 'ws2')
         }
         ws2.onclose = function() {
             console.log('ws2 连接已经关闭')
@@ -54,6 +60,15 @@
         }
         function closeMsg2() {
             ws2.close()
+        }
+
+
+
+        var ul = document.querySelector('.msg-ul')
+        function appendContent(msg, source) {
+            var li = document.createElement('li')
+            li.innerText = 'source:' + source + ',' + msg + new Date()
+            ul.append(li)
         }
     </script>
 </body>

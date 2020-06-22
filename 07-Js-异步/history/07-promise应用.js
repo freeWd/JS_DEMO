@@ -62,7 +62,7 @@ readFile('./day1/static/age.txt').then(function(value) {
     console.log(data);
     return 100;
 }).catch(err => {
-    console.log(err);
+    console.log('----->', err);
     throw err;
 }).then(data => {
     throw data;

@@ -30,28 +30,57 @@
 // }
 // test.bind2({a:2}).bind2({a:3})()
 
+// ajax('/test', (result) => {
+//     console.log(result)
+//     ajax('/test?value='+result, (result2) => {
+//         console.log(result2)
+//     })
+// })
 
-var a = 10;
-var x = function () {
-  console.log(a);
-};
-
-function y(f) {
-  var a = 2;
-  f();
-}
-
-y(x);
+// new Promise((resolve, reject) => {
+//     ajax('/test', result => {
+//         console.log(result)
+//         resolve(result)
+//     })
+// }).then(value => {
+//     console.log('/test?value='+value)
+// })
 
 
 
-var obj = {
-  a: 1,
-  b: {
-    c: 2
-  }
-}
+setTimeout(() => {
+  Promise.resolve().then(_ => {
+    console.log('hello xxx')
+  })
+  console.log('hello1')
+})
 
-var obj2 = Object.assign({}, obj)
-obj2.b = 3;
-console.log(obj, obj2)
+setTimeout(() => {
+  Promise.resolve().then(_ => {
+    console.log('hello xxx2')
+  })
+  console.log('hello2')
+})
+
+setTimeout(() => {
+  Promise.resolve().then(_ => {
+    console.log('hello xxx3')
+  })
+  console.log('hello3')
+})
+
+new Promise(resolve => {
+  console.log('xxx')
+  resolve('xxx')
+}).then(val => {
+  console.log('ppppp')
+  return 'ppppp'
+}).then(val => {
+  console.log('ppppp2')
+  return new Promise(resolve => {
+    console.log('pppp3')
+    resolve('pppp3')
+  }).then(val => {
+    console.log('pppp4')
+  })
+})

@@ -1,0 +1,4 @@
+- 函数式编程
+- APO面向切面编程
+- 原生ajax和fetch
+- Web Worker

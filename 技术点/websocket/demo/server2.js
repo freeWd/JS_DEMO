@@ -16,7 +16,7 @@ app.use(async (ctx, next) => {
   } else {
     ctx.body = "404";
   }
-  await next()
+  await next();
 });
 
 const server = require("http").createServer(app.callback());
@@ -34,9 +34,9 @@ ws1.on("connection", function connection(socket) {
     //example2 : 客户端WebSocket广播到所有连接的WebSocket客户端，包括其自身
     ws1.clients.forEach(function (client) {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(message)
+        client.send(message + "<--- by server");
       }
-    })
+    });
   });
 });
 
@@ -49,29 +49,52 @@ ws2.on("connection", function connection(socket) {
     //example2 : 客户端WebSocket广播到所有连接的WebSocket客户端，包括其自身
     ws2.clients.forEach(function (client) {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(message)
+        client.send(message);
       }
-    })
+    });
   });
 });
 
-// 每次服务器响应升级请求时发出 
+// 每次服务器响应升级请求时发出
 // eg: 状态码：101
-server.on("upgrade", function (request, socket, head) {
-  const pathname = url.parse(request.url).pathname;
+// server.on("upgrade", function (request, socket, head) {
+//   const pathname = url.parse(request.url).pathname;
 
-  if (pathname === "/ws1") {
-    ws1.handleUpgrade(request, socket, head, function done(ws) {
-      ws1.emit("connection", ws, request);
-    });
-  } else if (pathname === "/ws2") {
-    ws2.handleUpgrade(request, socket, head, function done(ws) {
-      ws2.emit("connection", ws, request);
-    });
+//   if (pathname === "/ws1") {
+//     ws1.handleUpgrade(request, socket, head, function done(ws) {
+//       ws1.emit("connection", ws, request);
+//     });
+//   } else if (pathname === "/ws2") {
+//     ws2.handleUpgrade(request, socket, head, function done(ws) {
+//       ws2.emit("connection", ws, request);
+//     });
+//   }
+// });
+
+
+// 添加了简单的权限校验, 如果是 /ws1 就不允许连接
+function authenticate(request, callBack) {
+  const pathname = url.parse(request.url).pathname
+  if (pathname === '/ws1') {
+    callBack('error', null)
+  } else if (pathname === '/ws2') {
+    callBack(null, request)
   }
+}
+server.on("upgrade", function upgrade(request, socket, head) {
+  authenticate(request, (err, client) => {
+    if (err || !client) {
+      socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+      socket.destroy();
+      return;
+    }
+
+    ws2.handleUpgrade(client, socket, head, function done(ws) {
+      ws2.emit("connection", ws, client);
+    });
+  });
 });
 
-
 server.listen(3003, () => {
-    console.log('启动成功')
+  console.log("启动成功");
 });

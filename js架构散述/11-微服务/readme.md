@@ -88,7 +88,7 @@ docker rmi `docker images -q` # 删除本地所有镜像
 
 - container 容器相关 (将镜像实例化为一个容器，能直接访问)
 ```sh
-# 启动
+# 启动 【创建一个新的容器并运行一个命令】
 docker run ${image_name}
 # 常见的可选参数：i t d p
 # -i: 交互式操作。
@@ -97,12 +97,16 @@ docker run ${image_name}
 # -p: 映射端口
 
 # example:
-# docker run -t -i ubuntu:15.10 /bin/bash
+# docker run -t -i ubuntu:15.10 /bin/bash # 使用版本为15.10的ubuntu系统镜像来运行容器
 # docker run -d -p 8080:3000 test_web  # 8080是宿主机端口，3000是内部端口
 
+# 将一个已经终止的容器启动运行起来
+docker start ${container_id}
+
 # 查看
-docker ps
-docker ps -a
+docker ps # 显示当前正在运行的容器
+docker ps -a # 显示所有状态的容器
+docker ps -s # 显示容器文件大小
 
 # 删除
 docker rm -f ${container_id}
@@ -111,6 +115,14 @@ docker rm -f `docker ps -a -q` # 删除本地所有容器
 ## 其他
 docker stop [containerId]  # 终止容器运行
 docker exec [containerId] # 进入一个正在运行的 docker 容器
+
+## 查看运行容器的相关信息
+docker inspect ${ID/NAMES} # 查看所有状态信息
+docker inspect --format='{{.NetworkSettings.IPAddress}}' ID/NAMES # 查看容器ip地址
+docker inspect --format '{{.Name}} {{.State.Running}}' ID/NAMES # 容器运行状态
+docker top NAMES # 查看进程信息
+docker port ID/NAMES # 查看端口
+
 ```
 
 - Dockerfile相关内容

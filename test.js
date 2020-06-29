@@ -1,27 +1,27 @@
-function *test() {
-  const a = yield new Promise(resolve => {
-    setTimeout(() => {
-      resolve(123)
-    }, 1000)
-  })
-  return a
-}
+const obj = {
+  bar: {
+    c: '1',
+    d: '2'
+  },
+  get foo() {
+    return 47;
+  },
+  test() {
+    console.log(this.bar)
+  },
+};
+const temp = Object.assign({}, obj)
 
-
-function test2() {
-  let it = test();
-  function inner(data) {
-    const { value, done } = it.next(data)
-    if (done) {
-      return value
-    } else {
-      value.then(val => {
-        inner(val)
-      })
-    }
+Object.defineProperty(obj, 'bar', {
+  get() {
+    return temp['bar']
+  },
+  set(value) {
+    temp['bar'] = value+ '123'
   }
-  inner();
-}
+})
 
 
-console.log(test2())
+console.log(obj.bar)
+obj.bar = 'xxx'
+console.log(obj.bar)

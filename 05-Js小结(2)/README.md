@@ -179,6 +179,7 @@ Object.prototype.__proto__ === null; // true
 Function.__proto__.__proto__.constructor === Object;
 Function.prototype.__proto__.constructor === Object;
 Function.__proto__.constructor === Function
+Function.__proto__ === Function.prototype
 
 // 设计构造函数
 Object.constructor === Function;

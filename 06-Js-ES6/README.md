@@ -483,7 +483,7 @@ Proxy 用于修改某些操作的默认行为，等同于在语言层面做出�
 var proxy = new Proxy(target, handler);
 ```
 
-proxy 拦截器一共有 13 种 下面只选几个常见的：
+proxy 拦截器一共有 13 种 下面是几个常见的：
 
 - get(target, propKey, receiver)：拦截对象属性的读取
 - set(target, propKey, value, receiver)：拦截对象属性的设置，返回 boolean
@@ -560,10 +560,25 @@ class Person {
   name() { return `${this.first} ${this.last}` }
 }
 
+
+// === target: 就是被修饰的对象本身
+// === name: 要修饰的属性名
+// === descriptor对象原来的值如下
+// {
+//   value: specifiedFunction,
+//   enumerable: false,
+//   configurable: true,
+//   writable: true
+// };
 function readonly(target, name, descriptor) {
   descriptor.writable = false;
   return descriptor;
 }
+
+readonly(Person.prototype, 'name', descriptor);
+// 类似于
+Object.defineProperty(Person.prototype, 'name', descriptor);
+// 修饰器第一个参数是类的原型对象，上例是Person.prototype，修饰器的本意是要“修饰”类的实例，但是这个时候实例还没生成，所以只能去修饰原型
 
 
 // 如果同一个方法有多个修饰器，会像剥洋葱一样，先从外到内进入，然后由内向外执行
@@ -584,4 +599,6 @@ class Example {
 ```
 
 **注意：修饰器只能用于类和类的方法，不能用于函数，因为存在函数提升。使得可能被修饰的函数提升到顶部，其对应的修饰器在没有初始化好的情况下执行**
+
+
 

@@ -1,19 +1,55 @@
 ## promise 手写
-想完美写出Promise，就要阅读 `Promise/A+ 规范`, 当然我没读过，所以写不出完美的代码，但是写个照猫画虎也差不多了，最重要不是手写它，而是了解它的运作思想和套路
+
+想完美写出 Promise，就要阅读 `Promise/A+ 规范`, 当然我没读过，所以写不出完美的代码，但是写个照猫画虎也差不多了，最重要不是手写它，而是了解它的运作思想和套路
 
 ### 基本考虑：
 
-- promise三个状态
-    - pending
-    - resolved
-    - rejected
+- promise 三个状态
 
-- 内置resolve，reject函数能够让构造函数中的回调直接调用
+  - pending
+  - resolved
+  - rejected
 
-- 内置resolvedCallbacks, rejectedCallbacks用于保存then中的回调，当触发resolve或者reject时执行
+- 内置 resolve，reject 函数能够让构造函数中的回调直接调用
 
+- 内置 resolvedCallbacks, rejectedCallbacks 用于保存 then 中的回调，当触发 resolve 或者 reject 时执行
 
+- 构造函数中的回调函数可能是异步的，如何在异步的情况下，then 中的代码延迟执行，有需要判断状态和维护 then 中回调函数
 
+- resolve 中的值也可能是 promise, 如果是就 resolve 这个 promise 中 then 的值
 
+- then 需要返回一个全新的 promise
 
 ## bind, call, apply 手写
+
+- bind
+  - 如果 bind 方法的第一个参数是 null 或 undefined，等于将 this 绑定到全局对象，函数运行时 this 指向顶层对象
+  - 要考虑 bind 后的函数不一定是正常执行的，也有可能是要执行 new 去构造新对象的，此时 this 的值就不发生变化
+
+
+## instanceof 原理 & 手写
+instanceof 查找引用类型的__proto__（也就是此引用类型的构造函数的prototype）,判断其constructor是否是要对比的函数，如果不是就按原型域链再次向上寻找，直到找到或者为null
+
+## 为什么 0.1 + 0.2 != 0.3
+js中的number是浮点型的数据, 采用 IEEE 754 双精度版本（64位）
+
+IEEE 754 双精度版本（64位）将 64 位分为了三段
+- 第一位用来表示符号
+- 接下去的 11 位用来表示指数
+- 其他的位数用来表示有效位，也就是用二进制表示 0.1 中的 10011(0011)
+
+JS 采用的浮点数标准会裁剪掉我们的数字,这些循环的数字被裁剪了，就会出现精度丢失的问题，也就造成了 0.1 不再是 0.1 了，而是变成了 0.100000000000000002
+
+为什么 `console.log(0.1)` 是正确的呢？ 
+
+在输入内容的时候，二进制被转换为了十进制，十进制又被转换为了字符串，在这个转换的过程中发生了取近似值的过程，所以打印出来的其实是一个近似值，可以验证：`console.log(0.100000000000000002) // 0.1`
+
+```js
+0.100000000000000002 === 0.1 // true
+0.200000000000000002 === 0.2 // true
+0.1 + 0.2 === 0.30000000000000004 // true
+
+// 如何解决这个问题，正确的获取计算结果  
+// toFixed 取小数点后数字的个数
+parseFloat((0.1 + 0.2).toFixed(10)) === 0.3 // true
+```

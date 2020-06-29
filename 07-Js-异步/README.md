@@ -140,12 +140,12 @@ function ajax(url) {
 }
 
 ajax("/url1")
-.then(val => {
-  return ajax("url2?value=" + value)
-})
-.then(val => {
-    console.log(val)
-})
+  .then((val) => {
+    return ajax("url2?value=" + value);
+  })
+  .then((val) => {
+    console.log(val);
+  });
 ```
 
 能手写一个 Promise，符合 Promise A+规范
@@ -184,57 +184,122 @@ console.log(it.next(13)); // => {value: 42, done: true}
 ```js
 // Generator 解决回调地狱的问题
 function ajax(url) {
-    return new Promise((resolve, reject) => {
-        // ...
-        resolve(result)
-    })
+  return new Promise((resolve, reject) => {
+    // ...
+    resolve(result);
+  });
 }
 
 function* test() {
-    const data1 = yield ajax('/url1')
-    const data2 = yield ajax('/url2?value='+data1)
-    return data2+'123'
+  const data1 = yield ajax("/url1");
+  const data2 = yield ajax("/url2?value=" + data1);
+  return data2 + "123";
 }
 
 let it = test();
-it.next().value.then(
-    result => it.next(result).value
-)
-.then(
-    result => {
-        const { value, done } = it.next(result)
-        console.log(value, done); // ${data2}+'123', true
-    }
-) 
+it.next()
+  .value.then((result) => it.next(result).value)
+  .then((result) => {
+    const { value, done } = it.next(result);
+    console.log(value, done); // ${data2}+'123', true
+  });
 ```
 
 ## async, await
-- 异步的终极解决方案, 相当于是 generator + promise的语法糖
-- async和await，比起星号和yield，语义更清楚了。async表示函数里有异步操作，await表示紧跟在后面的表达式需要等待结果
-- async函数的返回值是 Promise 对象，这比 Generator 函数的返回值是 Iterator 对象方便多了。你可以用then方法指定下一步的操作，进一步说，async函数完全可以看作多个异步操作，包装成的一个 Promise 对象，而await命令就是内部then命令的语法糖。
-- async 函数内如果是reutrn 1 调用的时候相当于是返回了 Promise.resolve(1)
-- async函数的await命令后面，可以是 Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。正常情况下，await命令后面是一个 Promise 对象。如果不是，会被转成一个立即resolve的 Promise 对象。 await相当于执行了 promise.then
+
+- 异步的终极解决方案, 相当于是 generator + promise 的语法糖
+- async 和 await，比起星号和 yield，语义更清楚了。async 表示函数里有异步操作，await 表示紧跟在后面的表达式需要等待结果
+- async 函数的返回值是 Promise 对象，这比 Generator 函数的返回值是 Iterator 对象方便多了。你可以用 then 方法指定下一步的操作，进一步说，async 函数完全可以看作多个异步操作，包装成的一个 Promise 对象，而 await 命令就是内部 then 命令的语法糖。
+- async 函数内如果是 reutrn 1 调用的时候相当于是返回了 Promise.resolve(1)
+- async 函数的 await 命令后面，可以是 Promise 对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）。正常情况下，await 命令后面是一个 Promise 对象。如果不是，会被转成一个立即 resolve 的 Promise 对象。 await 相当于执行了 promise.then
 - 如果多个异步代码没有依赖性却使用了 await 会导致性能上的降低
 
+### async 函数的实现原理
 
+async 函数的实现原理，就是将 Generator 函数和自动执行器，包装在一个函数里
+
+```js
+async function fn(args) {
+  // ...
+}
+
+// 等同于
+
+function fn(args) {
+  return spawn(function* () {
+    // ...
+  });
+}
+
+function spawn(genF) {
+  return new Promise((resolve, reject) => {
+    const gen = genF();
+    function step(nextF) {
+      let next;
+      try {
+        next = nextF();
+      } catch (e) {
+        return reject(e);
+      }
+      if (next.done) {
+        return resolve(next.value);
+      }
+      Promise.resolve(next.value).then(
+        value => {
+          step(function () {
+            return gen.next(v);
+          });
+        },
+        error => {
+          step(function () {
+            return gen.throw(e);
+          });
+        }
+      );
+      // <===
+    }
+    step(function () {
+      return gen.next(undefined);
+    });
+  });
+}
+
+// 简化版写法：
+function spawn(genF) {
+  const iterator = genF();
+  return new Promise((resolve, reject) => {
+    function step(val) {
+      const { value, done } = iterator.next(val);
+      if (done) {
+        resolve(value);
+      } else {
+        step(value);
+      }
+    }
+
+    step();
+  });
+}
+```
 
 ```js
 async function test() {
   // 以下代码没有依赖性的话，完全可以使用 Promise.all 的方式
   // 如果有依赖性的话，其实就是解决回调地狱的例子了
-  await fetch(url)
-  await fetch(url1)
-  await fetch(url2)
+  await fetch(url);
+  await fetch(url1);
+  await fetch(url2);
 }
 ```
+
 ```js
 // await 内部实现了 generator ，generator 会保留堆栈中东西，所以这时候 a = 0 被保存了下来
-let a = 0
+let a = 0;
 let b = async () => {
-  a = a + await 10
-  console.log('2', a) // -> '2' 10
-}
-b()
-a++
-console.log('1', a) // -> '1' 1
+  a = a + (await 10);
+  console.log("2", a); // -> '2' 10
+};
+b();
+a++;
+console.log("1", a); // -> '1' 1
 ```

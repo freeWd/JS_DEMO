@@ -197,11 +197,29 @@ if ("abc") {
 +{ foo: "bar" } - // NaN
 [1, 2, 3] + // NaN
 true - // 1
-  false; // 0
+false // 0
 "a" + +"b"; // 'aNaN'
 ```
 
-自动转换的规则是这样的：预期什么类型的值，就调用该类型的转换函数。比如，某个位置预期为字符串，就调用 String 函数进行转换。如果该位置即可以是字符串，也可能是数值，那么默认转为数值, 如果是字符串和数字操作，则数字转化为字符串
+自动转换的规律总结：
+
+- 加法运算符
+  - 规则1 运算中其中一方为字符串，那么就会把另一方也转换为字符串
+  - 规则2 如果一方不是字符串或者数字，那么会将它转换为数字或者字符串
+  ```js
+  1 + "1"; // '11'  规则1
+  true + true; // 2 规则2
+  4 + [1, 2, 3]; // "41,2,3" 规则2 -》 规则1
+  ```
+- 除了加法外的其他四则运算符：只要其中一方是数字，那么另一方就会被转为数字
+  ```js
+  4 * '3' // 12
+  4 * [] // 0
+  4 * [1, 2] // NaN
+  ```
+- 比较运算符(> , < ...)
+  - 如果是对象，就通过 toPrimitive 转换对象
+  - 如果是字符串，就通过 unicode 字符索引来比较
 
 **由于自动转换具有不确定性，而且不易除错，建议在预期为布尔值、数值、字符串的地方，全部使用 Boolean、Number 和 String 函数进行显式转换。**
 
@@ -231,6 +249,14 @@ null == 0 //false, 虽然Number(null)的确是0，但是按照上面的流程图
 var a = []
 var b = a
 a == b // 类型一样，地址一样 true
+```
+
+- Object.is
+  鉴于 `==` 和 `===` 都存在自己的缺点，前者会自动转换数据类型，后者的 NaN 不等于自身，以及+0 等于-0，ES6 中新增了此方法，它的行为和 === 基本一致，有两个区别：`一是+0不等于-0，二是NaN等于自身`
+
+```js
+Object.is(NaN, NaN); // true
+Object.is(+0, -0); // false
 ```
 
 ## 逻辑运算符
@@ -357,117 +383,113 @@ var regex2 = new Regex("xyz", "i") === /xyz/i;
 
 ```js
 // 忽略大小写
-/The/.test('the') // false
-/The/i.test('the') // true
+/The/.test("the") / // false
+  The /
+  i.test("the"); // true
 
 // 全局搜索
-'the abc the'.match(/the/) // [ 'the', index: 0, input: 'the abc the', groups: undefined ]
-'the abc the'.match(/the/g) // [ 'the', 'the' ]
-
-// 多行
+"the abc the".match(/the/); // [ 'the', index: 0, input: 'the abc the', groups: undefined ]
+"the abc the".match(/the/g) // 多行 // [ 'the', 'the' ]
 `The fat
 cat sat
 on the mat.`.match(/at/g) // [ 'at', index: 5, input: 'The fat\ncat sat\non the mat.', groups: undefined ]
-
 `The fat
 cat sat
-on the mat.`.match(/at/gm) // [ 'at', 'at', 'at', 'at' ]
-
+on the mat.`.match(/at/gm); // [ 'at', 'at', 'at', 'at' ]
 ```
 
-#### 贪婪匹配与惰性匹配 
+#### 贪婪匹配与惰性匹配
+
 ```js
 // 正则默认是贪婪匹配，下面ast和 ast1111st 都符合规则，但是结果是：
-'ast1111st'.match(/.*st/) // [ 'ast1111st', index: 0, input: 'ast1111st', groups: undefined ]
+"ast1111st".match(/.*st/); // [ 'ast1111st', index: 0, input: 'ast1111st', groups: undefined ]
 
 // 惰性匹配
-'ast1111st'.match(/.*?at/) // [ 'ast', index: 0, input: 'ast1111st', groups: undefined ]
+"ast1111st".match(/.*?at/); // [ 'ast', index: 0, input: 'ast1111st', groups: undefined ]
 ```
 
-
 ### 常见的使用方法和场景
-- RegExp.prototype.test() 正则实例对象的test方法返回一个布尔值，表示当前模式是否能匹配参数字符串
-- RegExp.prototype.exec() 正则实例对象的exec方法，用来返回匹配结果。如果发现匹配(第一个结果)，就返回一个数组，成员是匹配成功的子字符串，否则返回null
-- String.prototype.match() 返回一个数组，成员是`所有匹配的子字符串`, 注意和exec的区别
+
+- RegExp.prototype.test() 正则实例对象的 test 方法返回一个布尔值，表示当前模式是否能匹配参数字符串
+- RegExp.prototype.exec() 正则实例对象的 exec 方法，用来返回匹配结果。如果发现匹配(第一个结果)，就返回一个数组，成员是匹配成功的子字符串，否则返回 null
+- String.prototype.match() 返回一个数组，成员是`所有匹配的子字符串`, 注意和 exec 的区别
 - String.prototype.search() 按照给定的正则表达式进行搜索，返回一个整数，表示匹配开始的位置
 - String.prototype.replace() 按照给定的正则表达式进行替换，返回替换后的字符串
 - String.prototype.split() 按照给定规则进行字符串分割，返回一个数组，包含分割后的各个成员
 
 ```js
-/abc/.test('abc') // true
+/abc/.test("abc"); // true
 
 // 如果正则表达式带有g修饰符，则每一次test方法都从上一次结束的位置开始向后匹配
 var r = /x/g;
-var s = '_x_x';
+var s = "_x_x";
 
-r.lastIndex // 0
-r.test(s) // true
+r.lastIndex; // 0
+r.test(s); // true
 
-r.lastIndex // 2
-r.test(s) // true
+r.lastIndex; // 2
+r.test(s); // true
 
-r.lastIndex // 4
-r.test(s) // false
+r.lastIndex; // 4
+r.test(s); // false
 ```
 
 ```js
-/\w/.exec('abc') // [ 'a', index: 0, input: 'abc', groups: undefined ]
+/\w/.exec("abc"); // [ 'a', index: 0, input: 'abc', groups: undefined ]
 
 // 如果正则表示式包含圆括号（即含有“组匹配”），则返回的数组会包括多个成员。第一个成员是整个匹配成功的结果，后面的成员就是圆括号对应的匹配成功的组。也就是说，第二个成员对应第一个括号，第三个成员对应第二个括号，以此类推
-'_x_x'.exec(/_(x)/) // ["_x", "x"]
+"_x_x".exec(/_(x)/); // ["_x", "x"]
 
 // 如果正则表达式加上g修饰符，则可以使用多次exec方法
 var reg = /a/g;
-var str = 'abc_abc_abc'
+var str = "abc_abc_abc";
 var r1 = reg.exec(str);
-r1 // ["a"]
-r1.index // 0
-reg.lastIndex // 1
+r1; // ["a"]
+r1.index; // 0
+reg.lastIndex; // 1
 
 var r2 = reg.exec(str);
-r2 // ["a"]
-r2.index // 4
-reg.lastIndex // 5
+r2; // ["a"]
+r2.index; // 4
+reg.lastIndex; // 5
 
 var r3 = reg.exec(str);
-r3 // ["a"]
-r3.index // 8
-reg.lastIndex // 9
+r3; // ["a"]
+r3.index; // 8
+reg.lastIndex; // 9
 
 var r4 = reg.exec(str);
-r4 // null
-reg.lastIndex // 0
+r4; // null
+reg.lastIndex; // 0
 ```
 
 ```js
 // string match
 
-var s = '_x_x';
+var s = "_x_x";
 var r1 = /x/;
 var r2 = /y/;
-var r3 = /x/g
+var r3 = /x/g;
 
-s.match(r1) // [ 'x', index: 1, input: '_x_x', groups: undefined ]
-s.match(r2) // null
-s.match(r3) // ['x', 'x']
-
+s.match(r1); // [ 'x', index: 1, input: '_x_x', groups: undefined ]
+s.match(r2); // null
+s.match(r3); // ['x', 'x']
 
 // string search
-'_x_x'.search(/x/) // 1, 如果没有匹配 返回 -1
-
+"_x_x".search(/x/); // 1, 如果没有匹配 返回 -1
 
 // String replace
 // 正则表达式如果不加g修饰符，就替换第一个匹配成功的值，否则替换所有匹配成功的值
-'aaa'.replace('a', 'b') // "baa"
-'aaa'.replace(/a/, 'b') // "baa"
-'aaa'.replace(/a/g, 'b') // "bbb"
+"aaa".replace("a", "b"); // "baa"
+"aaa".replace(/a/, "b"); // "baa"
+"aaa".replace(/a/g, "b"); // "bbb"
 
 // replace方法的一个应用，就是消除字符串首尾两端的空格
-var str = '  #id div.class  ';
-str.replace(/^\s+|\s+$/g, '')
+var str = "  #id div.class  ";
+str.replace(/^\s+|\s+$/g, "");
 
 // replace的第一个参数也可以是可字符串，就相当于匹配并替换第一个字符串
-'aabbcc'.replace('b', 'd') // 'aadbcc'
+"aabbcc".replace("b", "d"); // 'aadbcc'
 
 // replace方法的第二个参数可以使用美元符号，用来指代所替换的内容，这种用法太抽象了，我用不来
 ```
@@ -477,12 +499,11 @@ str.replace(/^\s+|\s+$/g, '')
 // 该方法接受两个参数，第一个参数是正则表达式(或者字符串)，表示分隔规则，第二个参数是返回数组的最大成员数
 
 // 非正则分隔
-'a,  b,c, d'.split(',')  // [ 'a', '  b', 'c', ' d' ]
+"a,  b,c, d".split(","); // [ 'a', '  b', 'c', ' d' ]
 
 // 正则分隔，去除多余的空格
-'a,  b,c, d'.split(/, */)
+"a,  b,c, d".split(/, */);
 
 // 指定返回数组的最大成员
-'a,  b,c, d'.split(/, */, 2)
-[ 'a', 'b' ]
+"a,  b,c, d".split(/, */, 2)[("a", "b")];
 ```

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #traggle {
+            width: 80%;
+            height: 200px;
+            background: yellow;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>hello world</h1>
+    <div id="traggle">拉伸 ， 缩小 div的宽度</div>
+    <button onclick="changeText()">修改文本</button>
+    <button onclick="changeAttr()">修改属性</button>
+    <button onclick="stop()">停止监听</button>
+    <script>
+        const traggleDiv = document.getElementById('traggle')
+        
+        const config = { attributes: true, childList: true, subtree: true }
+        const observer = new MutationObserver((mutations) => {
+            for(var mutation of mutations) {
+                console.log(mutation)
+            }
+        })
+        observer.observe(traggleDiv, config)
+
+        function changeText() {
+            traggleDiv.innerHTML = 'xxxx'
+        }
+
+        function changeAttr() {
+            traggleDiv.style.background = 'red'
+        }
+
+        function stop() {
+            observer.disconnect()
+        }
+    </script>
+</body>
+</html>

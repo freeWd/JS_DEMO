@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}图书管理-添加页面{% endblock %}
+
+{% block head %}
+  {% parent %}
+{% endblock %}
+
+{% block content %}
+<div id="app-add">
+  <el-tag style="margin-bottom: 16px;">添加图书</el-tag>
+  <el-form :inline="true" :model="addForm">
+    <el-form-item label="书名">
+      <el-input v-model="addForm.name" placeholder="书名"></el-input>
+    </el-form-item>
+    <el-form-item label="价格">
+      <el-input type="number" v-model="addForm.price" placeholder="价格"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="addBook">添加</el-button>
+    </el-form-item>
+  </el-form>
+</div>
+{% endblock %}
+
+{% block script %}
+{% parent %}
+<script type="module" src="/scripts/add.js"></script>
+{% endblock %}

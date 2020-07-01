@@ -1,27 +1,16 @@
-const obj = {
-  bar: {
-    c: '1',
-    d: '2'
-  },
-  get foo() {
-    return 47;
-  },
-  test() {
-    console.log(this.bar)
-  },
-};
-const temp = Object.assign({}, obj)
+var http = require('http');
 
-Object.defineProperty(obj, 'bar', {
-  get() {
-    return temp['bar']
-  },
-  set(value) {
-    temp['bar'] = value+ '123'
-  }
-})
+var server = http.createServer(function(req, res){
+    res.setTimeout(1000, function() {
+      clearTimeout(timer)
+      res.writeHead(500, 'time out')
+      res.end('Error Timeout');
+    })
+    
+    let timer = setTimeout(function(){
+        res.write('world');
+        res.end();
+    }, 2000);
+});
 
-
-console.log(obj.bar)
-obj.bar = 'xxx'
-console.log(obj.bar)
+server.listen(3000);

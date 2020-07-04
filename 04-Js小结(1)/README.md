@@ -383,9 +383,8 @@ var regex2 = new Regex("xyz", "i") === /xyz/i;
 
 ```js
 // 忽略大小写
-/The/.test("the") / // false
-  The /
-  i.test("the"); // true
+/The/.test("the") // false
+/The/i.test("the"); // true
 
 // 全局搜索
 "the abc the".match(/the/); // [ 'the', index: 0, input: 'the abc the', groups: undefined ]

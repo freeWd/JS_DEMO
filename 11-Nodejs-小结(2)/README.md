@@ -901,6 +901,7 @@ child_process.spawn(command[, args][, options])
 var spawn = require("child_process").spawn;
 var ls = spawn("ls", ["-al"]);
 
+// 接收子进程的消息
 ls.stdout.on("data", function (data) {
   console.log("data from child: " + data);
 });

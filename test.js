@@ -1,16 +1,13 @@
-var http = require('http');
+const { spawn } = require('child_process')
 
-var server = http.createServer(function(req, res){
-    res.setTimeout(1000, function() {
-      clearTimeout(timer)
-      res.writeHead(500, 'time out')
-      res.end('Error Timeout');
-    })
-    
-    let timer = setTimeout(function(){
-        res.write('world');
-        res.end();
-    }, 2000);
-});
+const childProcess = spawn(process.execPath, ['./test2.js'])
 
-server.listen(3000);
+childProcess.stdin.write('start')
+
+let count = 0
+childProcess.stdout.on('data', function(data) {
+    console.log('parent ==>', data)
+    count++
+})
+
+console.log('xxx')

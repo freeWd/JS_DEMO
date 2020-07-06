@@ -1,13 +1,12 @@
-const { spawn } = require('child_process')
+// test.js
+function ClassDemo(val) {
+  this.prop = val
+}
 
-const childProcess = spawn(process.execPath, ['./test2.js'])
+var a = new ClassDemo('123')
+var b = new ClassDemo('456')
 
-childProcess.stdin.write('start')
+console.log(%HaveSameMap(a,b))
 
-let count = 0
-childProcess.stdout.on('data', function(data) {
-    console.log('parent ==>', data)
-    count++
-})
-
-console.log('xxx')
+b.prop2 = '789'
+console.log(%HaveSameMap(a,b))

@@ -42,3 +42,27 @@ process.nextTick(function() {
 });
 
 console.log(__dirname, __filename);
+
+
+
+
+setTimeout(() => {
+    console.log("timer21");
+  }, 0);
+  
+  Promise.resolve().then(function () {
+    console.log("promise1");
+  });
+  
+  process.nextTick(() => {
+   console.log('nextTick')
+   process.nextTick(() => {
+     console.log('nextTick')
+     process.nextTick(() => {
+       console.log('nextTick')
+       process.nextTick(() => {
+         console.log('nextTick')
+       })
+     })
+   })
+  })

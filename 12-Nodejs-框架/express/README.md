@@ -233,12 +233,14 @@ app[router].route(path).get((req, resp) => {}).post((req, resp) => {}) ... 来�
 这种方法可以更轻松地设计HTML页面。
     * 使用模板的关键代码：app.set('view engine','ejs'); app.set('views',__dirname);
       __dirname 此处是你静态文件的实际目录，ejs是你使用的模板引擎，常用的是（ejs, Pug, Mustache),也可以是html
-    * 如何渲染？ 
+    * 如何渲染？
+    
     ```js
     // 调用render渲染模板，文件后缀名可以省略，回调可以不写
-    res.render('3-index',{title:'hello'},function(err,data){
-        console.log(data);
-        res.send(data);
+    // 如果指定了回调，则必须显式发送呈现的HTML字符串
+    res.render('3-index',{title:'hello'},function(err,html){
+        console.log(html);
+        res.send(html);
     });
     ```
 

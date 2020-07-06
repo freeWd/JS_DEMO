@@ -67,7 +67,8 @@ import "regenerator-runtime/runtime";
 //方法三：如果是用webpack
 const path = require("path");
 module.exports = {
-  entry: ["core-js/stable", "regenerator-runtime/runtime", "./a.js"],
+  // entry: ["core-js/stable", "regenerator-runtime/runtime", "./a.js"],
+  entry: ['@babel/polyfill', './a/js']
   output: {
     filename: "b.js",
     path: path.resolve(__dirname, ""),

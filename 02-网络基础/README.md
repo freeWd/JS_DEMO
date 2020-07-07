@@ -428,6 +428,8 @@ TLS/SSL 的功能实现主要依赖于三类基本算法：散列函数 、对�
 
 申请Https: https://www.laozuo.org/7676.html
 
+感兴趣可以看下知乎中第一个答案的小故事（和尚，小花和张屠夫），很有意思 虽然讲的是https的东西，但是也涉及到很多加解密的内容：https://www.zhihu.com/question/21518760/answer/19698894
+
 ## HTTP2 & HTTP3
 
 #### HTTP2

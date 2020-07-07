@@ -2,7 +2,6 @@ let http = require('http');
 let path = require('path');
 let url = require('url');
 let fs = require('fs');
-let querystring = require('querystring');
 let mime = require('mime');
 
 let server = http.createServer((req, resp) => {
@@ -61,8 +60,6 @@ let server = http.createServer((req, resp) => {
         }
     });
 });
-
-
 
 
 server.listen(3003, 'localhost');

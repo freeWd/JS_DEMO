@@ -103,6 +103,7 @@ buff.fill("ab");
 var buff = Buffer.from("hello");
 buff.toString(); // hello
 buff.toString("utf8", 0, 2);
+buf.toString('bae64')
 
 // buf.toJSON
 var buff = Buffer.from("hello");

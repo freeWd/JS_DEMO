@@ -1,7 +1,4 @@
 {
-  // 使用 IntelliSense 了解相关属性。
-  // 悬停以查看现有属性的描述。
-  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
@@ -13,28 +10,16 @@
         "<node_internals>/**"
       ]
     },
-    // {
-    //   "type": "node",
-    //   "request": "launch",
-    //   "name": "启动程序",
-    //   "program": "${workspaceFolder}/day2-nodejs/require.js"
-    // },
-    // {
-    //   // // /Users/free_wd/Documents/GitHub/JS_DEMO/day17-webpack/package.json
-    //   "type": "node",
-    //   "request": "launch",
-    //   "name": "Launch Webpack",
-    //   "program": "${workspaceFolder}/day17-webpack/node_modules/webpack-cli/bin/webpack.js",
-    //   "args": ["--config", "${workspaceFolder}/day17-webpack/webpack.config.js"],
-    //   "env": { "NODE_ENV": "development" }
-    // }
     {
       "type": "node",
       "request": "launch",
       "name": "debug webpack",
       "cwd": "${workspaceFolder}/day19-webpack-core",
       "program": "${workspaceFolder}/day19-webpack-core/node_modules/webpack-cli/bin/cli.js",
-      "args": ["--config", "${workspaceFolder}/day19-webpack-core/webpack.config.js"]
+      "args": [
+        "--config",
+        "${workspaceFolder}/day19-webpack-core/webpack.config.js"
+      ]
     },
     {
       "type": "node",
@@ -47,6 +32,12 @@
       "request": "launch",
       "name": "debug koa",
       "program": "${workspaceFolder}/day5.2-koa/self-koa/self-applications.js"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Create JavaScript Debug Terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

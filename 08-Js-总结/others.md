@@ -12,6 +12,7 @@
 - [Web Worker](#web-worker)
 - [Muatation Observer](#muatation-observer)
 - [Object 修改对象的行为](#object-修改对象的行为)
+- [Iframe](#iframe)
 
 <!-- /code_chunk_output -->
 
@@ -332,3 +333,13 @@ observer.disconnect();
 - writable 当且仅当该属性的 writable 键值为 true 时，属性的值，也就是上面的 value，才能被赋值运算符改变。
 - get 属性的 getter 函数，如果没有 getter，则为 undefined。当访问该属性时，会调用此函数
 - set 属性的 setter 函数，如果没有 setter，则为 undefined。当属性值被修改时，会调用此函数
+
+
+## Iframe
+这玩意尽量少用，但有时候还挺有用的，demo看代码。
+
+iframe 嵌入一个子页面，父子页面相对独立，但也可用postMessage实现通信。
+
+父页面是可以操作子页面的dom元素的，子页面也可以调用父元素的方法
+
+iframe还可以作为轮询请求的一种解决方案

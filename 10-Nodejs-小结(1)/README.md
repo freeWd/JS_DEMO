@@ -463,3 +463,5 @@ npm uninstall {库名}
 - http://www.zhufengpeixun.cn/architecture/html/3.Node.html
 - https://juejin.im/post/5b5f365e6fb9a04fa8673f97
 - https://www.cnblogs.com/woodyblog/p/6061671.html
+
+资源分享： [Nodejs入门](https://www.nodebeginner.org/index-zh-cn.html#javascript-and-nodejs) 

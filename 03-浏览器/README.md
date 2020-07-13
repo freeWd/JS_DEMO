@@ -79,7 +79,7 @@ eg: webkit 的内核架构图：
 
 不同的渲染引擎在一些流程和细节处理上是有区别的但是大体上都是分成下面的四个阶段：
 
-- 解析代码：HTML 代码解析为 DOM，CSS 代码解析为 CSSOM（CSS Object Model）
+- 解析代码：HTML 代码解析为 DOM，CSS 代码解析为 CSSOM （CSS Object Model）
 - 对象合成：将 DOM 和 CSSOM 合成一棵渲染树（render tree）
 - 布局：计算出渲染树的布局（layout）
 - 绘制：将渲染树绘制到屏幕

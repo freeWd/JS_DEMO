@@ -21,7 +21,7 @@ module.exports = {
           minSize: 0,//最小提取字节数
           minChunks: 1, //最少被几个chunk引用
           priority: -20,
-          reuseExistingChunk: true//    如果该chunk中引用了已经被抽取的chunk，直接引用该chunk，不会重复打包代码
+          reuseExistingChunk: true // 如果该chunk中引用了已经被抽取的chunk，直接引用该chunk，不会重复打包代码
         }
       }
     }

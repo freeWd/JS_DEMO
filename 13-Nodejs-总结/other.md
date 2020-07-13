@@ -23,7 +23,7 @@
   - [cookie 客户端](#cookie-客户端)
   - [cookie 在服务端](#cookie-在服务端)
 - [JWT](#jwt)
-  - [JWT的结构](#jwt的结构)
+  - [JWT 的结构](#jwt-的结构)
   - [应用场景](#应用场景)
 
 <!-- /code_chunk_output -->
@@ -83,16 +83,13 @@ parseInt("0xff", 16);
 
 // ===》 m进制 ==> n进制
 // 10进制转化为2进制
-(255)
-  .toString(2)(
-    // 10进制转化为16进制
-    255
-  )
-  .toString(16)(
-    // 16进制转化为10进制
-    0xff
-  )
-  .toString(10);
+(255).toString(2);
+
+// 10进制转化为16进制
+(255).toString(16);
+
+// 16进制转化为10进制
+(0xff).toString(10);
 ```
 
 ### 简单了解 Base64 编码
@@ -246,11 +243,11 @@ cookie 的属性信息
 
   表示可以访问此 cookie 的域名。 (默认为设定该 Cookie 的域名)， 所指定的域名必须是当前发送 Cookie 的域名的一部分，比如当前访问的域名是 example.com，就不能将其设为 google.com。只有访问的域名匹配 domain 属性，Cookie 才会发送到服务器。
 
+  mac,linux 上可以通过 ==sudo vi /etc/hosts==设置本地映射不同的域名来测试
+
 - path
 
   为可以访问此 cookie 的页面路径。 比如 domain 是 abc.com,path 是/test，那么只有/test 路径下的页面可以读取此 cookie。
-
-  mac/linux 上可以通过 ==sudo vi /etc/hosts==设置本地映射不同的域名来测试
 
 - expires/Max-Age
 
@@ -316,21 +313,23 @@ let server = http.createServer((req, resp) => {
 server.listen(3003);
 ```
 
-> 也可以使用加密模块，对cookie的值做一层sha256的加密，和明文一起传输，后端校验，起到防止篡改的目的
+> 也可以使用加密模块，对 cookie 的值做一层 sha256 的加密，和明文一起传输，后端校验，起到防止篡改的目的
 
-* MD5 和 sha1 都已经不安全，有可能被碰撞成功
-* sha256 是不可逆加密，即如果明文一致，加密结果一致，但不能根据密文解密出明文
-* sha256 可以添加盐（随机数），盐值不同，即使用的都是sha256, 加密的结果都不一样。 （你不知道我的盐，不可能做出口味和我一样的菜）
-* 根据明文加密后的密文对比cookie中的密码，来判断是否内容被篡改
+- MD5 和 sha1 都已经不安全，有可能被碰撞成功
+- sha256 是不可逆加密，即如果明文一致，加密结果一致，但不能根据密文解密出明文
+- sha256 可以添加盐（随机数），盐值不同，即使用的都是 sha256, 加密的结果都不一样。 （你不知道我的盐，不可能做出口味和我一样的菜）
+- 根据明文加密后的密文对比 cookie 中的密码，来判断是否内容被篡改
 
 ---
+
 ## JWT
 
-* JWT(json web token)是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准。
-* JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源。比如用在用户登录上。
-因为数字签名的存在，这些信息是可信的，JWT可以使用HMAC算法或者是RSA的公私秘钥对进行签名
+- JWT(json web token)是为了在网络应用环境间传递声明而执行的一种基于 JSON 的开放标准。
+- JWT 的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源。比如用在用户登录上。
+  因为数字签名的存在，这些信息是可信的，JWT 可以使用 HMAC 算法或者是 RSA 的公私秘钥对进行签名
 
-### JWT的结构
+### JWT 的结构
+
 ```
 // 一个token的示例  JWT包含了使用.分隔的三部分
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTY2MzUyMDYwLCJleHAiOjE1NjYzNTIwODB9.v_IGmPIIOLaFO3oF6jLGUfop_lrzykoEqYkUvplRFTI
@@ -345,53 +344,60 @@ eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTY2MzUyMDYwLCJleHAiOjE1NjYzNTIwODB9
 // 第三部分 Signature 签名
 v_IGmPIIOLaFO3oF6jLGUfop_lrzykoEqYkUvplRFTI
 ```
-* 在header中通常包含了两部分：token类型和采用的加密算法。
+
+- 在 header 中通常包含了两部分：token 类型和采用的加密算法。
+
 ```
 // 对这部分内容使用Base64Url编码组成了JWT结构的第一部分
-{ "alg": "HS256", "typ": "JWT"} 
+{ "alg": "HS256", "typ": "JWT"}
 ```
 
-* Payload - 负载就是存放有效信息的地方。这个名字像是指货车上承载的货物，这些有效信息包含三个部分
-    * 标准中注册的声明（建议但不强制使用）
-        * iss: jwt签发者
-        * sub: jwt所面向的用户
-        * aud: 接收jwt的一方
-        * exp: jwt的过期时间，这个过期时间必须要大于签发时间,这是一个秒数
-        * nbf: 定义在什么时间之前，该jwt都是不可用的.
-        * iat: jwt的签发时间
-    * 公共的声明
-        * 公共的声明可以添加任何的信息，一般添加用户的相关信息或其他业务需要的必要信息.但不建议添加敏感信息，因为该部分在客户端可解密
-    * 私有的声明
-        * 私有声明是提供者和消费者所共同定义的声明，一般不建议存放敏感信息，因为base64是对称编码的，意味着该部分信息可以归类为明文信息
+- Payload - 负载就是存放有效信息的地方。这个名字像是指货车上承载的货物，这些有效信息包含三个部分
+  - 标准中注册的声明（建议但不强制使用）
+    - iss: jwt 签发者
+    - sub: jwt 所面向的用户
+    - aud: 接收 jwt 的一方
+    - exp: jwt 的过期时间，这个过期时间必须要大于签发时间,这是一个秒数
+    - nbf: 定义在什么时间之前，该 jwt 都是不可用的.
+    - iat: jwt 的签发时间
+  - 公共的声明
+    - 公共的声明可以添加任何的信息，一般添加用户的相关信息或其他业务需要的必要信息.但不建议添加敏感信息，因为该部分在客户端可解密
+  - 私有的声明
+    - 私有声明是提供者和消费者所共同定义的声明，一般不建议存放敏感信息，因为 base64 是对称编码的，意味着该部分信息可以归类为明文信息
+
 ```
 // 负载实例
-{ "sub": "1234567890", "name": "zfpx", "admin": true} 
+{ "sub": "1234567890", "name": "zfpx", "admin": true}
 ```
 
-* Signature 签名
-    * 创建签名需要使用编码后的header和payload以及一个秘钥
-    * 使用header中指定签名算法进行签名
-    * 例如如果希望使用HMAC SHA256算法，那么签名应该使用下列方式创建
-    ```
-    HMACSHA256( base64UrlEncode(header) + "." + base64UrlEncode(payload), secret) 
-    ```
-    * 签名用于验证消息的发送者以及消息是没有经过篡改的
+- Signature 签名
 
-* 完整的JWT 完整的JWT格式的输出是以. 分隔的三段Base64编码
-* 密钥secret是保存在服务端的，服务端会根据这个密钥进行生成token和验证，所以需要保护好。
+  - 创建签名需要使用编码后的 header 和 payload 以及一个秘钥
+  - 使用 header 中指定签名算法进行签名
+  - 例如如果希望使用 HMAC SHA256 算法，那么签名应该使用下列方式创建
 
+  ```
+  HMACSHA256( base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)
+  ```
+
+  - 签名用于验证消息的发送者以及消息是没有经过篡改的
+
+- 完整的 JWT 完整的 JWT 格式的输出是以. 分隔的三段 Base64 编码
+- 密钥 secret 是保存在服务端的，服务端会根据这个密钥进行生成 token 和验证，所以需要保护好。
 
 ### 应用场景
-结合vue，看看JWT在前后端分离中的使用
+
+结合 vue，看看 JWT 在前后端分离中的使用
 JWT - json web token 用于表示登录用户身份的唯一凭证。
 大致流程：
-* 在登录接口请求到服务端后，服务端确认用户登录成功，工具用户的唯一信息(比如 userId)配合自定义的秘钥生成一串加密后的token值和对应的过期时间，将token值作为响应结果返回。
-* 客户端在login的返回值中获取token值，存储在离线存储的环境中比如cookie或者localstorage
-* 客户端设置请求拦截器，在每次请求发送前，从离线存储位置获取到token值添加的请求头自定义的字段中
-* 后端拦截器在请求过来时，先获取请求头中的token值，利用秘钥将信息解密，如果解密成功（信息正确 & 在有效期内）继续后面的逻辑，在返回的结果中将带上新的token值(刷新到期时间)
-* 前端在相应位置 =》  路由拦截器 | 响应拦截器 中设置判断逻辑，如果返回信息表示用户到期或token不正确，就跳转到login页面
 
-JWT 和 cookie-session-jsessionId那种验证方式异曲同工，两者现在是并存的。
+- 在登录接口请求到服务端后，服务端确认用户登录成功，工具用户的唯一信息(比如 userId)配合自定义的秘钥生成一串加密后的 token 值和对应的过期时间，将 token 值作为响应结果返回。
+- 客户端在 login 的返回值中获取 token 值，存储在离线存储的环境中比如 cookie 或者 localstorage
+- 客户端设置请求拦截器，在每次请求发送前，从离线存储位置获取到 token 值添加的请求头自定义的字段中
+- 后端拦截器在请求过来时，先获取请求头中的 token 值，利用秘钥将信息解密，如果解密成功（信息正确 & 在有效期内）继续后面的逻辑，在返回的结果中将带上新的 token 值(刷新到期时间)
+- 前端在相应位置 =》 路由拦截器 | 响应拦截器 中设置判断逻辑，如果返回信息表示用户到期或 token 不正确，就跳转到 login 页面
 
-JWT个人感觉是前后端完全分离后的新产物，它更适用于分布式环境中，因为token是保存在客户端的，后端服务器不管怎么变，token都能正确的传递过去。
-而sessionid依赖前端的cookie和后端的session配合，如果是分布式环境，不同服务器的session不一样，这时候可能就需要将sessionid存在在db中了
+JWT 和 cookie-session-jsessionId 那种验证方式异曲同工，两者现在是并存的。
+
+JWT 个人感觉是前后端完全分离后的新产物，它更适用于分布式环境中，因为 token 是保存在客户端的，后端服务器不管怎么变，token 都能正确的传递过去。
+而 sessionid 依赖前端的 cookie 和后端的 session 配合，如果是分布式环境，不同服务器的 session 不一样，这时候可能就需要将 sessionid 存在在 db 中了

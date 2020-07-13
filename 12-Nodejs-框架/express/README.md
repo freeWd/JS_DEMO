@@ -231,10 +231,10 @@ app[router].route(path).get((req, resp) => {}).post((req, resp) => {}) ... 来�
 * express支持使用模板 - 模板引擎使您可以在应用程序中使用静态模板文件。
 在运行时，模板引擎用实际值替换模板文件中的变量，并将模板转换为发送到客户端的HTML文件。
 这种方法可以更轻松地设计HTML页面。
-    * 使用模板的关键代码：app.set('view engine','ejs'); app.set('views',__dirname);
+    * 使用模板的关键代码：`app.set('view engine','ejs'); app.set('views',__dirname);`
       __dirname 此处是你静态文件的实际目录，ejs是你使用的模板引擎，常用的是（ejs, Pug, Mustache),也可以是html
+
     * 如何渲染？
-    
     ```js
     // 调用render渲染模板，文件后缀名可以省略，回调可以不写
     // 如果指定了回调，则必须显式发送呈现的HTML字符串

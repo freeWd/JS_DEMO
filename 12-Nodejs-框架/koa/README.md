@@ -172,14 +172,14 @@ app.use(router.routes())
 const Router = require('koa-router')
 const home = new Router()
 
-// /home
+// path: /home
 home.get('/', async (ctx, next) => {
     ctx.response.status = 200
     ctx.response.body = 'home'
     await next()
 })
 
-// home/list
+// path: home/list
 home.get('/list', async (ctx, next) => {
     ctx.response.status = 200
     ctx.response.body = 'home-list'
@@ -348,16 +348,6 @@ app.use(async (ctx, next) => {
 
 
 更详细的信息：https://chenshenhai.github.io/koa2-note/
-
-### Koa是如何写出来的?
-洋葱模型 & 一起看看Koa源码吧
-koa核心源码包含4个文件
-- application.js
-- context.js
-- request.js
-- response.js
-
-可以先看看这个：如何从头实现一个node.js的koa框架 [https://www.jb51.net/article/163208.htm]
 
 
 

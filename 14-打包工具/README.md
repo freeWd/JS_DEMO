@@ -1,5 +1,31 @@
 > 渔得鱼心满意足，樵得樵眼笑眉舒 - 胡祗遹 《沉醉东风》
 
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [webapck](#webapck)
+  - [webpack 基本概念](#webpack-基本概念)
+  - [webpack 使用](#webpack-使用)
+  - [webpack 优化](#webpack-优化)
+    - [提高开发过程的效率](#提高开发过程的效率)
+    - [代码打包兼容性考虑](#代码打包兼容性考虑)
+    - [减少 Webpack 打包时间](#减少-webpack-打包时间)
+      - [尽量减小搜索的范围](#尽量减小搜索的范围)
+      - [多进程处理](#多进程处理)
+      - [定义 DLL](#定义-dll)
+      - [其他优化](#其他优化)
+    - [减少 Webpack 打包体积](#减少-webpack-打包体积)
+      - [提取公共代码 (基础类库，方便长期缓存, 页面之间的公用代码)](#提取公共代码-基础类库方便长期缓存-页面之间的公用代码)
+      - [动态导入和懒加载](#动态导入和懒加载)
+      - [Scope Hoisting 作用域提升](#scope-hoisting-作用域提升)
+      - [Tree Shaking](#tree-shaking)
+    - [其他优化](#其他优化-1)
+
+<!-- /code_chunk_output -->
+
+
 从原始的刀耕火种时代，到 Gulp、Grunt 等早期方案的横空出世，随着前端整体的迅猛发展，逻辑的越来越复杂化。前端工程化是一个绕不过去的大话题，而在整个工程化中，打包构建又是重中之重
 
 **目前市面上常见到的一些管理工具：**
@@ -420,41 +446,6 @@ module.exports = {
 
 - module.noParse：如果你确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
 
-- purgecss-webpack-plugin
-
-  - 可以去除未使用的 css，一般与 glob、glob-all 配合使用
-  - 必须和`mini-css-extract-plugin`配合使用
-  - `paths` 路径是绝对路径
-
-  ```js
-  const glob = require('glob');
-  const PurgecssPlugin = require('purgecss-webpack-plugin');
-
-  module.exports = {
-    module: {
-      loaders: [
-        {
-            test: /\.css/,
-            include: path.resolve(__dirname,'src'),
-            exclude: /node_modules/,
-            use: [{
-                loader: MiniCssExtractPlugin.loader
-            },'css-loader']
-        }
-      ]
-    },
-    plugins: [
-        new PurgecssPlugin({
-            paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename:'[id].css'
-        })
-    ],
-  }
-  ```
-
 
 
 #### 减少 Webpack 打包体积
@@ -534,4 +525,39 @@ webpack4默认支持摇树优化，但需要在production模式下生效
   - "side effect(副作用)" 的定义是，在导入时会执行特殊行为的代码，而不是仅仅暴露一个 export 或多个 export。举例说明，例如 polyfill，它影响全局作用域，并且通常不提供 export
 
 
+#### 其他优化
 
+- purgecss-webpack-plugin
+
+  - 可以去除未使用的 css，一般与 glob、glob-all 配合使用
+  - 必须和`mini-css-extract-plugin`配合使用
+  - `paths` 路径是绝对路径
+
+  ```js
+  const glob = require('glob');
+  const PurgecssPlugin = require('purgecss-webpack-plugin');
+
+  module.exports = {
+    module: {
+      loaders: [
+        {
+            test: /\.css/,
+            include: path.resolve(__dirname,'src'),
+            exclude: /node_modules/,
+            use: [{
+                loader: MiniCssExtractPlugin.loader
+            },'css-loader']
+        }
+      ]
+    },
+    plugins: [
+        new PurgecssPlugin({
+            paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename:'[id].css'
+        })
+    ],
+  }
+  ```

@@ -1,5 +1,6 @@
 // ====> Self Code
 const http = require("http");
+const url = require('url');
 
 const MethodList = ["get", "post", "put", "delete"];
 
@@ -34,6 +35,7 @@ function selfExpress() {
         path = null;
       }
       if (path && path.includes(":")) {
+        // 正则带
         path.replace(/:([^\/]+)/g, function () {
           pathParams.push(arguments[1]);
           return "[^/]+";
@@ -65,7 +67,9 @@ function selfExpress() {
       resp = expendResp(resp);
 
       // 按顺序执行路由列表
-      const url = req.url;
+      let {
+        pathname
+      } = url.parse(req.url);
       const method = req.method.toLowerCase();
       let index = 0;
       execute();
@@ -74,7 +78,17 @@ function selfExpress() {
         const routeItem = app.acrossRouteList[index];
         if (!routeItem.path || routeItem.path.test(url)) {
           if (routeItem.path && routeItem.pathParams.length > 0) {
-            const [, ...list] = url.parse(url.match(routeItem.path))
+            // routerItem.path 是正则中小括号是关键，match分解出小括号中的内容
+            // eg: pathName = '/abc/123/def/456'   regex: /abc\/(\d+)\/def\/(\d+)/
+            // pathName.match(regex)
+            // ===> result:
+            // [ 'xxxx/123/fff/345',
+            //   '123',
+            //   '345',
+            //   index: 0,
+            //   input: 'xxxx/123/fff/345',
+            //   groups: undefined ]
+            const [, ...list] = pathname.match(routeItem.path)
             routeItem.pathParams.forEach((pathItem, index) => {
               req.params[pathItem] = list[index]
             })

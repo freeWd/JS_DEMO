@@ -63,6 +63,14 @@ sudo mongod &
 
 # 连接mongo服务
 mongo
+
+
+## 停止Mongodb
+
+# 方法一：查看进程，使用kill命令；不能使用kill -9
+# 方法二：在客户端进去，使用shutdown命令
+use admin
+db.shutdownServer();
 ```
 
 ### 基本概念：
@@ -241,9 +249,9 @@ createIndex() 接收可选参数，可选参数列表如下：
 
 > db.students.getIndexes() //查看索引
 
-**备份和回复数据**
+**备份和恢复数据**
 
-> 注意：备份和回复数据的命令不是写在 mongo 的命令行里面，而是直接在 shell 里面
+> 注意：备份和恢复数据的命令不是写在 mongo 的命令行里面，而是直接在 shell 里面
 
 ```sh
 mongodump

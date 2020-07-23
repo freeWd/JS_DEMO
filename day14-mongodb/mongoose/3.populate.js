@@ -39,6 +39,11 @@ let Car = conn.model('shoppingcar', CarSchema);
 // 类似于多表关联查询
 Car.findById('5d9d145b1dd48e1e2d14fcd5').populate('user', {username: 1}).then(
     doc => {
-        console.log(doc);
+        // { _id: 5d9d145b1dd48e1e2d14fcd5,
+        //     productName: 'iphone',
+        //     productPrice: '300',
+        //     user: { _id: 5d9d145a1dd48e1e2d14fcd4, username: 'wd4' },
+        //     __v: 0 }
+        console.log(doc, '<----doc');
     }
 )

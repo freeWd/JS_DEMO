@@ -1,0 +1,17 @@
+{
+  "name": "history",
+  "version": "1.0.0",
+  "description": "",
+  "main": "01-eventloop.js",
+  "bin": {
+    "wd": "./test22.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

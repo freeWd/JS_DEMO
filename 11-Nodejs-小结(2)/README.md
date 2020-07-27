@@ -484,6 +484,7 @@ pipe(rs, ws);
 直接调用 node api：`rs.pipe(ws);` , 把可读流导入到可写流中
 
 ```js
+// 将1.txt内容拷贝到2.txt中，读1.txt, 写 2.txt
 const fs = require("fs");
 const rs = fs.createReadStream("./test/1.txt");
 const ws = fs.createWriteStream("./test/2.txt");

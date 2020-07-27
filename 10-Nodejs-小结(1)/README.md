@@ -304,7 +304,7 @@ npm uninstall {库名}
      #!/usr/bin/env node
      console.log('wd-test');
      ```
-  4. 拷贝到 `npm root -g` 所在目录下，或者本地调试的时候到需要  使用的第三方库文件夹下 运行 `npm link` 链接到  全局安装目录去。
+  4. 拷贝到 `npm root -g` 所在目录下，或者本地调试的时候到需要使用的第三方库文件夹下 运行 `npm link` 链接到  全局安装目录去。
 
 - 发布一个自己写的包到 npm 官网
 

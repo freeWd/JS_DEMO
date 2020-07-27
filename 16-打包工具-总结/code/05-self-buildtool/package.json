@@ -1,0 +1,21 @@
+{
+  "name": "05-self-buildtool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node self-build-cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/types": "^7.10.5"
+  },
+  "dependencies": {
+    "esprima": "^4.0.1",
+    "estraverse": "^5.1.0"
+  }
+}

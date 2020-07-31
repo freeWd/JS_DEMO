@@ -323,6 +323,10 @@ var regex2 = new Regex("xyz", "i") === /xyz/i;
 | \      | 转义字符,用于匹配一些保留的字符 `[ ]() { } . * + ? ^ $ \ |` |
 | ^      | 从开始行开始匹配                                            |
 | \$     | 从末端开始匹配                                              |
+| x(?=y) | 匹配'x'仅仅当'x'后面跟着'y'.                                  |
+| (?<=y)x | 匹配'x'仅当'x'前面是'y'.                                  |
+| x(?!y) | 仅仅当'x'后面不跟着'y'时匹配'x'                               |
+| (?<!y)x | 仅仅当'x'前面不是'y'时匹配'x'，                               |
 
 ```js
 /./.test('a') // true
@@ -405,6 +409,8 @@ on the mat.`.match(/at/gm); // [ 'at', 'at', 'at', 'at' ]
 
 // 惰性匹配
 "ast1111st".match(/.*?at/); // [ 'ast', index: 0, input: 'ast1111st', groups: undefined ]
+
+'abc  abaabac abd'.match(/(?<=a)(.+?)(?=c)/g) // ['b', 'baaba']
 ```
 
 ### 常见的使用方法和场景

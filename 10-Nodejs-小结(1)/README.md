@@ -133,8 +133,8 @@ console.log(obj);
 
 #### 全局变量
 
--  __dirname：指向当前运行脚本所在的目录
--  __filename：指向当前运行脚本的文件名，当前模块的文件名称---解析后的绝对路径。
+- \_\_dirname：指向当前运行脚本所在的目录
+- \_\_filename：指向当前运行脚本的文件名，当前模块的文件名称---解析后的绝对路径。
 
 ---
 
@@ -167,6 +167,7 @@ Node 中模块分类：
 ## ECMAScript 就无需再介绍了
 
 ---
+
 ## Node 如何实现模块化？
 
 早期的模块化解决方案：`seajs, cmd, requirejs, amd`
@@ -248,7 +249,6 @@ exports = {
 - 如果要输出一个函数或数组，必须直接对 module.exports 对象赋值。
 - 所以我们可以得出结论：直接对 module.exports 赋值，可以应对任何情况
 
-
 ## npm 的相关使用 & 全局模块
 
 npm 是 nodejs 自带的包管理工具，通过它可以下载第三方模块。
@@ -299,7 +299,7 @@ npm uninstall {库名}
          "wd": "./wd-test.js"
      }
      ```
-  3. #/usr/bin/env node (使用 node 来运行文件)
+  3. #/usr/bin/env node (表示 使用 node 来运行文件)
      ```
      #!/usr/bin/env node
      console.log('wd-test');
@@ -328,6 +328,7 @@ npm uninstall {库名}
 
 - yarn
   yarn 是 facebook 主推的一个包管理工具，下载速度比 npm 更快，版本  控制更好。
+
   ```
   npm install yarn -g
   yarn global add ${第三方库}
@@ -335,10 +336,18 @@ npm uninstall {库名}
   yarn remove ${第三方库}
   ```
 
+  | npm                        | yarn               |
+  | -------------------------- | ------------------ |
+  | npm install                | yarn               |
+  | npm install lib --save     | yarn add lib       |
+  | npm uninstall lib --save   | yarn remove lib    |
+  | npm install lib --save-dev | yarn add lib --dev |
+  | npm update --save          | yarn upgrade       |
+
 参考：
 
 - http://www.zhufengpeixun.cn/architecture/html/3.Node.html
 - https://juejin.im/post/5b5f365e6fb9a04fa8673f97
 - https://www.cnblogs.com/woodyblog/p/6061671.html
 
-资源分享： [Nodejs入门](https://www.nodebeginner.org/index-zh-cn.html#javascript-and-nodejs) 
+资源分享： [Nodejs 入门](https://www.nodebeginner.org/index-zh-cn.html#javascript-and-nodejs)

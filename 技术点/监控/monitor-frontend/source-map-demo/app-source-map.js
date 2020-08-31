@@ -1,5 +1,6 @@
 // 此处只是demo，使用的静态资源文件也是 demo性质的 react的打包文件
 // 仅仅通过此文件简单了解如何利用map文件，反编译js源码
+// 这块自己跑一下就懂了，map数据来源于 website-test/client/react-app 专门用来进行sourcemap的测试
 
 const Koa = require("koa");
 const app = new Koa();
@@ -26,7 +27,7 @@ app.use(async (ctx, next) => {
     });
 
 
-    // mock数据，错误的代码的行和列，这个错误信息可以通过 `src/errorCatch.js`来获取
+    // 这里是hardcode 的 mock数据，表示错误的代码的行和列，真实的这个错误信息可以通过 `src/errorCatch.js`来获取
     // 上面写死的 map文件也可以通过 `src/errorCatch.js`的source文件 + .map来动态获取
     let findPos = {
       line: 554,

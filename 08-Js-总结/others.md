@@ -50,7 +50,7 @@ newFn();
 面向切面的编程 (Aspect Oriented Programming)
 
 - 面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术
-- 在 js 中就是不改变原有逻辑的情况下对于对原函数、类的部分功能的  增强。
+- 在 js 中就是不改变原有逻辑的情况下对于对原函数、类的部分功能的增强。
 - es6 中的装饰器，注解使用的就是 AOP 模式的编程。
 
 ```js
@@ -110,11 +110,12 @@ xhr.timeout = 3000; // 可以设置HTTP请求的时限
 xhr.ontimeout = function(event){
     alert('请求超时！');
 }
-xhr.onreadystatehange = function() {
+xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
         console.log(xhr.responseText)
     }
 }
+// xhr.onload = function() { console.log(xhr.response) }
 xhr.open('GET', ${url})
 xhr.send()
 xhr.addEventListener('error', () => { // 当请求遇到错误时，将触发error 事件

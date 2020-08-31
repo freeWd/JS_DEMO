@@ -115,16 +115,16 @@ db.collection_name.drop()
 ### 文档的操作
 
 ```sh
-# 插入内容
+### 插入内容
 db.collection_name.insert(...) / save(...) - 有记录会更新
 
-# 删除内容
+### 删除内容
 # 删除当前集合所有内容
 db.collection_name.remove({})
 # 按条件删除, justOne默认为false, 删除所有匹配条件的，设置为true表示只删除找到的第一条
 db.col.remove({'title':'MongoDB 教程'}, {justOne: true})
 
-# 更新内容
+### 更新内容
 db.collection_name.update() // $set, $unset $inc $push $pop $ne $addToSet
 # 按条件name:wd4批量添加字段age
 db.user.update({name:'wd4'}, {$set:{age:9}}, {multi: true});
@@ -163,6 +163,7 @@ db.collection_name.find({queryWhere},{key:1,key:1})
 - 1 表示要显示
 
 ```sh
+### 查询
 # 只返回显示age列
 db.collection_name.find({},{age:1});
 
@@ -185,7 +186,7 @@ db.collection_name.find({age:{$gte:13,$lte:17}});
 # 取特定条件 age小于13 大于17的
 db.student.find({age:{$not:{$gte:13,$lte:17}}});
 
-# 对数组的查询
+### 对数组的查询
 # 按所有元素匹配
 let result = db.user.find({friends:[ "A", "B", "C", "D" ]});
 # 匹配一项 包含A的就可以

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        hello world
+    </div>
+    <script src="./script/04-long-task.js"></script>
+    <script>
+        // getEntriesByType 方法返回给定类型的 PerformanceEntry 列表
+        // paint为绘制时间，包括first-paint, 和 first-content-paint
+        // 如果执行内容过多，可能在此处无法直接获取到paint的数据，那么会在observer中打印出来
+        console.log(window.performance.getEntriesByType('paint'));
+        const observer = new PerformanceObserver(list => {
+            for (const entry of list.getEntries()) {
+                console.log(entry);
+            }
+        });
+        const observer2 = new PerformanceObserver(list => {
+            for (const entry of list.getEntries()) {
+                console.log(entry);
+            }
+        });
+        const observer3 = new PerformanceObserver(list => {
+            for (const entry of list.getEntries()) {
+                console.log(entry);
+            }
+        });
+        observer.observe({entryTypes: ['paint']});
+        observer2.observe({entryTypes: ['longtask']});
+
+
+        // ============= 自定义mark的使用 =============
+        // 设置一个标记 xxx, 在后面的脚本文件中通过getEntriesByName('xxx') 获取从设置标签到读取标签这段时间的执行状态
+        // 可以添加多个同名的mark标记，getEntriesByName读取的时候以数组的形式展示出来
+        window.performance.mark('xxx-start')
+        const arr1 = [];
+        for (let index = 0; index < 100000; index++) {
+            arr1.push(index)
+        }
+        window.performance.mark('xxx-end')
+        const startFmp = performance.getEntriesByName("xxx-start", "mark");
+        console.log(startFmp, '<----xxx-start');
+
+        const endFmp = performance.getEntriesByName("xxx-end", "mark");
+        console.log(endFmp, '<----xxx-end');
+
+        performance.measure('measureLoop', 'xxx-start', 'xxx-end');
+        console.log(performance.getEntriesByName('measureLoop'), '<-----measureLoop')
+
+        // 清楚所有添加的mark标记
+        performance.clearMarks();
+    </script>
+</body>
+</html>

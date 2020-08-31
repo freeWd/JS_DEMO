@@ -511,15 +511,16 @@ proxy.foo = "bar";
 
 `vue3.0 重写数据响应式部分，用Proxy代替Object.defineProperty, 因为Proxy 无需一层层递归为每个属性添加代理，一次即可完成以上操作，性能上更好`
 
-### Decorator
+### Decorator 装饰器
 
-有点类似可以自定义的语法糖，可以用它来使得代码进一步解耦，也能一定程度上实现AOP
+有点类似可以自定义的语法糖，可以用它来使得代码进一步解耦，也能一定程度上实现 AOP
 
 修饰器一般可以修饰类，还可以修饰类的属性。
+
 ```js
 // 修饰器的行为类似于下面
 @decorator
-class A {} 
+class A {}
 
 // 等同于
 
@@ -538,8 +539,7 @@ function testable(target) {
   target.isTestable = true;
 }
 
-MyTestableClass.isTestable // true
-
+MyTestableClass.isTestable; // true
 
 // 带参数
 @testable(true)
@@ -548,18 +548,18 @@ class MyTestableClass {
 }
 
 function testable(isTestable) {
-  return function(target) {
+  return function (target) {
     target.isTestable = isTestable;
-  }
+  };
 }
-
 
 // 修饰类的属性
 class Person {
   @readonly
-  name() { return `${this.first} ${this.last}` }
+  name() {
+    return `${this.first} ${this.last}`;
+  }
 }
-
 
 // === target: 就是被修饰的对象本身
 // === name: 要修饰的属性名
@@ -575,22 +575,21 @@ function readonly(target, name, descriptor) {
   return descriptor;
 }
 
-readonly(Person.prototype, 'name', descriptor);
+readonly(Person.prototype, "name", descriptor);
 // 类似于
-Object.defineProperty(Person.prototype, 'name', descriptor);
+Object.defineProperty(Person.prototype, "name", descriptor);
 // 修饰器第一个参数是类的原型对象，上例是Person.prototype，修饰器的本意是要“修饰”类的实例，但是这个时候实例还没生成，所以只能去修饰原型
 
-
 // 如果同一个方法有多个修饰器，会像剥洋葱一样，先从外到内进入，然后由内向外执行
-function dec(id){
-  console.log('evaluated', id);
-  return (target, property, descriptor) => console.log('executed', id);
+function dec(id) {
+  console.log("evaluated", id);
+  return (target, property, descriptor) => console.log("executed", id);
 }
 
 class Example {
-    @dec(1)
-    @dec(2)
-    method(){}
+  @dec(1)
+  @dec(2)
+  method() {}
 }
 // evaluated 1
 // evaluated 2
@@ -598,7 +597,32 @@ class Example {
 // executed 1
 ```
 
+```js
+// 修改函数内部执行逻辑
+class Demo {
+  constructor() {
+    this.value = "hello world";
+  }
+
+  @test("123")
+  method1() {
+    console.log(this.value, "<------");
+  }
+}
+
+function test(value) {
+  return function (target, name, descriptor) {
+    const oldValue = descriptor.value;
+    descriptor.value = function () {
+      oldValue.call(this, arguments);
+      return value;
+    };
+    return descriptor;
+  };
+}
+
+const demo = new Demo();
+console.log(demo.method1());
+```
+
 **注意：修饰器只能用于类和类的方法，不能用于函数，因为存在函数提升。使得可能被修饰的函数提升到顶部，其对应的修饰器在没有初始化好的情况下执行**
-
-
-

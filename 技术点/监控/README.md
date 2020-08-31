@@ -51,9 +51,8 @@ loadEventEnd | load 事件发送后
 
   - DOMContentLoaded:
 
-    - 当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载。
-    - 注意：DOMContentLoaded 事件必须等待其所属 script 之前的样式表加载解析完成才会触发。`其所属脚本`指的得是编写了监听 DOMContentLoaded 事件的 script 文件
-    - 这是来自 MDN 的定义，可能觉得前后有点矛盾，实际上是没有问题的，前提是要比较清楚的了解浏览器对 DOM 加载以及其中出现外链 link,script 的加载逻辑，可以看上面的链接
+    - 当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载。 注意：DOMContentLoaded 事件必须等待其所属 script 之前的样式表加载解析完成才会触发。`其所属脚本`指的得是编写了监听 DOMContentLoaded 事件的 script 文件
+    - 这是来自 MDN 的定义，可能觉得前后有点矛盾，实际上是没有问题的，把前后不要混在一起看即可。前提是要比较清楚的了解浏览器对 DOM 加载以及出现外链 link,script 的加载逻辑，
     - 无需等待子框架的完成,但是 DOMContentLoaded 事件在 html 文档加载完毕，并且 html 所引用的内联 js、以及外链 js 的同步代码都执行完毕后触发
 
   - load: 应该仅用于检测一个完全加载的页面, 页面的 html、css、js、图片等资源都已经加载完之后才会触发 load 事件

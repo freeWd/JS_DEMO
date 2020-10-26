@@ -142,7 +142,7 @@ path.relative("/data/demo", "/data/demo"); // ''
 path.basename("/tmp/demo/js/test.js"); // test.js
 path.basename("/tmp/demo/js/test/"); // test
 
-// 如果只想获取文件名，单不包括文件扩展呢
+// 如果只想获取文件名，但不包括文件扩展呢
 path.basename("/tmp/demo/js/test.js", ".js"); // test
 
 // 获取文件扩展名

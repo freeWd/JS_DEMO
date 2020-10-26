@@ -9,6 +9,6 @@
 
 Hapi: https://hapi.dev/
 
-Nestjs: https://nestjs.com/  [注意不是 nuxt, 不是 next，是nest，不要傻傻分不清]
+Nestjs: https://nestjs.com/  [注意不是 nuxt, 不是 next，不是nest，不要傻傻分不清]
 
 Egg: https://eggjs.org/zh-cn/ [依赖koa，更深度的封装，开箱即用]

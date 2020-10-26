@@ -1,6 +1,5 @@
 > 渔得鱼心满意足，樵得樵眼笑眉舒 - 胡祗遹 《沉醉东风》
 
-
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
 <!-- code_chunk_output -->
@@ -24,7 +23,6 @@
     - [其他优化](#其他优化-1)
 
 <!-- /code_chunk_output -->
-
 
 从原始的刀耕火种时代，到 Gulp、Grunt 等早期方案的横空出世，随着前端整体的迅猛发展，逻辑的越来越复杂化。前端工程化是一个绕不过去的大话题，而在整个工程化中，打包构建又是重中之重
 
@@ -57,6 +55,10 @@ WebPack 可以看做是模块打包机：它做的事情是，分析你的项目
 ![image](./images/build-relation.jpg)
 
 `module` 就是没有被编译之前的代码，通过 webpack 的根据文件引用关系生成 `chunk` 文件，webpack 处理好 chunk 文件后，生成运行在浏览器中的代码 `bundle`
+
+loader和plugin的区别:
+- 对于loader，它是一个转换器，将A文件进行编译形成B文件，这里操作的是文件，比如将A.scss转换为A.css，单纯的文件转换过程
+- plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务
 
 eg:
 
@@ -221,14 +223,15 @@ optimization 中压缩 css 和 js 文件
 
 ### webpack 优化
 
-关于打包的优化，在满足业务需求的前提下，要抓住两个基本点：
+关于打包的优化，在满足业务需求的前提下，要抓住下面几个基本点：
 
 - 提高开发过程的效率
 - 代码打包兼容性考虑
 - 减少 Webpack 打包的时间
 - 减小 Webpack 打包后文件的体积
 
-#### 提高开发过程的效率
+
+#### **提高开发过程的效率**
 
 HMR 不刷新页面的热加载
 
@@ -274,7 +277,7 @@ devServer:{
 
 代码路径：`code-optimization//webpack.base.js等`
 
-#### 减少 Webpack 打包时间
+#### **减少 Webpack 打包时间**
 
 ##### 尽量减小搜索的范围
 
@@ -446,40 +449,29 @@ module.exports = {
 
 - module.noParse：如果你确定一个文件下没有其他依赖，就可以使用该属性让 Webpack 不扫描该文件，这种方式对于大型的类库很有帮助
 
-
-
 #### 减少 Webpack 打包体积
 
 ##### 提取公共代码 (基础类库，方便长期缓存, 页面之间的公用代码)
 
-大网站如果是有多个页面的，每个页面由于采用相同技术栈和样式代码，会包含很多公共代码，如果都包含进来会有问题
-    - 相同的资源被重复的加载，浪费用户的流量和服务器的成本；
-    - 每个页面需要加载的资源太大，导致网页首屏加载缓慢，影响用户体验。
-    - 如果能把公共代码抽离成单独文件进行加载能进行优化，可以减少网络传输流量，降低服务器成本
+大网站如果是有多个页面的，每个页面由于采用相同技术栈和样式代码，会包含很多公共代码，如果都包含进来会有问题 - 相同的资源被重复的加载，浪费用户的流量和服务器的成本； - 每个页面需要加载的资源太大，导致网页首屏加载缓慢，影响用户体验。 - 如果能把公共代码抽离成单独文件进行加载能进行优化，可以减少网络传输流量，降低服务器成本
 
 代码文件 `code-optimization2/history/02-webpack.config.js` 配置 optimization 进行代码分割
 
-通过代码分割打包的代码中，被重复引用的模块会被抽离到一个公共的js中，被其他用到它的js共享
-
-
+通过代码分割打包的代码中，被重复引用的模块会被抽离到一个公共的 js 中，被其他用到它的 js 共享
 
 ##### 动态导入和懒加载
 
-用户当前需要用什么功能就只加载这个功能对应的代码，也就是所谓的按需加载 在给单页应用做按需加载优化时，一般采用以下原则：
-    - 对网站功能进行划分，每一类一个chunk
-    - 对于首次打开页面需要的功能直接加载，尽快展示给用户,某些依赖大量代码的功能点可以按需加载
-    - 被分割出去的代码需要一个按需加载的时机
+用户当前需要用什么功能就只加载这个功能对应的代码，也就是所谓的按需加载 在给单页应用做按需加载优化时，一般采用以下原则： - 对网站功能进行划分，每一类一个 chunk - 对于首次打开页面需要的功能直接加载，尽快展示给用户,某些依赖大量代码的功能点可以按需加载 - 被分割出去的代码需要一个按需加载的时机
 
 代码文件 `/code-optimization2/history/03-index.js`
 
-```js 
+```js
 // 代码中，当点击按钮的时候才加载lazyload文件，通过
 // 异步导入
-import('./lazyload').then(result => {
-    console.log(result);
+import("./lazyload").then((result) => {
+  console.log(result);
 });
 ```
-
 
 ##### Scope Hoisting 作用域提升
 
@@ -498,6 +490,7 @@ new webpack.optimize.ModuleConcatenationPlugin(),
 ```
 
 开启/不开启 区别如下：
+
 ```js
 // index.js
 import { num } from "./print1";
@@ -508,22 +501,21 @@ consolg.log(a);
 // 开启：打包后的代码：var num = 100; var a = num + 100;
 ```
 
-
 ##### Tree Shaking
 
-- 一个模块可以有多个方法，只要其中某个方法使用到了，则整个文件都会被打到bundle里面去，tree shaking就是只把用到的方法打入bundle,没用到的方法会uglify阶段擦除掉
-- 原理是利用es6模块的特点,只能作为模块顶层语句出现,import的模块名只能是字符串常量
+- 一个模块可以有多个方法，只要其中某个方法使用到了，则整个文件都会被打到 bundle 里面去，tree shaking 就是只把用到的方法打入 bundle,没用到的方法会 uglify 阶段擦除掉
+- 原理是利用 es6 模块的特点,只能作为模块顶层语句出现,import 的模块名只能是字符串常量
 
-webpack4默认支持摇树优化，但需要在production模式下生效
+webpack4 默认支持摇树优化，但需要在 production 模式下生效
 
 使用时注意的事项：
+
 - 使用 ES2015 模块语法（即 import 和 export）
 - 确保没有编译器将您的 ES2015 模块语法转换为 CommonJS 的（顺带一提，这是现在常用的 @babel/preset-env 的默认行为，详细信息请参阅文档）
-  - 如果我们将babel配置中的modules参数项改成false，那么就不会对ES6模块化进行更改，还是使用import引入模块
-  - 想办法是的babel的部分逻辑在tree-sharking执行完成之后再执行
+  - 如果我们将 babel 配置中的 modules 参数项改成 false，那么就不会对 ES6 模块化进行更改，还是使用 import 引入模块
+  - 想办法是的 babel 的部分逻辑在 tree-sharking 执行完成之后再执行
 - 在项目的 package.json 文件中，添加 "sideEffects" 属性
   - "side effect(副作用)" 的定义是，在导入时会执行特殊行为的代码，而不是仅仅暴露一个 export 或多个 export。举例说明，例如 polyfill，它影响全局作用域，并且通常不提供 export
-
 
 #### 其他优化
 
@@ -552,7 +544,7 @@ webpack4默认支持摇树优化，但需要在production模式下生效
     },
     plugins: [
         new PurgecssPlugin({
-            paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`
+            paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`)
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
@@ -561,3 +553,27 @@ webpack4默认支持摇树优化，但需要在production模式下生效
     ],
   }
   ```
+
+### 其他用到的插件介绍
+
+- DefinePlugin
+
+  DefinePlugin 允许在 编译时 创建配置的全局常量，这在需要区分开发模式与生产模式进行不同的操作时，非常有用。
+
+  ```js
+  // webpack.config.js
+  new webpack.DefinePlugin({
+    PRODUCTION: JSON.stringify(true),
+    VERSION: JSON.stringify("5fa3b9"),
+    BROWSER_SUPPORTS_HTML5: true,
+    TWO: "1+1",
+    "typeof window": JSON.stringify("object"),
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+  });
+
+  // xxx.js
+  console.log('Running App version ' + VERSION);
+  if(!BROWSER_SUPPORTS_HTML5) require('html5shiv'); // 直接使用全局常量
+  ```
+
+- script-ext-html-webpack-plugin 添加async，defer或module属性的<script>元素，甚至他们内联

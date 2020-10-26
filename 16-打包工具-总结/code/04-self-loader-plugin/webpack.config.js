@@ -21,8 +21,8 @@ module.exports = {
         test: /\.js/,
         use: [
           {
-            loader: path.resolve(__dirname, "./self/loader-banner.js"),
-            options: { filename: path.resolve(__dirname, './banner.txt') }
+            loader: path.resolve(__dirname, "./self/loader-file.js"),
+            // options: { filename: path.resolve(__dirname, './banner.txt') }
           },
         ],
       },

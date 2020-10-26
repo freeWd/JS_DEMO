@@ -1,42 +1,32 @@
-function ismobile() {
-  var mobileArry = [
-    "iPhone",
-    "iPad",
-    "Android",
-    "Windows Phone",
-    "BB10; Touch",
-    "BB10; Touch",
-    "PlayBook",
-    "Nokia",
-  ];
-  var ua = navigator.userAgent;
-  var res = mobileArry.filter(function (arr) {
-    return ua.indexOf(arr) > 0;
-  });
-  return res.length > 0;
+const { pathToFileURL } = require("url");
+
+var a = 10;
+var b = 20;
+
+
+function test(obj) {
+  obj.test();
+  obj.test2();
 }
 
+test({
+  test: () => {
+    console.log(this)
+  },
+  test2() {
+    console.log(this)
+  },
+  a: 20
+})
 
-var flag = ismobile();
+
+console.log(/((25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))/.test('10.'))
+
+
+console.log(/[a-zA-Z0-9]{32}/.test("8ca9732f5e884b0f87e21aae19360b9f"))
 
 
 
-if (!flag) {
-  let zftoken = localStorage.getItem("zftoken");
-  if (zftoken) {
-    var str = window.atob(zftoken);
-    if (!/\d+@\d+/.test(str)) {
-      localStorage.removeItem("zftoken");
-    }
-  }
-  let zftoken2 = localStorage.getItem("zftoken");
-  if (!zftoken2) {
-    let str = prompt("please input your username");
-    if (/\d+@\d{4}/.test(str)) {
-      var enc = window.btoa(str);
-      localStorage.setItem("zftoken", enc);
-    } else {
-      window.location = "http://www.zhufengpeixun.cn";
-    }
-  }
-}
+const path = require('path')
+console.log(path.join('./test2', '/1.txt'))
+console.log(path.resolve(".test2", "/1.txt"))

@@ -13,7 +13,7 @@ export default {
         const newValue = 'new demo name';
         return store.dispatch('set_username', newValue);
     },
-    // 只在客户单执行，和asyncData逻辑保持一致，确保路由跳转时，vuex state值也保持最新
+    // 只在客户端执行，和asyncData逻辑保持一致，确保路由跳转时，vuex state值也保持最新
     mounted() {
         const newValue = 'new demo name';
         this.$store.dispatch('set_username', newValue);

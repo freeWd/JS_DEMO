@@ -70,8 +70,8 @@ console.log(buf.indexOf(Buffer.from("buffer x"))); // -1
 // Buffer.concat(list[, totalLength]) 连接
 var buff1 = Buffer.alloc(10);
 var buff2 = Buffer.alloc(20);
-let big2 = Buffer.concat([b1, b2]);
-let big2 = Buffer.concat([b1, b2], buff1.length + buff2.length);
+let big2 = Buffer.concat([buff1, buff2]);
+let big2 = Buffer.concat([buff1, buff2], buff1.length + buff2.length);
 
 // Buffer 拷贝 buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])
 let big = Buffer.from("你好"); // <Buffer e4 bd a0 e5 a5 bd>

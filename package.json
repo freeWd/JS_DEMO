@@ -1,0 +1,21 @@
+{
+  "name": "JS_DEMO",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freeWd/JS_DEMO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/freeWd/JS_DEMO/issues"
+  },
+  "homepage": "https://github.com/freeWd/JS_DEMO#readme"
+}
